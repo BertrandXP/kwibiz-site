@@ -179,18 +179,14 @@
     <span class="syncdot" id="syncDot"></span>
     <div>
       <div class="collab-title">Pilotage équipe</div>
-      <span class="collab-status" id="syncStatus">Initialisation…</span>
+      <span class="collab-status" id="syncStatus">Connexion à Supabase…</span>
     </div>
   </div>
-  <div class="collab-auth" id="authLoggedOut">
-    <input type="email" id="teamEmail" placeholder="Votre email d’équipe">
-    <button class="collab-btn" id="sendMagicLink" type="button">Recevoir le lien de connexion</button>
+  <div class="collab-auth">
+    <input type="text" id="teamName" placeholder="Votre prénom / nom">
+    <button class="collab-btn secondary" id="saveTeamName" type="button">Enregistrer mon nom</button>
   </div>
-  <div class="collab-auth" id="authLoggedIn" style="display:none">
-    <span class="collab-user" id="teamUser"></span>
-    <button class="collab-btn secondary" id="signOutTeam" type="button">Déconnexion</button>
-  </div>
-  <div class="auth-hint" id="authHint">Connectez-vous pour modifier la checklist partagée.</div>
+  <div class="cloud-note">Cases et indications partagées en temps réel avec l’équipe.</div>
 </div>
 
 <section class="phase">
@@ -366,7 +362,7 @@
     </div>
     <div class="task-list">
       <textarea class="note-area" id="taskNoteText" placeholder="Ajoutez ici les indications, décisions, liens utiles, personnes responsables, points à vérifier…"></textarea>
-      <div class="note-help">Ces indications sont enregistrées dans le document local pour l’instant. Elles seront raccordées au mode partagé lorsque nous pousserons la version finale.</div>
+      <div class="note-help">Ces indications sont enregistrées dans Supabase et partagées en temps réel avec toute l’équipe.</div>
     </div>
     <div class="task-dialog-foot">
       <button class="note-clear" id="taskNoteClear" type="button">Effacer les indications</button>
@@ -379,12 +375,12 @@
 
 <script>
 (function(){
-  const DATA = {"prep-1": {"title": "Offre & cadre franchise", "tasks": ["Finaliser la structure de l’offre franchise", "Valider le prix, les redevances et les modalités de paiement", "Valider les conditions d’entrée et les prérequis", "Vérifier la cohérence de tous les supports avec le DIP", "Valider le wording commercial utilisé pendant le lancement", "Fixer précisément la fenêtre d’entrée, de vente et de closing"]}, "prep-2": {"title": "Parcours juridique & DIP", "tasks": ["Finaliser la version du DIP utilisée pour le lancement", "Configurer l’envoi / remise électronique du DIP", "Enregistrer automatiquement la date de remise dans le CRM", "Calculer la date individuelle d’éligibilité au closing", "Finaliser le contrat de franchise et les annexes", "Tester le workflow DIP → délai → closing → signature"]}, "prep-3": {"title": "CRM & pipeline", "tasks": ["Créer toutes les étapes du pipeline candidat", "Créer les tags et segments nécessaires", "Configurer les automatisations entre les étapes", "Créer le lead scoring / niveau de chaleur", "Faire remonter les réponses des ateliers dans la fiche candidat", "Créer le dashboard de pilotage du lancement", "Créer les statuts CRM spécifiques au parcours de mise à niveau", "Créer la logique de réentrée future Mise à niveau → Candidature Franchise"]}, "prep-4": {"title": "Landing & formulaires", "tasks": ["Créer la landing d’inscription au webinar principal", "Créer la page de confirmation / merci", "Créer le formulaire de candidature express", "Créer le formulaire post-webinar avec choix « Programme Franchise » ou « Mise à niveau »", "Créer la page de replay", "Créer la page / formulaire de prise de rendez-vous closer", "Tester tous les formulaires sur mobile et desktop", "Créer la page d’inscription / confirmation du parcours de mise à niveau"]}, "prep-5": {"title": "Emails, social & retargeting", "tasks": ["Créer les emails de pré-lancement / teasing", "Créer la séquence d’inscription au webinar", "Créer la séquence anti-no-show", "Créer la séquence replay + candidature", "Créer les relances de progression du parcours", "Créer les publications réseaux / communauté", "Configurer les audiences et campagnes de retargeting", "Créer la séquence email dédiée aux inscrits en mise à niveau"]}, "prep-6": {"title": "3 webinaires", "tasks": ["Finaliser le script du webinar principal du 25 octobre", "Créer les slides du webinar principal", "Préparer le webinar FAQ du 9 novembre", "Préparer le webinar d’ouverture des ventes du 15 novembre", "Créer les pages / liens d’accès aux 3 lives", "Configurer Q&A, modération et enregistrement", "Tester le dispositif technique des 3 webinars"]}, "prep-7": {"title": "Portail candidat & orchestration", "tasks": ["Créer le dashboard candidat", "Afficher la progression globale 0/7 → 7/7", "Permettre de réaliser les 7 ateliers dans n’importe quel ordre", "Configurer la sauvegarde des réponses", "Configurer les relances selon la progression", "Créer la génération de la fiche candidat finale", "Afficher les dates clés : FAQ du 9 novembre et ouverture des ventes du 15 novembre", "Tester le portail sur mobile et desktop"]}, "prep-8": {"title": "Closer & onboarding", "tasks": ["Créer le script de closing", "Créer la grille de compatibilité finale", "Créer la banque de réponses aux objections", "Configurer l’agenda des closers", "Préparer les liens / modalités de paiement", "Configurer la signature électronique", "Créer le parcours d’onboarding post-signature"]}, "prep-9": {"title": "Tracking & KPIs", "tasks": ["Installer le tracking des pages du lancement", "Configurer le suivi des emails", "Configurer le suivi du webinar et du replay", "Suivre candidatures, qualifications et DIP remis", "Suivre la progression dans les 7 ateliers", "Suivre RDV, closings, signatures et chiffre généré", "Créer un tableau de bord quotidien lisible par l’équipe", "Suivre le nombre de personnes orientées vers la mise à niveau et leur source d’orientation"]}, "prep-10": {"title": "Rôles & organisation équipe", "tasks": ["Nommer le responsable de chaque étape du lancement", "Définir qui valide les contenus et supports", "Définir qui qualifie les candidatures", "Définir qui répond aux candidats / questions", "Définir qui anime et modère chaque webinar", "Définir l’affectation des candidats aux closers", "Créer le canal interne de suivi quotidien"]}, "prep-11": {"title": "Recette complète", "tasks": ["Tester inscription → confirmation → webinar", "Tester webinar → replay → candidature", "Tester candidature → qualification → DIP", "Tester DIP → accès portail → ateliers", "Tester ateliers → fiche candidat → closer", "Tester RDV → paiement → signature", "Tester signature → onboarding", "Vérifier tous les emails, liens et automatisations de bout en bout", "Tester le choix post-webinar Franchise / Mise à niveau", "Tester la réorientation Atelier Niveau technique → Mise à niveau"]}, "prep-12": {"title": "Répétition générale", "tasks": ["Répéter le webinar principal en conditions réelles", "Tester micro, caméra, slides et partage d’écran", "Tester le passage vers le CTA candidature", "Briefer la personne chargée de la modération", "Préparer un plan B en cas de problème technique", "Vérifier la disponibilité de l’équipe le jour J"]}, "prep-13": {"title": "Parcours alternatif · Mise à niveau", "tasks": ["Définir précisément qui doit être orienté vers la mise à niveau", "Définir les certifications / compétences manquantes à combler", "Structurer le parcours de mise à niveau", "Créer la page de présentation et d’inscription", "Créer le workflow CRM spécifique", "Créer la séquence email d’accueil et de progression", "Créer les contenus / formations nécessaires", "Définir les critères de sortie du parcours de mise à niveau", "Créer le mécanisme de réévaluation du niveau technique", "Créer la réentrée vers une future candidature Franchise", "Tracer si l’orientation vient du formulaire post-webinar ou de l’atelier Niveau technique", "Créer le choix « Franchise » / « Mise à niveau » juste après le 1er webinaire", "Créer la réorientation vers la mise à niveau depuis l’atelier Niveau technique", "Définir le point de réentrée vers une future candidature Franchise"]}, "prep-14": {"title": "Atelier 1 · Modèle franchisé", "tasks": ["Définir l’objectif précis de l’atelier", "Créer la mini-vidéo de présentation du modèle franchisé", "Créer le quiz de compréhension", "Créer les mises en situation liées aux droits, obligations et fonctionnement du réseau", "Définir les réponses / critères attendus", "Définir les informations à remonter dans la fiche candidat", "Tester l’atelier de bout en bout"]}, "prep-15": {"title": "Atelier 2 · Posture entrepreneuriale", "tasks": ["Définir l’objectif précis de l’atelier", "Créer le test situationnel", "Créer les cas de prise de décision et d’autonomie", "Créer l’auto-positionnement entrepreneurial", "Définir les critères : initiative, responsabilité, discipline, résilience", "Définir les informations à remonter dans la fiche candidat", "Tester l’atelier de bout en bout"]}, "prep-16": {"title": "Atelier 3 · Posture commerciale", "tasks": ["Définir l’objectif précis de l’atelier", "Créer les scénarios de prospection et découverte", "Créer les simulations de présentation de l’offre", "Créer les objections à traiter", "Créer un exercice de relance / suivi prospect", "Décider si un pitch audio ou vidéo est demandé", "Définir les informations à remonter dans la fiche candidat", "Tester l’atelier de bout en bout"]}, "prep-17": {"title": "Atelier 4 · Communication adaptée", "tasks": ["Définir l’objectif précis de l’atelier", "Créer l’exercice « Autorisé / Interdit »", "Créer les phrases à reformuler", "Créer les situations de réponse client", "Créer un exercice de mini-post ou message commercial", "Valider le contenu avec les règles de wording Mezaelle", "Définir les informations à remonter dans la fiche candidat", "Tester l’atelier de bout en bout"]}, "prep-18": {"title": "Atelier 5 · Valeurs & alignement", "tasks": ["Définir l’objectif précis de l’atelier", "Créer les dilemmes de valeurs", "Créer les situations de relation au réseau", "Créer les cas éthiques / arbitrages", "Définir les signaux de bon alignement", "Définir les red flags", "Définir les informations à remonter dans la fiche candidat", "Tester l’atelier de bout en bout"]}, "prep-19": {"title": "Atelier 6 · Niveau technique", "tasks": ["Rassembler et valider le référentiel technique PNG-U utilisé", "Définir le niveau minimal requis pour poursuivre en Franchise", "Créer le quiz technique", "Créer les cas pratiques", "Définir le seuil / les critères de niveau insuffisant", "Créer la sortie vers le parcours Mise à niveau", "Créer le message de réorientation sans casser la motivation", "Définir les informations à remonter dans la fiche candidat", "Tester les deux sorties : Franchise / Mise à niveau"]}, "prep-20": {"title": "Atelier 7 · Gestion & pilotage", "tasks": ["Définir l’objectif précis de l’atelier", "Créer un mini-tableau de bord fictif", "Créer les cas d’organisation et de planning", "Créer les scénarios CRM / suivi client", "Créer l’exercice de priorisation", "Définir les critères de rigueur et de pilotage", "Définir les informations à remonter dans la fiche candidat", "Tester l’atelier de bout en bout"]}};
-  const LOCAL_KEY = 'mezaelle_phase0_modal_tasks_cache_v2';
-  const NOTE_KEY = 'mezaelle_phase0_task_notes_v1';
-  const CFG = window.MEZAELLE_CONFIG || {};
-  const CONFIGURED = !!(CFG.supabaseUrl && CFG.supabaseAnonKey &&
-    !CFG.supabaseUrl.includes('VOTRE_') && !CFG.supabaseAnonKey.includes('VOTRE_'));
+  const DATA = {"prep-1":{"title":"Offre & cadre franchise","tasks":["Finaliser la structure de l’offre franchise","Valider le prix, les redevances et les modalités de paiement","Valider les conditions d’entrée et les prérequis","Vérifier la cohérence de tous les supports avec le DIP","Valider le wording commercial utilisé pendant le lancement","Fixer précisément la fenêtre d’entrée, de vente et de closing"]},"prep-2":{"title":"Parcours juridique & DIP","tasks":["Finaliser la version du DIP utilisée pour le lancement","Configurer l’envoi / remise électronique du DIP","Enregistrer automatiquement la date de remise dans le CRM","Calculer la date individuelle d’éligibilité au closing","Finaliser le contrat de franchise et les annexes","Tester le workflow DIP → délai → closing → signature"]},"prep-3":{"title":"CRM & pipeline","tasks":["Créer toutes les étapes du pipeline candidat","Créer les tags et segments nécessaires","Configurer les automatisations entre les étapes","Créer le lead scoring / niveau de chaleur","Faire remonter les réponses des ateliers dans la fiche candidat","Créer le dashboard de pilotage du lancement","Créer les statuts CRM spécifiques au parcours de mise à niveau","Créer la logique de réentrée future Mise à niveau → Candidature Franchise"]},"prep-4":{"title":"Landing & formulaires","tasks":["Créer la landing d’inscription au webinar principal","Créer la page de confirmation / merci","Créer le formulaire de candidature express","Créer le formulaire post-webinar avec choix « Programme Franchise » ou « Mise à niveau »","Créer la page de replay","Créer la page / formulaire de prise de rendez-vous closer","Tester tous les formulaires sur mobile et desktop","Créer la page d’inscription / confirmation du parcours de mise à niveau"]},"prep-5":{"title":"Emails, social & retargeting","tasks":["Créer les emails de pré-lancement / teasing","Créer la séquence d’inscription au webinar","Créer la séquence anti-no-show","Créer la séquence replay + candidature","Créer les relances de progression du parcours","Créer les publications réseaux / communauté","Configurer les audiences et campagnes de retargeting","Créer la séquence email dédiée aux inscrits en mise à niveau"]},"prep-6":{"title":"3 webinaires","tasks":["Finaliser le script du webinar principal du 25 octobre","Créer les slides du webinar principal","Préparer le webinar FAQ du 9 novembre","Préparer le webinar d’ouverture des ventes du 15 novembre","Créer les pages / liens d’accès aux 3 lives","Configurer Q&A, modération et enregistrement","Tester le dispositif technique des 3 webinars"]},"prep-7":{"title":"Portail candidat & orchestration","tasks":["Créer le dashboard candidat","Afficher la progression globale 0/7 → 7/7","Permettre de réaliser les 7 ateliers dans n’importe quel ordre","Configurer la sauvegarde des réponses","Configurer les relances selon la progression","Créer la génération de la fiche candidat finale","Afficher les dates clés : FAQ du 9 novembre et ouverture des ventes du 15 novembre","Tester le portail sur mobile et desktop"]},"prep-8":{"title":"Closer & onboarding","tasks":["Créer le script de closing","Créer la grille de compatibilité finale","Créer la banque de réponses aux objections","Configurer l’agenda des closers","Préparer les liens / modalités de paiement","Configurer la signature électronique","Créer le parcours d’onboarding post-signature"]},"prep-9":{"title":"Tracking & KPIs","tasks":["Installer le tracking des pages du lancement","Configurer le suivi des emails","Configurer le suivi du webinar et du replay","Suivre candidatures, qualifications et DIP remis","Suivre la progression dans les 7 ateliers","Suivre RDV, closings, signatures et chiffre généré","Créer un tableau de bord quotidien lisible par l’équipe","Suivre le nombre de personnes orientées vers la mise à niveau et leur source d’orientation"]},"prep-10":{"title":"Rôles & organisation équipe","tasks":["Nommer le responsable de chaque étape du lancement","Définir qui valide les contenus et supports","Définir qui qualifie les candidatures","Définir qui répond aux candidats / questions","Définir qui anime et modère chaque webinar","Définir l’affectation des candidats aux closers","Créer le canal interne de suivi quotidien"]},"prep-11":{"title":"Recette complète","tasks":["Tester inscription → confirmation → webinar","Tester webinar → replay → candidature","Tester candidature → qualification → DIP","Tester DIP → accès portail → ateliers","Tester ateliers → fiche candidat → closer","Tester RDV → paiement → signature","Tester signature → onboarding","Vérifier tous les emails, liens et automatisations de bout en bout","Tester le choix post-webinar Franchise / Mise à niveau","Tester la réorientation Atelier Niveau technique → Mise à niveau"]},"prep-12":{"title":"Répétition générale","tasks":["Répéter le webinar principal en conditions réelles","Tester micro, caméra, slides et partage d’écran","Tester le passage vers le CTA candidature","Briefer la personne chargée de la modération","Préparer un plan B en cas de problème technique","Vérifier la disponibilité de l’équipe le jour J"]},"prep-13":{"title":"Parcours alternatif · Mise à niveau","tasks":["Définir précisément qui doit être orienté vers la mise à niveau","Définir les certifications / compétences manquantes à combler","Structurer le parcours de mise à niveau","Créer la page de présentation et d’inscription","Créer le workflow CRM spécifique","Créer la séquence email d’accueil et de progression","Créer les contenus / formations nécessaires","Définir les critères de sortie du parcours de mise à niveau","Créer le mécanisme de réévaluation du niveau technique","Créer la réentrée vers une future candidature Franchise","Tracer si l’orientation vient du formulaire post-webinar ou de l’atelier Niveau technique","Créer le choix « Franchise » / « Mise à niveau » juste après le 1er webinaire","Créer la réorientation vers la mise à niveau depuis l’atelier Niveau technique","Définir le point de réentrée vers une future candidature Franchise"]},"prep-14":{"title":"Atelier 1 · Modèle franchisé","tasks":["Définir l’objectif précis de l’atelier","Créer la mini-vidéo de présentation du modèle franchisé","Créer le quiz de compréhension","Créer les mises en situation liées aux droits, obligations et fonctionnement du réseau","Définir les réponses / critères attendus","Définir les informations à remonter dans la fiche candidat","Tester l’atelier de bout en bout"]},"prep-15":{"title":"Atelier 2 · Posture entrepreneuriale","tasks":["Définir l’objectif précis de l’atelier","Créer le test situationnel","Créer les cas de prise de décision et d’autonomie","Créer l’auto-positionnement entrepreneurial","Définir les critères : initiative, responsabilité, discipline, résilience","Définir les informations à remonter dans la fiche candidat","Tester l’atelier de bout en bout"]},"prep-16":{"title":"Atelier 3 · Posture commerciale","tasks":["Définir l’objectif précis de l’atelier","Créer les scénarios de prospection et découverte","Créer les simulations de présentation de l’offre","Créer les objections à traiter","Créer un exercice de relance / suivi prospect","Décider si un pitch audio ou vidéo est demandé","Définir les informations à remonter dans la fiche candidat","Tester l’atelier de bout en bout"]},"prep-17":{"title":"Atelier 4 · Communication adaptée","tasks":["Définir l’objectif précis de l’atelier","Créer l’exercice « Autorisé / Interdit »","Créer les phrases à reformuler","Créer les situations de réponse client","Créer un exercice de mini-post ou message commercial","Valider le contenu avec les règles de wording Mezaelle","Définir les informations à remonter dans la fiche candidat","Tester l’atelier de bout en bout"]},"prep-18":{"title":"Atelier 5 · Valeurs & alignement","tasks":["Définir l’objectif précis de l’atelier","Créer les dilemmes de valeurs","Créer les situations de relation au réseau","Créer les cas éthiques / arbitrages","Définir les signaux de bon alignement","Définir les red flags","Définir les informations à remonter dans la fiche candidat","Tester l’atelier de bout en bout"]},"prep-19":{"title":"Atelier 6 · Niveau technique","tasks":["Rassembler et valider le référentiel technique PNG-U utilisé","Définir le niveau minimal requis pour poursuivre en Franchise","Créer le quiz technique","Créer les cas pratiques","Définir le seuil / les critères de niveau insuffisant","Créer la sortie vers le parcours Mise à niveau","Créer le message de réorientation sans casser la motivation","Définir les informations à remonter dans la fiche candidat","Tester les deux sorties : Franchise / Mise à niveau"]},"prep-20":{"title":"Atelier 7 · Gestion & pilotage","tasks":["Définir l’objectif précis de l’atelier","Créer un mini-tableau de bord fictif","Créer les cas d’organisation et de planning","Créer les scénarios CRM / suivi client","Créer l’exercice de priorisation","Définir les critères de rigueur et de pilotage","Définir les informations à remonter dans la fiche candidat","Tester l’atelier de bout en bout"]}};
+  const SUPABASE_URL = "https://vvuqkddageaupkfolorc.supabase.co";
+  const SUPABASE_KEY = "sb_publishable_mztGTQc-OUO2qZ_qqFNIkg_fDaE4uDn";
+  const LOCAL_KEY = "mezaelle_phase0_shared_cache_v3";
+  const NOTE_KEY = "mezaelle_phase0_shared_notes_v2";
+  const NAME_KEY = "mezaelle_team_display_name_v2";
 
   const cards = [...document.querySelectorAll('.prepbox[data-prep-id]')];
   const modal = document.getElementById('prepModal');
@@ -394,37 +390,38 @@
   const status = document.getElementById('prepStatus');
   const syncStatus = document.getElementById('syncStatus');
   const syncDot = document.getElementById('syncDot');
-  const loggedOut = document.getElementById('authLoggedOut');
-  const loggedIn = document.getElementById('authLoggedIn');
-  const teamUser = document.getElementById('teamUser');
-  const authHint = document.getElementById('authHint');
-
-  let activeId = null;
-  let activeTaskKey = null;
-  let state = {};
-  let meta = {};
-  let notes = {};
-  try { notes = JSON.parse(localStorage.getItem(NOTE_KEY) || '{}'); } catch(e) { notes = {}; }
+  const teamName = document.getElementById('teamName');
 
   const taskNoteModal = document.getElementById('taskNoteModal');
   const taskNoteTitle = document.getElementById('taskNoteTitle');
   const taskNoteContext = document.getElementById('taskNoteContext');
   const taskNoteText = document.getElementById('taskNoteText');
-  let client = null;
-  let session = null;
+
+  let activeId = null;
+  let activeTaskKey = null;
+  let state = {};
+  let notes = {};
+  let meta = {};
   let realtimeChannel = null;
 
   try { state = JSON.parse(localStorage.getItem(LOCAL_KEY) || '{}'); } catch(e) { state = {}; }
+  try { notes = JSON.parse(localStorage.getItem(NOTE_KEY) || '{}'); } catch(e) { notes = {}; }
+  teamName.value = localStorage.getItem(NAME_KEY) || '';
+
+  const client = window.supabase
+    ? window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY)
+    : null;
 
   function ensure(id){
     if(!state[id]) state[id] = DATA[id].tasks.map(() => false);
-    if(state[id].length !== DATA[id].tasks.length) {
+    if(state[id].length !== DATA[id].tasks.length){
       const old = state[id] || [];
-      state[id] = DATA[id].tasks.map((_, i) => !!old[i]);
+      state[id] = DATA[id].tasks.map((_,i) => !!old[i]);
     }
   }
 
-  function taskKey(blockId, i){ return `${blockId}:${i}`; }
+  function taskKey(blockId, index){ return `${blockId}:${index}`; }
+
   function parseTaskKey(key){
     const pos = key.lastIndexOf(':');
     if(pos < 0) return null;
@@ -433,54 +430,33 @@
     if(!DATA[blockId] || !Number.isInteger(index) || index < 0 || index >= DATA[blockId].tasks.length) return null;
     return {blockId,index};
   }
-  function cache(){
-    localStorage.setItem(LOCAL_KEY, JSON.stringify(state));
-    refreshCards();
+
+  function person(){
+    let value = (teamName.value || '').trim() || localStorage.getItem(NAME_KEY) || '';
+    if(!value){
+      value = (prompt('Votre prénom / nom pour identifier la modification :') || '').trim();
+      if(!value) value = 'Membre de l’équipe';
+    }
+    localStorage.setItem(NAME_KEY,value);
+    teamName.value = value;
+    return value;
   }
+
+  function persistLocal(){
+    localStorage.setItem(LOCAL_KEY,JSON.stringify(state));
+    localStorage.setItem(NOTE_KEY,JSON.stringify(notes));
+  }
+
   function counts(id){
     ensure(id);
     return {done:state[id].filter(Boolean).length,total:DATA[id].tasks.length};
   }
+
   function refreshCards(){
     let blocksDone=0, allDone=0, allTotal=0;
-  
-  // --- Fenêtre d'indications d'une tâche ---
-  document.getElementById('taskNoteClose').addEventListener('click', (e)=>{
-    e.preventDefault();
-    e.stopPropagation();
-    closeTaskNote();
-  });
-
-  document.getElementById('taskNoteSave').addEventListener('click', (e)=>{
-    e.preventDefault();
-    e.stopPropagation();
-    saveTaskNote();
-  });
-
-  document.getElementById('taskNoteClear').addEventListener('click', (e)=>{
-    e.preventDefault();
-    e.stopPropagation();
-    if(!activeTaskKey) return;
-    taskNoteText.value='';
-    delete notes[activeTaskKey];
-    localStorage.setItem(NOTE_KEY,JSON.stringify(notes));
-    closeTaskNote();
-    if(activeId) render();
-  });
-
-  taskNoteModal.addEventListener('click', (e)=>{
-    if(e.target===taskNoteModal) closeTaskNote();
-  });
-
-  taskNoteText.addEventListener('keydown', (e)=>{
-    if((e.metaKey || e.ctrlKey) && e.key==='Enter'){
-      e.preventDefault();
-      saveTaskNote();
-    }
-  });
-
-  cards.forEach(card=>{
-      const id=card.dataset.prepId, c=counts(id);
+    cards.forEach(card=>{
+      const id=card.dataset.prepId;
+      const c=counts(id);
       allDone+=c.done; allTotal+=c.total;
       const complete=c.total>0 && c.done===c.total;
       if(complete) blocksDone++;
@@ -490,75 +466,119 @@
     });
     if(status) status.textContent=`Préparation : ${blocksDone}/${cards.length} blocs terminés · ${allDone}/${allTotal} tâches`;
   }
+
   function fmtDate(value){
     if(!value) return '';
     try {
-      return new Intl.DateTimeFormat('fr-FR',{day:'2-digit',month:'short',hour:'2-digit',minute:'2-digit'}).format(new Date(value));
+      return new Intl.DateTimeFormat('fr-FR',{
+        day:'2-digit',month:'short',hour:'2-digit',minute:'2-digit'
+      }).format(new Date(value));
     } catch(e) { return ''; }
   }
+
+  function setSync(text,mode=''){
+    syncStatus.textContent=text;
+    syncDot.classList.remove('live','warn');
+    if(mode) syncDot.classList.add(mode);
+  }
+
   function render(){
-    const item=DATA[activeId], c=counts(activeId);
+    const item=DATA[activeId];
+    const c=counts(activeId);
     title.textContent=item.title;
     progress.textContent=`${c.done} / ${c.total} tâches terminées`;
     list.innerHTML='';
+
     item.tasks.forEach((task,i)=>{
       const key=taskKey(activeId,i);
-      const row=document.createElement('div'); row.className='modal-task';
+      const row=document.createElement('div');
+      row.className='modal-task';
 
-      const checkLabel=document.createElement('label'); checkLabel.className='modal-check-label';
-      const input=document.createElement('input'); input.type='checkbox'; input.checked=!!state[activeId][i];
-      const box=document.createElement('span'); box.className='modal-check';
+      const checkLabel=document.createElement('label');
+      checkLabel.className='modal-check-label';
+
+      const input=document.createElement('input');
+      input.type='checkbox';
+      input.checked=!!state[activeId][i];
+
+      const box=document.createElement('span');
+      box.className='modal-check';
       checkLabel.append(input,box);
 
       input.addEventListener('change', async()=>{
         const wanted=input.checked;
-        if(CONFIGURED && !session){
-          input.checked=!wanted;
-          authHint.classList.add('show');
-          document.getElementById('teamEmail')?.focus();
-          return;
-        }
         const previous=!!state[activeId][i];
         state[activeId][i]=wanted;
-        cache(); render();
+        persistLocal();
+        refreshCards();
+        render();
 
-        if(CONFIGURED && session){
-          const who=session.user.email || session.user.id;
-          const cloudRow={
-            task_id:key, checked:wanted, updated_by:session.user.id,
-            updated_by_name:who, updated_at:new Date().toISOString()
-          };
-          const {error}=await client.from('mezaelle_launch_tasks').upsert(cloudRow,{onConflict:'task_id'});
-          if(error){
-            console.error(error);
-            state[activeId][i]=previous;
-            cache(); render();
-            alert("La modification n'a pas pu être synchronisée. Réessayez.");
-          } else {
-            meta[key]=cloudRow;
-            render();
-          }
+        if(!client){
+          state[activeId][i]=previous;
+          persistLocal();
+          refreshCards();
+          render();
+          setSync('Supabase indisponible','warn');
+          return;
         }
+
+        const cloudRow={
+          task_id:key,
+          checked:wanted,
+          updated_by:null,
+          updated_by_name:person(),
+          updated_at:new Date().toISOString()
+        };
+
+        const {error}=await client
+          .from('mezaelle_launch_tasks')
+          .upsert(cloudRow,{onConflict:'task_id'});
+
+        if(error){
+          console.error(error);
+          state[activeId][i]=previous;
+          persistLocal();
+          refreshCards();
+          render();
+          setSync('Erreur de synchronisation','warn');
+          alert("La modification n'a pas pu être synchronisée.");
+          return;
+        }
+
+        meta[key]={...(meta[key]||{}),...cloudRow};
+        setSync('Synchronisé en direct avec l’équipe','live');
+        render();
       });
 
       const wrap=document.createElement('button');
       wrap.type='button';
       wrap.className='modal-task-wrap';
       if(input.checked) wrap.classList.add('done');
-      wrap.addEventListener('click',()=>openTaskNote(key, task, item.title));
+      wrap.addEventListener('click',()=>openTaskNote(key,task,item.title));
 
-      const txt=document.createElement('span'); txt.className='modal-task-text'; txt.textContent=task;
+      const txt=document.createElement('span');
+      txt.className='modal-task-text';
+      txt.textContent=task;
       wrap.appendChild(txt);
 
       const noteHint=document.createElement('span');
       noteHint.className='task-note-link' + (notes[key] ? ' has-note' : '');
-      noteHint.textContent=notes[key] ? '📝 Indications ajoutées — cliquer pour ouvrir' : '+ Ajouter des indications';
+      noteHint.textContent=notes[key]
+        ? '📝 Indications ajoutées — cliquer pour ouvrir'
+        : '+ Ajouter des indications';
       wrap.appendChild(noteHint);
 
       const md=meta[key];
-      if(md && md.updated_by_name){
-        const sm=document.createElement('span'); sm.className='task-meta';
-        sm.textContent=`Mis à jour par ${md.updated_by_name} · ${fmtDate(md.updated_at)}`;
+      if(md?.updated_by_name){
+        const sm=document.createElement('span');
+        sm.className='task-meta';
+        sm.textContent=`Case mise à jour par ${md.updated_by_name} · ${fmtDate(md.updated_at)}`;
+        wrap.appendChild(sm);
+      }
+      if(md?.note_updated_by_name && notes[key]){
+        const sm=document.createElement('span');
+        sm.className='task-meta';
+        sm.textContent=`Indications par ${md.note_updated_by_name} · ${fmtDate(md.note_updated_at)}`;
         wrap.appendChild(sm);
       }
 
@@ -567,7 +587,7 @@
     });
   }
 
-  function openTaskNote(key, task, blockTitle){
+  function openTaskNote(key,task,blockTitle){
     activeTaskKey=key;
     taskNoteTitle.textContent=task;
     taskNoteContext.textContent=blockTitle;
@@ -581,118 +601,210 @@
     taskNoteModal.classList.remove('open');
     taskNoteModal.setAttribute('aria-hidden','true');
     activeTaskKey=null;
-    if(modal.classList.contains('open')) {
-      document.body.style.overflow='hidden';
-    }
+    if(modal.classList.contains('open')) document.body.style.overflow='hidden';
   }
 
-  function saveTaskNote(){
+  async function saveTaskNote(){
     if(!activeTaskKey) return;
+    const key=activeTaskKey;
+    const parsed=parseTaskKey(key);
+    if(!parsed) return;
+
+    const previous=notes[key] || '';
     const value=taskNoteText.value.trim();
-    if(value) notes[activeTaskKey]=value;
-    else delete notes[activeTaskKey];
-    localStorage.setItem(NOTE_KEY,JSON.stringify(notes));
-    const blockId=activeTaskKey.split(':')[0];
+
+    if(value) notes[key]=value;
+    else delete notes[key];
+
+    persistLocal();
+    const blockId=parsed.blockId;
     closeTaskNote();
+    if(activeId===blockId) render();
+
+    if(!client){
+      if(previous) notes[key]=previous; else delete notes[key];
+      persistLocal();
+      if(activeId===blockId) render();
+      setSync('Supabase indisponible','warn');
+      return;
+    }
+
+    const now=new Date().toISOString();
+    const cloudRow={
+      task_id:key,
+      checked:!!state[parsed.blockId][parsed.index],
+      updated_by:null,
+      note_text:value || null,
+      note_updated_by_name:person(),
+      note_updated_at:now
+    };
+
+    const {error}=await client
+      .from('mezaelle_launch_tasks')
+      .upsert(cloudRow,{onConflict:'task_id'});
+
+    if(error){
+      console.error(error);
+      if(previous) notes[key]=previous; else delete notes[key];
+      persistLocal();
+      if(activeId===blockId) render();
+      setSync('Erreur de synchronisation','warn');
+      alert("Les indications n'ont pas pu être synchronisées.");
+      return;
+    }
+
+    meta[key]={...(meta[key]||{}),...cloudRow};
+    setSync('Synchronisé en direct avec l’équipe','live');
     if(activeId===blockId) render();
   }
 
   function openModal(id){
-    activeId=id; ensure(id); render();
-    modal.classList.add('open'); modal.setAttribute('aria-hidden','false');
+    activeId=id;
+    ensure(id);
+    render();
+    modal.classList.add('open');
+    modal.setAttribute('aria-hidden','false');
     document.body.style.overflow='hidden';
     document.getElementById('prepModalClose').focus();
   }
+
   function closeModal(){
-    modal.classList.remove('open'); modal.setAttribute('aria-hidden','true');
-    document.body.style.overflow=''; activeId=null;
+    modal.classList.remove('open');
+    modal.setAttribute('aria-hidden','true');
+    document.body.style.overflow='';
+    activeId=null;
   }
-  function setSync(text,mode=''){
-    syncStatus.textContent=text;
-    syncDot.classList.remove('live','warn');
-    if(mode) syncDot.classList.add(mode);
-  }
-  function setAuthUI(){
-    if(!CONFIGURED){
-      loggedOut.style.display='none'; loggedIn.style.display='none';
-      setSync('Mode local · Supabase pas encore connecté','warn');
+
+  async function loadCloud(){
+    if(!client){
+      setSync('Supabase indisponible','warn');
+      refreshCards();
       return;
     }
-    if(session){
-      loggedOut.style.display='none'; loggedIn.style.display='flex';
-      teamUser.textContent=session.user.email || 'Membre connecté';
-      authHint.classList.remove('show');
-      setSync('Synchronisé en direct avec l’équipe','live');
-    } else {
-      loggedOut.style.display='flex'; loggedIn.style.display='none';
-      setSync('Connexion équipe requise','warn');
-    }
-  }
-  async function loadCloud(){
-    if(!client || !session) return;
+
     setSync('Synchronisation…','');
-    Object.keys(DATA).forEach(id=>state[id]=DATA[id].tasks.map(()=>false));
-    const {data:rows,error}=await client.from('mezaelle_launch_tasks').select('*');
+    const {data:rows,error}=await client
+      .from('mezaelle_launch_tasks')
+      .select('*');
+
     if(error){
-      console.error(error); setSync('Erreur de synchronisation','warn'); return;
+      console.error(error);
+      setSync('Erreur de synchronisation','warn');
+      refreshCards();
+      return;
     }
+
+    Object.keys(DATA).forEach(id=>state[id]=DATA[id].tasks.map(()=>false));
+    notes={};
+    meta={};
+
     (rows||[]).forEach(row=>{
       const parsed=parseTaskKey(row.task_id);
       if(!parsed) return;
       ensure(parsed.blockId);
       state[parsed.blockId][parsed.index]=!!row.checked;
+      if(row.note_text) notes[row.task_id]=row.note_text;
       meta[row.task_id]=row;
     });
-    cache();
+
+    persistLocal();
+    refreshCards();
     if(activeId) render();
     setSync('Synchronisé en direct avec l’équipe','live');
   }
+
   function subscribeRealtime(){
-    if(!client || !session) return;
+    if(!client) return;
     if(realtimeChannel) client.removeChannel(realtimeChannel);
-    realtimeChannel=client.channel('mezaelle-launch-tasks')
-      .on('postgres_changes',{event:'*',schema:'public',table:'mezaelle_launch_tasks'},payload=>{
+
+    realtimeChannel=client
+      .channel('mezaelle-launch-tasks')
+      .on('postgres_changes',{
+        event:'*',
+        schema:'public',
+        table:'mezaelle_launch_tasks'
+      },payload=>{
         const row=payload.new || payload.old;
         if(!row?.task_id) return;
         const parsed=parseTaskKey(row.task_id);
         if(!parsed) return;
+
         ensure(parsed.blockId);
+
         if(payload.eventType==='DELETE'){
-          state[parsed.blockId][parsed.index]=false; delete meta[row.task_id];
+          state[parsed.blockId][parsed.index]=false;
+          delete notes[row.task_id];
+          delete meta[row.task_id];
         } else {
-          state[parsed.blockId][parsed.index]=!!row.checked; meta[row.task_id]=row;
+          state[parsed.blockId][parsed.index]=!!row.checked;
+          if(row.note_text) notes[row.task_id]=row.note_text;
+          else delete notes[row.task_id];
+          meta[row.task_id]=row;
         }
-        cache();
+
+        persistLocal();
+        refreshCards();
         if(activeId===parsed.blockId) render();
-      }).subscribe();
-  }
-  async function initCloud(){
-    if(!CONFIGURED || !window.supabase){
-      setAuthUI(); refreshCards(); return;
-    }
-    client=window.supabase.createClient(CFG.supabaseUrl,CFG.supabaseAnonKey);
-    const {data}=await client.auth.getSession();
-    session=data.session; setAuthUI();
-    if(session){ await loadCloud(); subscribeRealtime(); }
-    client.auth.onAuthStateChange(async(_event,newSession)=>{
-      session=newSession; setAuthUI();
-      if(session){ await loadCloud(); subscribeRealtime(); }
-      else if(realtimeChannel){ client.removeChannel(realtimeChannel); realtimeChannel=null; }
-    });
+      })
+      .subscribe(channelStatus=>{
+        if(channelStatus==='SUBSCRIBED'){
+          setSync('Synchronisé en direct avec l’équipe','live');
+        } else if(channelStatus==='CHANNEL_ERROR' || channelStatus==='TIMED_OUT'){
+          setSync('Temps réel momentanément indisponible','warn');
+        }
+      });
   }
 
   cards.forEach(card=>{
     card.addEventListener('click',()=>openModal(card.dataset.prepId));
     card.addEventListener('keydown',e=>{
-      if(e.key==='Enter'||e.key===' '){e.preventDefault();openModal(card.dataset.prepId);}
+      if(e.key==='Enter'||e.key===' '){
+        e.preventDefault();
+        openModal(card.dataset.prepId);
+      }
     });
   });
+
   document.getElementById('prepModalClose').addEventListener('click',closeModal);
   document.getElementById('prepModalDone').addEventListener('click',closeModal);
-  modal.addEventListener('click',e=>{if(e.target===modal)closeModal();});
+
+  modal.addEventListener('click',e=>{
+    if(e.target===modal) closeModal();
+  });
+
+  document.getElementById('taskNoteClose').addEventListener('click',e=>{
+    e.preventDefault();
+    e.stopPropagation();
+    closeTaskNote();
+  });
+
+  document.getElementById('taskNoteSave').addEventListener('click',e=>{
+    e.preventDefault();
+    e.stopPropagation();
+    saveTaskNote();
+  });
+
+  document.getElementById('taskNoteClear').addEventListener('click',e=>{
+    e.preventDefault();
+    e.stopPropagation();
+    taskNoteText.value='';
+    saveTaskNote();
+  });
+
+  taskNoteModal.addEventListener('click',e=>{
+    if(e.target===taskNoteModal) closeTaskNote();
+  });
+
+  taskNoteText.addEventListener('keydown',e=>{
+    if((e.metaKey||e.ctrlKey) && e.key==='Enter'){
+      e.preventDefault();
+      saveTaskNote();
+    }
+  });
+
   document.addEventListener('keydown',e=>{
     if(e.key!=='Escape') return;
-    if(taskNoteModal.classList.contains('open')) {
+    if(taskNoteModal.classList.contains('open')){
       closeTaskNote();
       return;
     }
@@ -701,40 +813,60 @@
 
   document.getElementById('prepModalReset').addEventListener('click',async()=>{
     if(!activeId) return;
-    if(CONFIGURED && !session){authHint.classList.add('show');return;}
-    if(!confirm('Réinitialiser toutes les tâches de cette checklist ?')) return;
-    state[activeId]=DATA[activeId].tasks.map(()=>false); cache(); render();
-    if(CONFIGURED && session){
-      const who=session.user.email||session.user.id;
-      const rows=DATA[activeId].tasks.map((_,i)=>({
-        task_id:taskKey(activeId,i),checked:false,updated_by:session.user.id,
-        updated_by_name:who,updated_at:new Date().toISOString()
-      }));
-      const {error}=await client.from('mezaelle_launch_tasks').upsert(rows,{onConflict:'task_id'});
-      if(error) alert("La réinitialisation n'a pas pu être synchronisée.");
+    if(!confirm('Réinitialiser toutes les coches de cette checklist ?')) return;
+
+    const id=activeId;
+    const old=[...state[id]];
+    state[id]=DATA[id].tasks.map(()=>false);
+    persistLocal();
+    refreshCards();
+    render();
+
+    if(!client){
+      state[id]=old;
+      persistLocal();
+      refreshCards();
+      render();
+      setSync('Supabase indisponible','warn');
+      return;
+    }
+
+    const name=person();
+    const now=new Date().toISOString();
+    const rows=DATA[id].tasks.map((_,i)=>({
+      task_id:taskKey(id,i),
+      checked:false,
+      updated_by:null,
+      updated_by_name:name,
+      updated_at:now
+    }));
+
+    const {error}=await client
+      .from('mezaelle_launch_tasks')
+      .upsert(rows,{onConflict:'task_id'});
+
+    if(error){
+      console.error(error);
+      state[id]=old;
+      persistLocal();
+      refreshCards();
+      render();
+      setSync('Erreur de synchronisation','warn');
+      alert("La réinitialisation n'a pas pu être synchronisée.");
     }
   });
 
-  document.getElementById('sendMagicLink')?.addEventListener('click',async()=>{
-    if(!client) return;
-    const input=document.getElementById('teamEmail');
-    const email=(input.value||'').trim();
-    if(!email){alert('Entrez votre email.');return;}
-    const redirectTo=window.location.href.split('#')[0].split('?')[0];
-    const {error}=await client.auth.signInWithOtp({email,options:{emailRedirectTo:redirectTo}});
-    if(error) alert(error.message);
-    else {
-      setSync('Lien de connexion envoyé par email','live');
-      input.value='';
-    }
-  });
-  document.getElementById('signOutTeam')?.addEventListener('click',async()=>{
-    if(client) await client.auth.signOut();
+  document.getElementById('saveTeamName').addEventListener('click',()=>{
+    const value=(teamName.value||'').trim();
+    if(!value) return;
+    localStorage.setItem(NAME_KEY,value);
+    setSync(`Nom enregistré : ${value}`,'live');
+    setTimeout(()=>setSync('Synchronisé en direct avec l’équipe','live'),1200);
   });
 
   Object.keys(DATA).forEach(ensure);
   refreshCards();
-  initCloud();
+  loadCloud().then(subscribeRealtime);
 })();
 </script>
 
