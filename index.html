@@ -662,6 +662,7 @@
   async function initSupabase(){
     try{
       await loadCloud(false);
+      setSync('Synchronisé avec l’équipe','live');
       subscribeRealtime();
     }catch(error){
       console.error(error);
