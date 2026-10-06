@@ -1,4 +1,4 @@
 User-agent: *
-Disallow: /
+Allow: /
 
-# This site is private/internal and should not be crawled or indexed.
+# Indexing is disabled by the page-level robots meta directives.
