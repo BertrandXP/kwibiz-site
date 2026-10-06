@@ -2,22 +2,135 @@
 <html lang="fr">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Kwibiz — Kwibiz</title>
-<meta name="description" content="Kwibiz : chaque jour, des idées de petites activités rémunératrices, et un parcours guidé pour lancer la tienne.">
-<link rel="icon" href="favicon.png">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;600&family=Saira+Condensed:wght@800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Mezaelle — Pilotage lancement franchise</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+:root{--g:#297464;--gd:#0f5147;--gold:#D4B063;--iv:#FBF7EF;--paper:#fffdf9;--ink:#173d36;--muted:#687872;--line:#e7dbc0}
+*{box-sizing:border-box} body{margin:0;background:linear-gradient(#fffefa,#f7f1e4);font-family:Inter,system-ui,sans-serif;color:var(--ink)}
+.page{max-width:1500px;margin:auto;padding:24px}
+.hero,.phase,.summary{background:var(--paper);border:1px solid var(--line);border-radius:22px;box-shadow:0 12px 30px rgba(27,78,67,.08)}
+.hero{padding:24px 28px}.brand{font-family:Georgia,serif;font-size:32px;color:var(--gold);font-weight:700}
+.eyebrow{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:#b58a35;font-weight:900;margin-top:8px}
+h1,h2,h3{font-family:Georgia,serif} h1{margin:4px 0 8px;color:var(--gd);font-size:46px;line-height:1}.sub{color:var(--muted);font-size:15px;line-height:1.5}
+.dates{display:grid;grid-template-columns:repeat(6,1fr);gap:9px;margin-top:16px}.date{padding:11px 12px;border:1px solid var(--line);border-radius:14px;background:white}.date b{display:block;color:var(--gd);font-family:Georgia,serif;font-size:17px}.date span{font-size:10.5px;color:var(--muted)}
+.collab{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-top:14px;padding:11px 13px;border:1px solid var(--line);border-radius:15px;background:#fff}
+.collab .left{display:flex;align-items:center;gap:10px}.dot{width:10px;height:10px;border-radius:50%;background:#c48656}.dot.live{background:#2f9b70}.sync{font-size:11px;color:var(--muted)} .collab input{border:1px solid var(--line);border-radius:9px;padding:8px 10px}
+.btn{border:0;border-radius:9px;background:var(--gd);color:#fff;padding:9px 11px;font-weight:800;cursor:pointer}
+.phase{margin-top:15px;overflow:hidden}.head{display:flex;align-items:center;gap:12px;background:linear-gradient(90deg,var(--gd),var(--g));color:#fff;padding:11px 15px}
+.num{width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,var(--gold),#efd68f);display:grid;place-items:center;font-weight:900;font-size:20px}.head h2{margin:0;font-size:23px}.strap{margin-left:auto;font-size:12px;opacity:.9}
+.prepgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;padding:13px}.prep{border:1px solid #eadfc8;border-radius:15px;background:#fff;padding:11px;min-height:104px;cursor:pointer;transition:.15s}.prep:hover{transform:translateY(-1px);box-shadow:0 8px 18px rgba(27,78,67,.08)}.prep.done{background:#eef6f3;border-color:#b8d6ce}.prep strong{display:block;color:var(--gd);font-size:13px}.prep small{display:block;color:var(--muted);font-size:10.5px;line-height:1.35;margin-top:4px}.count{display:inline-block;margin-top:8px;padding:5px 8px;border-radius:999px;background:#eaf2ef;color:var(--gd);font-size:10px;font-weight:900}
+.status{margin:0 13px 13px;padding:9px 11px;border-radius:12px;background:#eef5f2;border:1px solid #d5e6e0;font-size:11px;font-weight:800}
+.flow{display:flex;gap:8px;align-items:stretch;flex-wrap:wrap;padding:13px}.box{flex:1 1 155px;min-width:140px;border:1px solid #eadfc8;border-radius:14px;background:#fff;padding:11px}.box strong{color:var(--gd);font-size:13px}.box small{display:block;color:var(--muted);font-size:10.5px;line-height:1.35;margin-top:4px}.pill{display:inline-block;margin-top:7px;padding:5px 8px;border-radius:999px;background:#f7ebce;color:#8f6929;font-size:10px;font-weight:900}.arr{display:flex;align-items:center;color:#b58a35;font-size:22px;font-weight:900}.decision{background:#fffaf0}.branches{display:grid;grid-template-columns:1fr 1fr;gap:5px;margin-top:7px}.branches span{font-size:10px;padding:6px;border-radius:8px;background:#eaf2ef}.branches .no{background:#f5e6df;color:#9d5148}
+.note{margin:0 13px 13px;padding:9px 11px;border-radius:12px;background:#f7ecd0;border:1px solid #ead5a5;font-size:11px;color:#765a2d}
+.summary{margin-top:15px;padding:14px 15px}.chips{display:flex;flex-wrap:wrap;gap:7px;align-items:center}.chip{background:#eaf2ef;color:var(--gd);font-weight:800;font-size:11px;padding:7px 9px;border-radius:999px}.chev{color:#b58a35;font-weight:900}
+.modal{position:fixed;inset:0;background:rgba(9,36,31,.55);backdrop-filter:blur(6px);display:none;align-items:center;justify-content:center;padding:18px;z-index:99}.modal.open{display:flex}.dialog{width:min(760px,96vw);max-height:86vh;overflow:hidden;background:#fffdf9;border-radius:22px;border:1px solid var(--line);display:flex;flex-direction:column;box-shadow:0 30px 80px rgba(8,42,35,.3)}.mhead{display:flex;justify-content:space-between;gap:10px;padding:18px 20px;border-bottom:1px solid var(--line);background:#fffaf0}.mhead h3{margin:2px 0;color:var(--gd);font-size:24px}.mprogress{font-size:11px;color:var(--muted);font-weight:800}.close{border:0;background:#eaf2ef;color:var(--gd);width:36px;height:36px;border-radius:50%;font-size:20px;cursor:pointer}.tasks{padding:8px 20px 18px;overflow:auto}.task{display:grid;grid-template-columns:26px 1fr;gap:10px;align-items:start;padding:11px 0;border-bottom:1px dashed var(--line);cursor:pointer}.task input{position:absolute;opacity:0}.check{width:22px;height:22px;border:2px solid var(--gold);border-radius:7px;background:#fff;position:relative}.task input:checked+.check{background:var(--g);border-color:var(--g)}.task input:checked+.check:after{content:"✓";color:#fff;font-weight:900;position:absolute;left:4px;top:-2px}.ttext{font-size:13.5px;line-height:1.4}.task input:checked~.wrap .ttext{text-decoration:line-through;color:#93a29c}.meta{display:block;font-size:9.5px;color:#81908a;margin-top:3px}.mfoot{display:flex;justify-content:space-between;gap:10px;padding:12px 20px;border-top:1px solid var(--line);background:#fbf7ef}.reset{border:0;background:transparent;color:#9d5148;font-weight:800;cursor:pointer}
+@media(max-width:950px){.dates{grid-template-columns:1fr 1fr}.prepgrid{grid-template-columns:1fr 1fr}h1{font-size:36px}}
+@media(max-width:620px){.page{padding:10px}.dates,.prepgrid{grid-template-columns:1fr}.strap{display:none}.arr{width:100%;justify-content:center;transform:rotate(90deg)}.branches{grid-template-columns:1fr}}
+</style>
 </head>
 <body>
-<header><a class="brand" href="./">KWI<span>BIZ</span></a><nav><a href="./" aria-current="page">Accueil</a><a href="confidentialite/">Confidentialité</a><a href="cgu/">Conditions d'utilisation</a><a href="mentions-legales/">Mentions légales</a><a href="support/">Support</a></nav></header>
-<main><section class="hero">
-<h1>Des biz super <span>kwick</span></h1>
-<p>Chaque jour, Kwibiz te propose des idées de petites activités rémunératrices, faites pour ton profil. Tu en choisis une, et un parcours guidé t'aide à la lancer en moins d'une heure.</p>
-<p class="soon">Bientôt sur l'App Store et Google Play.</p>
-</section></main>
-<footer>© 2026 BM Group, LLC · <a href="mailto:contact@kwibiz.com">contact@kwibiz.com</a></footer>
-</body>
-</html>
+<div class="page">
+<header class="hero">
+<div class="brand">Mezaelle</div>
+<div class="eyebrow">Franchise · pilotage équipe</div>
+<h1>Lancement de la franchise Mezaelle</h1>
+<div class="sub">Document collaboratif partagé : préparation, acquisition, candidature, DIP, parcours 7 ateliers, mise à niveau, FAQ, ouverture des ventes, closing et onboarding.</div>
+<div class="dates">
+<div class="date"><b>Avant le 20 oct.</b><span>Préparation complète</span></div>
+<div class="date"><b>20–24 oct.</b><span>Inscriptions webinar</span></div>
+<div class="date"><b>25 oct.</b><span>Webinaire principal</span></div>
+<div class="date"><b>25 oct.–9 nov.</b><span>Franchise ou mise à niveau</span></div>
+<div class="date"><b>9 nov.</b><span>Webinaire FAQ</span></div>
+<div class="date"><b>15–30 nov.</b><span>Ventes & closings</span></div>
+</div>
+<div class="collab">
+<div class="left"><span class="dot" id="dot"></span><div><b style="font-size:12px;color:var(--gd)">Checklist partagée</b><div class="sync" id="sync">Connexion…</div></div></div>
+<div><input id="name" placeholder="Votre prénom / nom"><button class="btn" id="saveName">Enregistrer</button></div>
+</div>
+</header>
+
+<section class="phase">
+<div class="head"><div class="num">0</div><h2>Préparer le lancement</h2><div class="strap">Structurer → produire → connecter → tester</div></div>
+<div class="prepgrid" id="prepgrid"></div>
+<div class="status" id="globalStatus"></div>
+</section>
+
+<section class="phase">
+<div class="head"><div class="num">1</div><h2>Attirer & orienter</h2><div class="strap">Attirer → informer → choisir le bon parcours</div></div>
+<div class="flow">
+<div class="box"><strong>Base praticiens / communauté PNG-U</strong><small>Audience chaude déjà familière de Martine et de Mezaelle.</small></div><div class="arr">→</div>
+<div class="box"><strong>Pré-lancement</strong><small>Email, communauté, réseaux sociaux, retargeting.</small><span class="pill">22–24 oct.</span></div><div class="arr">→</div>
+<div class="box"><strong>Inscriptions webinar</strong><small>Landing, formulaire et rappels.</small><span class="pill">20–24 oct.</span></div><div class="arr">→</div>
+<div class="box"><strong>Webinaire principal</strong><small>Présentation du modèle et des deux parcours.</small><span class="pill">25 oct.</span></div><div class="arr">→</div>
+<div class="box decision"><strong>Choix post-webinar</strong><div class="branches"><span>Programme Franchise</span><span class="no">Mise à niveau</span></div><span class="pill">25 oct.–9 nov.</span></div>
+</div>
+<div class="note"><b>Principe :</b> les personnes motivées mais insuffisamment certifiées sont conservées dans l’écosystème via un parcours de mise à niveau pour pouvoir rejoindre une future cohorte franchise.</div>
+</section>
+
+<section class="phase">
+<div class="head"><div class="num">2</div><h2>Qualifier & faire progresser</h2><div class="strap">Qualifier → DIP → ateliers → orienter</div></div>
+<div class="flow">
+<div class="box"><strong>Candidature Franchise</strong><small>Profil, certifications, motivation, disponibilité et projet.</small></div><div class="arr">→</div>
+<div class="box"><strong>Qualification rapide</strong><small>Prérequis, alignement et points de vigilance.</small></div><div class="arr">→</div>
+<div class="box"><strong>Remise du DIP</strong><small>Déclenche le délai précontractuel individuel.</small><span class="pill">25 oct.–9 nov.</span></div><div class="arr">→</div>
+<div class="box"><strong>7 ateliers</strong><small>Modèle franchisé · posture entrepreneuriale · commercial · communication · valeurs · niveau technique · gestion & pilotage.</small></div><div class="arr">→</div>
+<div class="box decision"><strong>Atelier niveau technique</strong><div class="branches"><span>Niveau suffisant → Franchise</span><span class="no">Insuffisant → Mise à niveau</span></div></div><div class="arr">→</div>
+<div class="box"><strong>FAQ / confirmation</strong><small>Questions, objections et maintien de la motivation.</small><span class="pill">9 nov.</span></div><div class="arr">→</div>
+<div class="box"><strong>Fiche candidat</strong><small>7 dimensions, forces, vigilances et red flags.</small></div>
+</div>
+</section>
+
+<section class="phase">
+<div class="head"><div class="num">3</div><h2>Ouvrir les ventes & closer</h2><div class="strap">Ouvrir → closer au fil des éligibilités → signer</div></div>
+<div class="flow">
+<div class="box"><strong>Webinaire ouverture ventes</strong><small>Dernières questions et passage aux RDV.</small><span class="pill">15 nov.</span></div><div class="arr">→</div>
+<div class="box"><strong>RDV closer</strong><small>Proposés selon la date individuelle de remise du DIP.</small></div><div class="arr">→</div>
+<div class="box"><strong>Closing roulant</strong><small>Fenêtre miroir des inscriptions post-webinar, décalée de 21 jours.</small><span class="pill">15–30 nov.</span></div><div class="arr">→</div>
+<div class="box decision"><strong>Décision</strong><div class="branches"><span>Oui → signature</span><span class="no">Pas maintenant → maturation</span></div></div>
+</div>
+</section>
+
+<section class="phase">
+<div class="head"><div class="num">4</div><h2>Signer & intégrer</h2><div class="strap">Signature → accès → formation → accompagnement</div></div>
+<div class="flow">
+<div class="box"><strong>Signature</strong><small>Contrat + droits d’entrée.</small></div><div class="arr">→</div>
+<div class="box"><strong>Accès immédiat</strong><small>E-learning, CRM et ressources.</small></div><div class="arr">→</div>
+<div class="box"><strong>Formation Mezaelle</strong><small>E-learning + présentiel + certification.</small></div><div class="arr">→</div>
+<div class="box"><strong>Onboarding business</strong><small>Coaching, outils, marketing et commercial.</small></div>
+</div>
+</section>
+
+<div class="summary"><h3 style="margin:0 0 10px;color:var(--gd)">Vue ultra-synthétique</h3><div class="chips">
+<span class="chip">Préparation</span><span class="chev">→</span><span class="chip">Webinar 25/10</span><span class="chev">→</span><span class="chip">Franchise / Mise à niveau</span><span class="chev">→</span><span class="chip">DIP</span><span class="chev">→</span><span class="chip">7 ateliers</span><span class="chev">→</span><span class="chip">FAQ 09/11</span><span class="chev">→</span><span class="chip">Ventes 15/11</span><span class="chev">→</span><span class="chip">Closing roulant</span><span class="chev">→</span><span class="chip">Signature</span>
+</div></div>
+</div>
+
+<div class="modal" id="modal"><div class="dialog">
+<div class="mhead"><div><div style="font-size:10px;text-transform:uppercase;letter-spacing:.12em;color:#b58a35;font-weight:900">Phase 0 · préparation</div><h3 id="mtitle"></h3><div class="mprogress" id="mprogress"></div></div><button class="close" id="close">×</button></div>
+<div class="tasks" id="tasks"></div>
+<div class="mfoot"><button class="reset" id="reset">Réinitialiser cette checklist</button><button class="btn" id="done">Fermer</button></div>
+</div></div>
+
+<script>
+const DATA={"prep-1":{"title":"Offre & cadre franchise","tasks":["Finaliser la structure de l’offre franchise","Valider le prix, les redevances et les modalités de paiement","Valider les conditions d’entrée et les prérequis","Vérifier la cohérence de tous les supports avec le DIP","Valider le wording commercial utilisé pendant le lancement","Fixer précisément la fenêtre d’entrée, de vente et de closing"]},"prep-2":{"title":"Parcours juridique & DIP","tasks":["Finaliser la version du DIP utilisée pour le lancement","Configurer l’envoi / remise électronique du DIP","Enregistrer automatiquement la date de remise dans le CRM","Calculer la date individuelle d’éligibilité au closing","Finaliser le contrat de franchise et les annexes","Tester le workflow DIP → délai → closing → signature"]},"prep-3":{"title":"CRM & pipeline","tasks":["Créer toutes les étapes du pipeline candidat","Créer les tags et segments nécessaires","Configurer les automatisations entre les étapes","Créer le lead scoring / niveau de chaleur","Faire remonter les réponses des ateliers dans la fiche candidat","Créer le dashboard de pilotage du lancement","Créer les statuts CRM spécifiques au parcours de mise à niveau","Créer la logique de réentrée future Mise à niveau → Candidature Franchise"]},"prep-4":{"title":"Landing & formulaires","tasks":["Créer la landing d’inscription au webinar principal","Créer la page de confirmation / merci","Créer le formulaire de candidature express","Créer le formulaire post-webinar avec choix « Programme Franchise » ou « Mise à niveau »","Créer la page de replay","Créer la page / formulaire de prise de rendez-vous closer","Tester tous les formulaires sur mobile et desktop","Créer la page d’inscription / confirmation du parcours de mise à niveau"]},"prep-5":{"title":"Emails, social & retargeting","tasks":["Créer les emails de pré-lancement / teasing","Créer la séquence d’inscription au webinar","Créer la séquence anti-no-show","Créer la séquence replay + candidature","Créer les relances de progression du parcours","Créer les publications réseaux / communauté","Configurer les audiences et campagnes de retargeting","Créer la séquence email dédiée aux inscrits en mise à niveau"]},"prep-6":{"title":"3 webinaires","tasks":["Finaliser le script du webinar principal du 25 octobre","Créer les slides du webinar principal","Préparer le webinar FAQ du 9 novembre","Préparer le webinar d’ouverture des ventes du 15 novembre","Créer les pages / liens d’accès aux 3 lives","Configurer Q&A, modération et enregistrement","Tester le dispositif technique des 3 webinars"]},"prep-7":{"title":"Portail candidat + 7 ateliers","tasks":["Créer le dashboard candidat et la progression 0/7 → 7/7","Créer l’atelier Compréhension du modèle franchisé","Créer l’atelier Posture entrepreneuriale","Créer l’atelier Posture commerciale","Créer l’atelier Communication adaptée","Créer l’atelier Valeurs & alignement","Créer l’atelier Niveau technique","Configurer l’atelier Niveau technique pour déclencher une orientation vers la mise à niveau si nécessaire","Créer l’atelier Gestion & pilotage","Configurer la sauvegarde des réponses","Créer la génération de la fiche candidat finale"]},"prep-8":{"title":"Closer & onboarding","tasks":["Créer le script de closing","Créer la grille de compatibilité finale","Créer la banque de réponses aux objections","Configurer l’agenda des closers","Préparer les liens / modalités de paiement","Configurer la signature électronique","Créer le parcours d’onboarding post-signature"]},"prep-9":{"title":"Tracking & KPIs","tasks":["Installer le tracking des pages du lancement","Configurer le suivi des emails","Configurer le suivi du webinar et du replay","Suivre candidatures, qualifications et DIP remis","Suivre la progression dans les 7 ateliers","Suivre RDV, closings, signatures et chiffre généré","Créer un tableau de bord quotidien lisible par l’équipe","Suivre le nombre de personnes orientées vers la mise à niveau et leur source d’orientation"]},"prep-10":{"title":"Rôles & organisation équipe","tasks":["Nommer le responsable de chaque étape du lancement","Définir qui valide les contenus et supports","Définir qui qualifie les candidatures","Définir qui répond aux candidats / questions","Définir qui anime et modère chaque webinar","Définir l’affectation des candidats aux closers","Créer le canal interne de suivi quotidien"]},"prep-11":{"title":"Recette complète","tasks":["Tester inscription → confirmation → webinar","Tester webinar → replay → candidature","Tester candidature → qualification → DIP","Tester DIP → accès portail → ateliers","Tester ateliers → fiche candidat → closer","Tester RDV → paiement → signature","Tester signature → onboarding","Vérifier tous les emails, liens et automatisations de bout en bout","Tester le choix post-webinar Franchise / Mise à niveau","Tester la réorientation Atelier Niveau technique → Mise à niveau"]},"prep-12":{"title":"Répétition générale","tasks":["Répéter le webinar principal en conditions réelles","Tester micro, caméra, slides et partage d’écran","Tester le passage vers le CTA candidature","Briefer la personne chargée de la modération","Préparer un plan B en cas de problème technique","Vérifier la disponibilité de l’équipe le jour J"]},"prep-13":{"title":"Programme de mise à niveau","tasks":["Définir précisément qui doit être orienté vers la mise à niveau","Définir les certifications / compétences manquantes à combler","Structurer le parcours de mise à niveau","Créer la page de présentation et d’inscription","Créer le workflow CRM spécifique","Créer la séquence email d’accueil et de progression","Créer les contenus / formations nécessaires","Définir les critères de sortie du parcours de mise à niveau","Créer le mécanisme de réévaluation du niveau technique","Créer la réentrée vers une future candidature Franchise","Tracer si l’orientation vient du formulaire post-webinar ou de l’atelier Niveau technique"]}};
+const SB=supabase.createClient("https://vvuqkddageaupkfolorc.supabase.co","sb_publishable_mztGTQc-OUO2qZ_qqFNIkg_fDaE4uDn");
+const NAMEKEY="mezaelle_name",CACHE="mezaelle_cache";let state={},meta={},active=null;
+try{state=JSON.parse(localStorage.getItem(CACHE)||"{}")}catch(e){state={}}
+const $=id=>document.getElementById(id),grid=$("prepgrid"),modal=$("modal"),name=$("name");name.value=localStorage.getItem(NAMEKEY)||"";
+function ensure(id){if(!state[id])state[id]=DATA[id].tasks.map(()=>false);if(state[id].length!==DATA[id].tasks.length){const o=state[id]||[];state[id]=DATA[id].tasks.map((_,i)=>!!o[i])}}
+function key(id,i){return id+":"+i} function parse(k){const p=k.lastIndexOf(":");if(p<0)return null;const id=k.slice(0,p),i=+k.slice(p+1);return DATA[id]&&Number.isInteger(i)&&i>=0&&i<DATA[id].tasks.length?{id,i}:null}
+function person(){let n=(name.value||"").trim()||localStorage.getItem(NAMEKEY)||"";if(!n)n=(prompt("Votre prénom / nom :")||"Membre équipe").trim();localStorage.setItem(NAMEKEY,n);name.value=n;return n}
+function fmt(v){try{return new Intl.DateTimeFormat("fr-FR",{day:"2-digit",month:"short",hour:"2-digit",minute:"2-digit"}).format(new Date(v))}catch(e){return""}}
+function cards(){grid.innerHTML="";let bd=0,ad=0,at=0;Object.entries(DATA).forEach(([id,o])=>{ensure(id);const d=state[id].filter(Boolean).length,t=o.tasks.length;ad+=d;at+=t;if(d===t)bd++;const el=document.createElement("div");el.className="prep"+(d===t?" done":"");el.innerHTML="<strong>"+o.title+"</strong><small>"+(id==="prep-13"?"Parcours alternatif pour devenir éligible à une future cohorte franchise.":"Cliquez pour ouvrir la checklist détaillée.")+"</small><span class='count'>"+d+"/"+t+" tâches</span>";el.onclick=()=>open(id);grid.appendChild(el)});$("globalStatus").textContent="Préparation : "+bd+"/"+Object.keys(DATA).length+" blocs terminés · "+ad+"/"+at+" tâches"}
+function open(id){active=id;ensure(id);render();modal.classList.add("open")}
+function close(){modal.classList.remove("open");active=null}
+function render(){const o=DATA[active],d=state[active].filter(Boolean).length;$("mtitle").textContent=o.title;$("mprogress").textContent=d+" / "+o.tasks.length+" tâches terminées";$("tasks").innerHTML="";o.tasks.forEach((t,i)=>{const k=key(active,i),lab=document.createElement("label");lab.className="task";const inp=document.createElement("input");inp.type="checkbox";inp.checked=!!state[active][i];inp.onchange=async()=>{const old=state[active][i],val=inp.checked,p=person();state[active][i]=val;save();render();const row={task_id:k,checked:val,updated_by:null,updated_by_name:p,updated_at:new Date().toISOString()};const{error}=await SB.from("mezaelle_launch_tasks").upsert(row,{onConflict:"task_id"});if(error){state[active][i]=old;save();render();alert("Synchronisation impossible")}else{meta[k]=row;render()}};const ch=document.createElement("span");ch.className="check";const w=document.createElement("span");w.className="wrap";const tx=document.createElement("span");tx.className="ttext";tx.textContent=t;w.appendChild(tx);if(meta[k]){const sm=document.createElement("span");sm.className="meta";sm.textContent="Mis à jour par "+meta[k].updated_by_name+" · "+fmt(meta[k].updated_at);w.appendChild(sm)}lab.append(inp,ch,w);$("tasks").appendChild(lab)})}
+function save(){localStorage.setItem(CACHE,JSON.stringify(state));cards()}
+async function load(){$("sync").textContent="Synchronisation…";Object.keys(DATA).forEach(id=>state[id]=DATA[id].tasks.map(()=>false));const{data,error}=await SB.from("mezaelle_launch_tasks").select("*");if(error){$("sync").textContent="Connexion impossible";return}(data||[]).forEach(r=>{const p=parse(r.task_id);if(!p)return;ensure(p.id);state[p.id][p.i]=!!r.checked;meta[r.task_id]=r});save();$("dot").classList.add("live");$("sync").textContent="Synchronisé en direct avec l’équipe"}
+SB.channel("mezaelle").on("postgres_changes",{event:"*",schema:"public",table:"mezaelle_launch_tasks"},p=>{const r=p.new||p.old,x=parse(r?.task_id||"");if(!x)return;ensure(x.id);state[x.id][x.i]=p.eventType==="DELETE"?false:!!r.checked;if(p.eventType==="DELETE")delete meta[r.task_id];else meta[r.task_id]=r;save();if(active===x.id)render()}).subscribe();
+$("saveName").onclick=()=>{if(name.value.trim()){localStorage.setItem(NAMEKEY,name.value.trim());$("sync").textContent="Nom enregistré : "+name.value.trim()}}
+$("close").onclick=$("done").onclick=close;modal.onclick=e=>{if(e.target===modal)close()};$("reset").onclick=async()=>{if(!active||!confirm("Réinitialiser cette checklist ?"))return;const p=person();state[active]=DATA[active].tasks.map(()=>false);save();render();const rows=DATA[active].tasks.map((_,i)=>({task_id:key(active,i),checked:false,updated_by:null,updated_by_name:p,updated_at:new Date().toISOString()}));await SB.from("mezaelle_launch_tasks").upsert(rows,{onConflict:"task_id"})};
+Object.keys(DATA).forEach(ensure);cards();load();
+</script>
+</body></html>
