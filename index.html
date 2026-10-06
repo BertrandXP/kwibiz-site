@@ -600,9 +600,27 @@
   let meta = {};
   let realtimeChannel = null;
 
-  try { state = JSON.parse(localStorage.getItem(LOCAL_KEY) || '{}'); } catch(e) { state = {}; }
-  try { notes = JSON.parse(localStorage.getItem(NOTE_KEY) || '{}'); } catch(e) { notes = {}; }
-  teamName.value = localStorage.getItem(NAME_KEY) || '';
+  // Stockage local tolérant : certains navigateurs / webviews peuvent bloquer localStorage.
+  function storageGet(key, fallback=''){
+    try {
+      const value=window.localStorage ? localStorage.getItem(key) : null;
+      return value===null ? fallback : value;
+    } catch(e) {
+      return fallback;
+    }
+  }
+  function storageSet(key, value){
+    try {
+      if(window.localStorage) localStorage.setItem(key,value);
+      return true;
+    } catch(e) {
+      return false;
+    }
+  }
+
+  try { state = JSON.parse(storageGet(LOCAL_KEY,'{}')); } catch(e) { state = {}; }
+  try { notes = JSON.parse(storageGet(NOTE_KEY,'{}')); } catch(e) { notes = {}; }
+  if(teamName) teamName.value = storageGet(NAME_KEY,'');
 
   let client = null;
 
@@ -659,19 +677,19 @@
   }
 
   function person(){
-    let value = (teamName.value || '').trim() || localStorage.getItem(NAME_KEY) || '';
+    let value = (teamName.value || '').trim() || storageGet(NAME_KEY,'');
     if(!value){
       value = (prompt('Votre prénom / nom pour identifier la modification :') || '').trim();
       if(!value) value = 'Membre de l’équipe';
     }
-    localStorage.setItem(NAME_KEY,value);
-    teamName.value = value;
+    storageSet(NAME_KEY,value);
+    if(teamName) teamName.value = value;
     return value;
   }
 
   function persistLocal(){
-    localStorage.setItem(LOCAL_KEY,JSON.stringify(state));
-    localStorage.setItem(NOTE_KEY,JSON.stringify(notes));
+    storageSet(LOCAL_KEY,JSON.stringify(state));
+    storageSet(NOTE_KEY,JSON.stringify(notes));
   }
 
   function counts(id){
@@ -807,7 +825,7 @@
     prepDeadlineView?.classList.toggle('active',deadline);
     viewByFamily?.classList.toggle('active',!deadline);
     viewByDeadline?.classList.toggle('active',deadline);
-    localStorage.setItem(PREP_VIEW_KEY,deadline ? 'deadline' : 'family');
+    storageSet(PREP_VIEW_KEY,deadline ? 'deadline' : 'family');
     if(deadline) renderDeadlineView();
   }
 
@@ -986,13 +1004,14 @@
   }
 
   function openModal(id){
+    if(!DATA[id] || !modal) return;
     activeId=id;
     ensure(id);
     render();
     modal.classList.add('open');
     modal.setAttribute('aria-hidden','false');
     document.body.style.overflow='hidden';
-    document.getElementById('prepModalClose').focus();
+    document.getElementById('prepModalClose')?.focus();
   }
 
   function closeModal(){
