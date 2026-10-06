@@ -1,0 +1,4 @@
+User-agent: *
+Disallow: /
+
+# This site is private/internal and should not be crawled or indexed.
