@@ -624,6 +624,13 @@
 
   let client = null;
 
+  function promiseTimeout(promise, ms, label='Délai dépassé'){
+    return Promise.race([
+      promise,
+      new Promise((_,reject)=>setTimeout(()=>reject(new Error(label)),ms))
+    ]);
+  }
+
   function loadSupabaseSdk(){
     if(window.supabase) return Promise.resolve(window.supabase);
     return new Promise((resolve,reject)=>{
@@ -646,14 +653,14 @@
   async function initSupabase(){
     setSync('Connexion à Supabase…','');
     try{
-      const sdk=await loadSupabaseSdk();
+      const sdk=await promiseTimeout(loadSupabaseSdk(),7000,'Chargement Supabase trop long');
       if(!sdk) throw new Error('SDK Supabase non chargé');
       client=sdk.createClient(SUPABASE_URL,SUPABASE_KEY);
-      await loadCloud();
+      await promiseTimeout(loadCloud(),7000,'Connexion Supabase trop longue');
       subscribeRealtime();
     }catch(error){
       console.error(error);
-      setSync('Supabase momentanément indisponible · interface utilisable','warn');
+      setSync('Supabase indisponible · interface utilisable','warn');
     }
   }
 
@@ -991,29 +998,3 @@
     if(error){
       console.error(error);
       if(previous) notes[key]=previous; else delete notes[key];
-      persistLocal();
-      if(activeId===blockId) render();
-      setSync('Erreur de synchronisation','warn');
-      alert("Les indications n'ont pas pu être synchronisées.");
-      return;
-    }
-
-    meta[key]={...(meta[key]||{}),...cloudRow};
-    setSync('Synchronisé en direct avec l’équipe','live');
-    if(activeId===blockId) render();
-  }
-
-  function openModal(id){
-    if(!DATA[id] || !modal) return;
-    activeId=id;
-    ensure(id);
-    render();
-    modal.classList.add('open');
-    modal.setAttribute('aria-hidden','false');
-    document.body.style.overflow='hidden';
-    document.getElementById('prepModalClose')?.focus();
-  }
-
-  function closeModal(){
-    modal.classList.remove('open');
-    modal.setAttribute('aria-hidden','true');
