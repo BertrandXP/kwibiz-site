@@ -797,7 +797,6 @@
       }).format(new Date(value+'T12:00:00')).replace('.','').toUpperCase();
     } catch(e) { return value; }
   }
-
   function fmtDeadlineHeading(value){
     if(!value) return '';
     try {
@@ -998,3 +997,270 @@
     taskNoteModal.classList.add('open');
     taskNoteModal.setAttribute('aria-hidden','false');
     setTimeout(()=>taskNoteText.focus(),50);
+  }
+
+  function closeTaskNote(){
+    taskNoteModal.classList.remove('open');
+    taskNoteModal.setAttribute('aria-hidden','true');
+    activeTaskKey=null;
+    if(modal.classList.contains('open')) document.body.style.overflow='hidden';
+  }
+
+  async function saveTaskNote(){
+    if(!activeTaskKey) return;
+    const key=activeTaskKey;
+    const parsed=parseTaskKey(key);
+    if(!parsed) return;
+
+    const previous=notes[key] || '';
+    const value=taskNoteText.value.trim();
+
+    if(value) notes[key]=value;
+    else delete notes[key];
+
+    persistLocal();
+    const blockId=parsed.blockId;
+    closeTaskNote();
+    if(activeId===blockId) render();
+
+    const now=new Date().toISOString();
+    const cloudRow={
+      task_id:key,
+      checked:!!state[parsed.blockId][parsed.index],
+      updated_by:null,
+      note_text:value || null,
+      note_updated_by_name:person(),
+      note_updated_at:now
+    };
+
+    try{
+      await upsertCloud(cloudRow);
+      meta[key]={...(meta[key]||{}),...cloudRow};
+      setSync('Synchronisé avec l’équipe','live');
+      if(activeId===blockId) render();
+    }catch(error){
+      console.error(error);
+      if(previous) notes[key]=previous; else delete notes[key];
+      persistLocal();
+      if(activeId===blockId) render();
+      setSync('Erreur de synchronisation','warn');
+      alert("Les indications n'ont pas pu être synchronisées.");
+    }
+  }
+
+  function openModal(id){
+    if(!DATA[id] || !modal) return;
+    activeId=id;
+    ensure(id);
+    render();
+    modal.classList.add('open');
+    modal.setAttribute('aria-hidden','false');
+    document.body.style.overflow='hidden';
+    document.getElementById('prepModalClose')?.focus();
+  }
+
+  function closeModal(){
+    modal.classList.remove('open');
+    modal.setAttribute('aria-hidden','true');
+    document.body.style.overflow='';
+    activeId=null;
+  }
+
+  async function loadCloud(showStatus=true){
+    if(showStatus) setSync('Synchronisation…','');
+
+    const rows=await cloudRequest(`${REST_URL}?select=*`,{},5000);
+
+    Object.keys(DATA).forEach(id=>state[id]=DATA[id].tasks.map(()=>false));
+    notes={};
+    meta={};
+    dueOverrides={};
+
+    (rows||[]).forEach(row=>{
+      const parsed=parseTaskKey(row.task_id);
+      if(!parsed) return;
+      ensure(parsed.blockId);
+      state[parsed.blockId][parsed.index]=!!row.checked;
+      if(row.note_text) notes[row.task_id]=row.note_text;
+      if(row.due_date) dueOverrides[row.task_id]=row.due_date;
+      meta[row.task_id]=row;
+    });
+
+    persistLocal();
+    refreshCards();
+    if(activeId) render();
+    if(showStatus) setSync('Synchronisé avec l’équipe','live');
+  }
+
+  function subscribeRealtime(){
+    if(syncTimer) clearInterval(syncTimer);
+    syncTimer=setInterval(()=>{
+      loadCloud(false).catch(error=>{
+        console.warn('Synchronisation différée',error);
+      });
+    },5000);
+  }
+
+  cards.forEach(card=>{
+    card.addEventListener('click',()=>openModal(card.dataset.prepId));
+    card.addEventListener('keydown',e=>{
+      if(e.key==='Enter'||e.key===' '){
+        e.preventDefault();
+        openModal(card.dataset.prepId);
+      }
+    });
+  });
+
+  document.getElementById('prepModalClose')?.addEventListener('click',closeModal);
+  document.getElementById('prepModalDone')?.addEventListener('click',closeModal);
+
+  modal.addEventListener('click',e=>{
+    if(e.target===modal) closeModal();
+  });
+
+  document.getElementById('taskNoteClose')?.addEventListener('click',e=>{
+    e.preventDefault();
+    e.stopPropagation();
+    closeTaskNote();
+  });
+
+  document.getElementById('taskNoteSave')?.addEventListener('click',e=>{
+    e.preventDefault();
+    e.stopPropagation();
+    saveTaskNote();
+  });
+
+  document.getElementById('taskNoteClear')?.addEventListener('click',e=>{
+    e.preventDefault();
+    e.stopPropagation();
+    taskNoteText.value='';
+    saveTaskNote();
+  });
+
+  taskNoteModal.addEventListener('click',e=>{
+    if(e.target===taskNoteModal) closeTaskNote();
+  });
+
+  taskNoteText.addEventListener('keydown',e=>{
+    if((e.metaKey||e.ctrlKey) && e.key==='Enter'){
+      e.preventDefault();
+      saveTaskNote();
+    }
+  });
+
+  document.addEventListener('keydown',e=>{
+    if(e.key!=='Escape') return;
+    if(taskNoteModal.classList.contains('open')){
+      closeTaskNote();
+      return;
+    }
+    if(modal.classList.contains('open')) closeModal();
+  });
+
+  document.getElementById('prepModalReset')?.addEventListener('click',async()=>{
+    if(!activeId) return;
+    if(!confirm('Réinitialiser toutes les coches de cette checklist ?')) return;
+
+    const id=activeId;
+    const old=[...state[id]];
+    state[id]=DATA[id].tasks.map(()=>false);
+    persistLocal();
+    refreshCards();
+    render();
+
+    const name=person();
+    const now=new Date().toISOString();
+    const rows=DATA[id].tasks.map((_,i)=>({
+      task_id:taskKey(id,i),
+      checked:false,
+      updated_by:null,
+      updated_by_name:name,
+      updated_at:now
+    }));
+
+    try{
+      await upsertCloud(rows);
+      setSync('Synchronisé avec l’équipe','live');
+    }catch(error){
+      console.error(error);
+      state[id]=old;
+      persistLocal();
+      refreshCards();
+      render();
+      setSync('Erreur de synchronisation','warn');
+      alert("La réinitialisation n'a pas pu être synchronisée.");
+    }
+  });
+
+  document.getElementById('saveTeamName')?.addEventListener('click',()=>{
+    const value=(teamName.value||'').trim();
+    if(!value) return;
+    storageSet(NAME_KEY,value);
+    setSync(`Nom enregistré : ${value}`,'live');
+    setTimeout(()=>setSync('Synchronisé en direct avec l’équipe','live'),1200);
+  });
+
+
+  viewByFamily?.addEventListener('click',()=>setPrepView('family'));
+  viewByDeadline?.addEventListener('click',()=>setPrepView('deadline'));
+  setPrepView(storageGet(PREP_VIEW_KEY,'family')==='deadline' ? 'deadline' : 'family');
+
+  // Étapes repliables
+  const PHASE_FOLD_KEY = 'mezaelle_phase_folds_v1';
+  let phaseFolds = {};
+  try { phaseFolds = JSON.parse(storageGet(PHASE_FOLD_KEY,'{}')); } catch(e) { phaseFolds = {}; }
+
+  function initPhaseFolds(){
+    document.querySelectorAll('.phase').forEach((phase,index)=>{
+      const head=phase.firstElementChild?.classList?.contains('head') ? phase.firstElementChild : phase.querySelector('.head');
+      if(!head || head.querySelector('.phase-toggle')) return;
+
+      const key=String(index);
+      const chev=document.createElement('span');
+      chev.className='phase-toggle no-print';
+      chev.setAttribute('aria-hidden','true');
+
+      head.setAttribute('role','button');
+      head.setAttribute('tabindex','0');
+
+      const apply=()=>{
+        const collapsed=!!phaseFolds[key];
+        phase.classList.toggle('collapsed',collapsed);
+        head.title=collapsed ? 'Cliquer pour déplier cette étape' : 'Cliquer pour replier cette étape';
+        head.setAttribute('aria-expanded',collapsed ? 'false' : 'true');
+      };
+
+      const toggle=()=>{
+        phaseFolds[key]=!phaseFolds[key];
+        storageSet(PHASE_FOLD_KEY,JSON.stringify(phaseFolds));
+        apply();
+      };
+
+      head.addEventListener('click',toggle);
+      head.addEventListener('keydown',e=>{
+        if(e.key==='Enter' || e.key===' '){
+          e.preventDefault();
+          toggle();
+        }
+      });
+
+      head.appendChild(chev);
+      apply();
+    });
+  }
+
+  initPhaseFolds();
+  Object.keys(DATA).forEach(ensure);
+  refreshCards();
+
+  // Marqueur de diagnostic : si présent, toute l'interface locale est initialisée.
+  window.MEZAELLE_UI_READY = true;
+  document.documentElement.dataset.mezaelleUi = 'ready';
+
+  // La synchronisation Supabase se fait en REST avec timeout court et ne bloque jamais l'UI.
+  initSupabase();
+})();
+</script>
+
+
+</body></html>
