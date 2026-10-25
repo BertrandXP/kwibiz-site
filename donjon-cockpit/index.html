@@ -1,0 +1,1270 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="theme-color" content="#13283b" />
+<title>Le Donjon — Cockpit de lancement 24 h</title>
+<style>
+:root{--navy:#14283b;--dark:#0d2132;--ink:#233548;--muted:#718091;--cream:#f7f5ef;--white:#fff;--green:#218468;--mint:#e7f6ee;--gold:#cb9b4b;--line:#e1e6e8;--warn:#b15b35;--soft:#ecf1f3;--shadow:0 10px 35px rgba(16,36,48,.055)}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;font:15px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;background:var(--cream);color:var(--ink)}button,input,textarea,select{font:inherit}button{cursor:pointer}a{color:#126f70}a:hover{text-decoration:underline}.shell{display:flex;min-height:100vh}.sidebar{position:sticky;top:0;min-width:248px;width:248px;height:100vh;overflow-y:auto;background:var(--navy);color:#eff5f8;padding:28px 15px;display:flex;flex-direction:column;gap:18px}.brand{display:flex;align-items:center;gap:11px;margin:0 10px 12px}.crest{font-size:27px;background:#274456;border:1px solid #58768c;border-radius:12px;padding:8px}.brand strong{display:block;font-size:16px;line-height:1.1;letter-spacing:.01em}.brand small{color:#aec1cc;font-size:11px;letter-spacing:.1em;text-transform:uppercase}.sidebar .section-label{font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:#8da5b7;margin:10px 12px 3px}.navbtn{display:flex;width:100%;align-items:center;text-align:left;gap:10px;background:none;color:#c8d9e3;border:0;border-radius:10px;padding:11px 12px;font-size:13px}.navbtn:hover,.navbtn.active{background:#294458;color:#fff}.navbtn .num{display:grid;place-items:center;width:23px;height:23px;border:1px solid #567183;border-radius:7px;font-size:11px}.navbtn.active .num{background:#a5d5c0;color:#113d32;border-color:#a5d5c0}.sidebarfoot{margin-top:auto;border-top:1px solid #375268;padding:15px 10px;color:#a8bbca;font-size:11px}.main{flex:1;min-width:0;max-width:1600px;padding:30px min(4vw,60px) 70px}.topbar{display:flex;align-items:center;justify-content:space-between;gap:15px;margin-bottom:28px}.eyebrow{text-transform:uppercase;font-size:11px;letter-spacing:.17em;color:var(--green);font-weight:800}.topbar .right{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.btn{border-radius:9px;background:#fff;border:1px solid #d6dee1;padding:10px 15px;color:var(--navy);font-weight:650;font-size:12px;display:inline-flex;align-items:center;justify-content:center;gap:7px;transition:.15s}.btn:hover{border-color:#9db7bd;background:#f0f7f4;text-decoration:none}.btn.primary{background:var(--green);border-color:var(--green);color:#fff}.btn.primary:hover{background:#176f58}.btn.dark{background:var(--navy);color:#fff;border-color:var(--navy)}.btn.light{background:var(--mint);color:#115c4c;border-color:#c3e7d7}.btn.small{padding:7px 10px}.btn:disabled{opacity:.5;cursor:not-allowed}.tag{display:inline-flex;padding:5px 9px;background:#eaf0f3;border-radius:30px;font-size:11px;font-weight:750;color:#627588}.tag.green{background:#e5f4ec;color:#206b52}.tag.warn{background:#fff0e5;color:#a85e28}.tag.dark{background:#e6ebf1;color:#1e3a51}.view{display:none;animation:appear .22s ease}.view.active{display:block}@keyframes appear{from{opacity:.4;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}h1,h2,h3,h4,p{margin-top:0}h1{font-size:clamp(32px,4.25vw,57px);line-height:1.09;letter-spacing:-.045em;color:var(--navy);margin-bottom:16px}h2{font-size:clamp(23px,2.5vw,32px);line-height:1.2;letter-spacing:-.026em;color:var(--navy);margin-bottom:12px}h3{font-size:18px;color:var(--navy);margin-bottom:8px}p{line-height:1.68}.lead{font-size:17px;color:#5b6c7a;max-width:850px}.sub{color:var(--muted)}.muted{color:var(--muted)}.headline{display:flex;align-items:end;justify-content:space-between;gap:20px;flex-wrap:wrap;margin-bottom:24px}.headline h2{margin-bottom:0}.hero{position:relative;overflow:hidden;background:linear-gradient(125deg,#142c3f,#22505a);color:#fff;padding:38px;border-radius:18px;margin-bottom:20px}.hero:after{content:'✦';font-size:300px;line-height:1;position:absolute;right:-15px;top:-65px;color:rgba(255,255,255,.045);pointer-events:none}.hero h1{color:#fff;max-width:690px}.hero p{color:#c5d9db;max-width:670px;margin-bottom:21px}.hero .eyebrow{color:#a6d5c0}.hero .btn{position:relative;z-index:1}.grid{display:grid;gap:17px}.g2{grid-template-columns:repeat(2,minmax(0,1fr))}.g3{grid-template-columns:repeat(3,minmax(0,1fr))}.g4{grid-template-columns:repeat(4,minmax(0,1fr))}.panel{background:#fff;border:1px solid var(--line);border-radius:14px;padding:24px;box-shadow:var(--shadow)}.panel.soft{background:#f2f7f5}.panel.dark{background:var(--navy);color:#fff;border-color:var(--navy)}.panel.dark h3,.panel.dark h2{color:#fff}.panel.flush{padding:0;overflow:hidden}.metric{background:#fff;border:1px solid var(--line);border-radius:13px;padding:19px 21px}.metric .value{font-size:31px;line-height:1.2;color:var(--navy);font-weight:850;letter-spacing:-.04em}.metric .label{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.09em;font-weight:750}.metric .helper{margin-top:5px;color:var(--muted);font-size:12px}.progress{height:10px;background:#dce7e6;border-radius:99px;overflow:hidden}.progress .fill{width:0;height:100%;background:linear-gradient(90deg,#218468,#72c39b);border-radius:99px;transition:.25s}.ribbon{border:1px solid #cfe4df;background:#eff8f3;border-radius:12px;padding:15px 18px;font-size:13px}.ribbon.warning{background:#fff5ea;border-color:#f0dbc4}.ribbon strong{color:var(--navy)}.ribbon a{font-weight:700}.sectionblock{margin-bottom:28px}.mini-title{font-size:11px;color:var(--green);font-weight:800;text-transform:uppercase;letter-spacing:.11em;margin:0 0 7px}.row{display:flex;align-items:center;justify-content:space-between;gap:15px}.stack{display:flex;flex-direction:column;gap:12px}.line{border:0;border-top:1px solid var(--line);margin:17px 0}.checkrow{display:flex;align-items:flex-start;gap:9px;padding:9px 0;border-bottom:1px solid #edf0f1;cursor:pointer;font-size:13px}.checkrow:last-child{border:0}.checkrow input{margin-top:4px;accent-color:var(--green);width:16px;height:16px;flex-shrink:0}.checkrow:has(input:checked) span{color:#5e796b;text-decoration:line-through;text-decoration-color:#a5cbb8}.task{background:#fff;border:1px solid var(--line);border-radius:14px;padding:19px 21px;margin-bottom:12px;scroll-margin-top:20px;box-shadow:var(--shadow)}.task.complete{border-color:#9fd0b5;background:#fafffb}.taskhead{display:flex;align-items:flex-start;gap:14px}.tasktime{flex:0 0 119px;background:var(--soft);border-radius:8px;padding:10px;font-size:12px;font-weight:750;color:var(--navy);line-height:1.5;text-align:center}.tasktime small{display:block;color:#8292a2;font-weight:600}.taskmain{flex:1;min-width:0}.taskhead h3{margin:1px 0 4px}.taskhead p{font-size:12px;color:#6e7d8c;margin:0}.taskdetails{margin:14px 0 2px;padding-top:12px;border-top:1px solid #ebeff0}.taskdetails summary{font-size:13px;font-weight:750;cursor:pointer;color:#2e6870}.taskdetails summary:hover{color:#13584c}.taskbody{padding-top:14px}.tasknote{margin-top:14px}.field{width:100%;border:1px solid #d4dee1;background:#fff;border-radius:9px;padding:11px 12px;color:#223b4b;outline:none}.field:focus{border-color:#4a9a83;box-shadow:0 0 0 3px #dceee7}.tasknote textarea{min-height:76px;resize:vertical}.pillgroup{display:flex;flex-wrap:wrap;gap:7px}.pill{border:1px solid #d6e4e2;background:#f2f7f4;color:#3c6760;font-size:11px;font-weight:700;border-radius:20px;padding:4px 9px}.item-label{font-size:11px;font-weight:800;color:#8292a1;text-transform:uppercase;letter-spacing:.08em;margin-bottom:5px}.mini{font-size:12px}.guide{color:#506475;font-size:13px;line-height:1.7}.guide ul{margin-top:7px;padding-left:19px}.guide li{margin-bottom:5px}.phase{display:flex;align-items:center;gap:9px;margin:20px 0 13px}.phase span{font-size:10px;text-transform:uppercase;letter-spacing:.1em;font-weight:850;color:#647c88}.phase:after{content:'';height:1px;background:#dce6e7;flex:1}.chapter{border:1px solid var(--line);background:#fff;border-radius:12px;margin-bottom:10px;overflow:hidden}.chapter summary{display:flex;align-items:center;gap:14px;cursor:pointer;padding:17px 19px;list-style:none}.chapter summary::-webkit-details-marker{display:none}.chapter summary .index{height:39px;width:39px;border-radius:10px;background:#e8f3ef;color:#147459;display:grid;place-items:center;font-weight:850}.chapter summary .caption{margin-left:auto;white-space:nowrap;color:#70818e;font-size:12px}.chapter .chapbody{border-top:1px solid var(--line);padding:19px;display:grid;grid-template-columns:1fr 1fr;gap:18px}.chapter .chapbody p{margin-bottom:8px;font-size:13px}.prompt{font-size:12px;line-height:1.7;background:#0e2435;color:#dcf1ec;border-radius:12px;padding:22px;max-height:350px;overflow:auto;white-space:pre-wrap;word-break:break-word}.flowstep{display:grid;grid-template-columns:45px 1fr;gap:12px;align-items:start;position:relative;margin:0 0 6px}.flowstep:not(:last-child):after{content:'';position:absolute;left:21px;top:43px;bottom:-9px;width:2px;background:#cde2db}.flownum{height:42px;width:42px;border-radius:50%;background:var(--navy);color:#fff;display:grid;place-items:center;font-weight:850;z-index:1}.flowcard{background:#fff;padding:18px 20px;border:1px solid var(--line);border-radius:10px;margin-bottom:13px}.flowcard h3{margin:0 0 5px}.flowcard p{font-size:13px;color:#6c7a86;margin:0}.copybox{border:1px solid #d8e3df;border-radius:11px;background:#f3f8f5;padding:16px;white-space:pre-wrap;font-size:13px;line-height:1.7}.twocol{display:grid;grid-template-columns:1.1fr .9fr;gap:18px}.kpirow{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.kpi{background:#f2f7f5;border-radius:12px;padding:15px}.kpi b{font-size:25px;letter-spacing:-.03em;color:var(--navy)}.kpi small{display:block;color:var(--muted)}input[type=number]{width:100%;appearance:textfield}label{font-size:12px;font-weight:750;color:#4c6878}.formgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px}.formgrid label{display:grid;gap:6px}.formgrid input{min-width:0}.tablewrap{overflow:auto}table{width:100%;border-collapse:collapse;font-size:12px}th,td{padding:13px;text-align:left;border-bottom:1px solid #e8eeef;vertical-align:top}th{color:#6a7c8a;text-transform:uppercase;letter-spacing:.06em;font-size:10px}td:last-child{text-align:right}.badge-number{font-size:11px;font-weight:750;color:#587c73;background:#e5f4eb;border-radius:14px;padding:4px 8px}.code-note{font-family:ui-monospace,Menlo,Consolas,monospace;background:#ebf0f3;padding:2px 5px;border-radius:4px;font-size:12px}.gates .checkrow{font-size:14px}.gate-status{font-size:12px;font-weight:750}.status-go{color:var(--green)}.status-hold{color:var(--warn)}.warnbox{background:#fff7ed;border:1px solid #e9d8bd;border-radius:10px;padding:13px 15px;color:#77512e;font-size:12px}.footnote{font-size:11px;color:#7a8894}.infoicon{height:37px;width:37px;display:grid;place-items:center;border-radius:10px;background:#e4f1ea;color:#26684e;font-size:19px}.modal{display:none;position:fixed;inset:0;background:rgba(7,24,37,.75);z-index:2000;padding:22px;align-items:center;justify-content:center}.modal.open{display:flex}.modalcard{background:#fff;border-radius:18px;max-width:560px;width:100%;max-height:92vh;overflow:auto;position:relative;padding:26px}.modalcard .close{position:absolute;right:16px;top:15px;border:0;background:#eff3f1;height:34px;width:34px;border-radius:9px}.demo-screen{background:radial-gradient(ellipse at 50% 10%,#30485e,#101d2b 75%);color:#f5e9d5;border-radius:15px;min-height:305px;padding:30px 24px;text-align:center;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:15px}.demo-screen h3{color:#f4d58c;font-size:26px}.runes{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}.runes button{font-size:30px;background:#244055;color:#f9e3a8;border:1px solid #637787;border-radius:10px;height:58px;min-width:58px}.runes button:hover{background:#36586b}.demo-success{color:#9be0bc;font-weight:700}.toast{position:fixed;right:25px;bottom:25px;background:#173b39;color:#fff;padding:12px 17px;border-radius:10px;font-size:13px;z-index:2100;box-shadow:0 9px 29px #1c3a3b44;opacity:0;transform:translateY(8px);pointer-events:none;transition:.25s}.toast.show{opacity:1;transform:translateY(0)}.simple-list{padding-left:18px}.simple-list li{margin-bottom:7px}.tworow{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.micro{font-size:11px;color:#779099}.footer{margin-top:40px;border-top:1px solid #dce4e2;padding-top:19px;color:#7b8b96;font-size:12px}.print-only{display:none}
+@media(max-width:1120px){.sidebar{width:214px;min-width:214px}.main{padding:25px 24px 60px}.g4{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:800px){.shell{display:block}.sidebar{height:auto;position:static;width:100%;min-width:0;padding:14px;gap:0}.brand{margin:5px 5px 10px}.sidebar nav{display:flex;overflow:auto;gap:6px}.sidebar .section-label,.sidebarfoot{display:none}.navbtn{flex:0 0 auto;width:auto;white-space:nowrap;padding:8px 11px}.navbtn .num{display:none}.main{padding:20px 15px 45px}.topbar{align-items:start}.topbar .right{justify-content:flex-end}.hero{padding:27px 22px}.g2,.g3,.g4,.twocol{grid-template-columns:1fr}.taskhead{flex-wrap:wrap}.tasktime{flex:0 0 auto}.chapter .chapbody{grid-template-columns:1fr}.kpirow{grid-template-columns:1fr}.formgrid{grid-template-columns:1fr}.modalcard{padding:20px}.chapter summary .caption{display:none}}@media print{.sidebar,.topbar,.btn,.modal,.toast,.no-print{display:none!important}body{background:#fff}.main{padding:0;width:100%}.view{display:block!important;break-before:page}.panel,.task,.chapter{break-inside:avoid;box-shadow:none}.hero{color:#111;background:#fff;border:1px solid #888}.hero h1,.hero p{color:#111}details:not([open])>*:not(summary){display:block}.print-only{display:block}}
+
+.phone-shell{max-width:325px;min-height:285px;margin:auto;border:7px solid #172839;border-radius:31px;background:linear-gradient(160deg,#112538,#1b3a4b 60%,#234b54);padding:12px 16px 22px;color:#f6faf9;box-shadow:0 18px 35px #071a2a25}.phone-notch{height:14px;width:88px;background:#081a26;border-radius:0 0 12px 12px;margin:-12px auto 20px}.phone-inner{padding-top:15px}.phone-inner p{color:#c6d9e1;font-size:14px}.phone-badge{display:inline-block;padding:7px 10px;border-radius:7px;background:#4f728187;color:#fff;font-size:10px;font-weight:750;letter-spacing:.07em;margin-bottom:18px}.phone-msg{background:#e0e7eb19;padding:14px;border-radius:15px}.phone-time{color:#c3cdd9;font-size:11px;margin-top:14px}.voice-card{display:flex;align-items:flex-start;gap:12px;padding:15px;background:#f1f5f4;border-radius:11px}.voice-dot{width:22px;height:22px;border-radius:9px;flex:0 0 22px}.voice-card p{margin:5px 0 0}.audio-clip{border:1px solid var(--line);border-radius:9px;margin:9px 0;background:#fbfcfc}.audio-clip summary{padding:12px 14px;cursor:pointer;display:flex;align-items:center;gap:9px;flex-wrap:wrap;list-style:none}.audio-clip summary::-webkit-details-marker{display:none}.audio-clip summary code{font-size:11px;color:#7b8998;margin-left:auto}.audio-body{padding:0 16px 15px}.audio-body p{padding:11px;background:#eff6f1;border-radius:8px;font-size:13px}.audio-body button{margin-top:4px}@media(max-width:900px){.audio-clip summary code{margin-left:0}} 
+</style>
+</head>
+<body>
+<div class="shell">
+<aside class="sidebar">
+ <div class="brand"><div class="crest">♜</div><div><strong>LE DONJON</strong><small>Mission Switch 2 · 24 h</small></div></div>
+ <div class="section-label">Cockpit de mission</div>
+ <nav id="nav" aria-label="Navigation">
+  <button class="navbtn active" data-view="overview"><span class="num">01</span> Vue d'ensemble</button>
+  <button class="navbtn" data-view="timeline"><span class="num">02</span> Plan 24 h</button>
+  <button class="navbtn" data-view="product"><span class="num">03</span> Créer le jeu</button>
+  <button class="navbtn" data-view="audio"><span class="num">04</span> Voix & grand départ</button>
+  <button class="navbtn" data-view="funnel"><span class="num">05</span> Funnel & vente</button>
+  <button class="navbtn" data-view="ads"><span class="num">06</span> Publicités</button>
+  <button class="navbtn" data-view="quality"><span class="num">07</span> Tests & GO</button>
+  <button class="navbtn" data-view="finance"><span class="num">08</span> Objectif financier</button>
+  <button class="navbtn" data-view="resources"><span class="num">09</span> Ressources</button>
+ </nav>
+ <div class="sidebarfoot">Cockpit en ligne • Sauvegarde cloud automatique • Accès privé</div>
+</aside>
+<main class="main">
+ <div class="topbar"><div><span class="eyebrow">Opération · lancement express</span><div id="cloudStatus" style="font-size:12px;font-weight:700;color:#218468;margin-top:4px">☁ Connexion au cloud…</div></div><div class="right"><button class="btn" id="copyCloudLink" title="Gardez ce lien confidentiel">🔒 Copier mon accès</button><button class="btn" id="exportBtn">↧ Sauvegarder</button><button class="btn" id="printBtn">⎙ Imprimer</button><button class="btn primary" id="timerBtn">▶ Démarrer 24 h</button></div></div>
+ <section class="view active" id="view-overview">
+  <div class="hero"><div class="eyebrow">MISSION 01 — DU ZÉRO À LA PREMIÈRE VENTE</div><h1>24 heures pour lancer<br>Le Donjon à la Maison.</h1><p>Une aventure d’anniversaire à créer, tester, vendre et livrer. Ce cockpit transforme le projet en 22 blocs d'exécution — avec 10 épreuves scénarisées, 47 vocaux, scripts, cahier des charges, publicités et contrôles de mise en ligne.</p><div class="tworow"><button class="btn primary" data-go="timeline">Ouvrir le plan d'exécution →</button><button class="btn" data-go="product">Voir le jeu à fabriquer</button><button class="btn" id="openDemo">Jouer la mini-démo</button></div></div>
+  <div class="ribbon sectionblock"><b>Nouvelle expérience :</b> faux message mystérieux sur le téléphone parental → heure choisie → appel vocal du Gardien → 10 épreuves pilotées par 4 personnages. <button class="btn small" data-go="audio">🎙 Voir les voix & scripts</button></div>
+  <div class="grid g4 sectionblock"><div class="metric"><div class="label">Temps restant</div><div class="value" id="countdown">24h 00</div><div class="helper" id="timerSub">Chrono non démarré</div></div><div class="metric"><div class="label">Avancement</div><div class="value" id="progressPct">0 %</div><div class="progress" style="margin-top:12px"><div class="fill" id="progressBar"></div></div></div><div class="metric"><div class="label">Actions réalisées</div><div class="value" id="checkedTasks">0 / 126</div><div class="helper">Sous-tâches concrètes</div></div><div class="metric"><div class="label">Décision lancement</div><div class="value" id="readyOverview" style="font-size:25px">HOLD</div><div class="helper">Selon les contrôles critiques</div></div></div>
+  <div class="grid g2 sectionblock"><div class="panel"><div class="row"><h3>Priorité immédiate</h3><span class="tag dark" id="currentTimeLabel">H+00:00</span></div><div id="nextTask"></div><div class="line"></div><button class="btn primary" data-go="timeline">Voir le bloc et cocher les étapes</button></div><div class="panel"><h3>Les règles du jeu</h3><div class="stack guide"><div>🎯 <b>1 seul acheteur :</b> parent d’un enfant de 8 à 11 ans, anniversaire à domicile.</div><div>💶 <b>1 offre :</b> aventure numérique à 39,90 € TTC (prix test).</div><div>🕹️ <b>1 produit :</b> un scénario original, 10 épreuves, sans impression.</div><div>📣 <b>1 acquisition payante :</b> Meta Reels + démo gratuite.</div><div>🧱 <b>0 diversion :</b> pas de seconde cible, de marketplace, d’abonnement ou d'IA live.</div></div></div></div>
+  <div class="ribbon warning sectionblock"><strong>À ne pas confondre :</strong> ce fichier organise et illustre la fabrication ; il contient une mini-démo jouable, <b>mais pas encore l'application payante complète</b>. Le lancement n’est autorisé qu’une fois le jeu entier, son paiement et sa livraison réellement testés.</div>
+  <div class="grid g2"><div class="panel"><h3>Livrables à obtenir avant la mise en vente</h3><div id="deliverables"></div></div><div class="panel"><h3>Ce qu'on reporte volontairement</h3><div class="stack guide"><div>Invitations virales gratuites et tracking de parrainage</div><div>Diplôme personnalisable / packs de plusieurs aventures</div><div>Relances e-mail marketing et retargeting</div><div>Animations complexes et génération d'énigmes par IA</div><div>Tests A/B lourds, SEO et multiplication des canaux</div></div><div class="line"></div><p class="mini sub">Le produit doit avant tout être <b>jouable, achetable et livrable</b> sans ton intervention.</p></div></div>
+ </section>
+ <section class="view" id="view-timeline"><div class="headline"><div><div class="eyebrow">Exécution</div><h2>Planning minute par minute.</h2><p class="sub">22 blocs, 24 heures calendaires, pauses et marge comprises. Les 10 épreuves demandent un développement plus serré : préserver absolument les tests. Les cases et tes notes sont enregistrées automatiquement dans le cloud.</p></div><div class="pillgroup"><span class="tag">126 sous-tâches</span><span class="tag green">5 phases critiques : jeu / voix / vente / test / diffusion</span></div></div><div class="panel sectionblock"><div class="row"><b>Filtrer les blocs</b><span class="mini sub" id="tasksFound"></span></div><div class="grid g2" style="margin-top:12px"><input class="field" id="taskSearch" placeholder="Chercher une tâche, un livrable…" aria-label="Rechercher les tâches"><select class="field" id="taskFilter"><option value="all">Toutes les tâches</option><option value="todo">Non terminées</option><option value="done">Terminées</option><option value="product">Création du produit</option></select></div></div><div id="tasks"></div>
+<div class="panel sectionblock" id="userWorkPanel" style="margin-top:24px">
+<h3>Mon journal de bord & mes tâches personnelles</h3>
+<p class="mini sub">Ajoute tes décisions, liens, retours de tests et tâches imprévues. Tout est sauvegardé en ligne automatiquement.</p>
+<label class="item-label" for="projectJournal">Journal de bord / décisions / liens importants</label>
+<textarea class="field" id="projectJournal" rows="6" placeholder="Ex. : Landing publiée le…, choix de la voix, coordonnées, prochaines décisions…"></textarea>
+<div class="line"></div>
+<form id="customTaskForm" class="tworow" style="margin:12px 0">
+ <input id="customTaskTitle" class="field" placeholder="Ajouter une nouvelle tâche à mon plan…" required maxlength="240" style="flex:1;min-width:180px">
+ <button class="btn primary" type="submit">+ Ajouter</button>
+</form>
+<div id="customTasksList"></div>
+</div></section>
+ <section class="view" id="view-product"><div class="eyebrow">Le cœur du défi</div><h2>Fabriquer l’aventure complète.</h2><p class="lead">Un moteur, un univers, dix épreuves. Une V1 cohérente qui pousse les enfants à bouger et collaborer, plutôt qu’à regarder un téléphone pendant une heure.</p>
+  <div class="grid g3 sectionblock"><div class="metric"><div class="label">Âge cible</div><div class="value">8–11</div><div class="helper">ans, avec adulte présent</div></div><div class="metric"><div class="label">Groupe cible</div><div class="value">6–10</div><div class="helper">enfants, rôles tournants</div></div><div class="metric"><div class="label">Durée théorique</div><div class="value">≈60–75 min</div><div class="helper">Hypothèse non validée · test réel requis</div></div></div>
+  <div class="panel sectionblock"><div class="row"><div><div class="mini-title">Scénario unique</div><h3>Les dix sceaux du Donjon</h3></div><button class="btn primary" id="demoFromProduct">▶ Tester une énigme</button></div><p>Dix sceaux protègent le Cœur du Donjon. Pour les restaurer, les jeunes aventuriers traversent deux actes de cinq épreuves ; quatre runes découvertes en chemin ouvrent le dernier coffre.</p><div class="ribbon">La version vendue doit être un <b>jeu fini et vocalisé</b> : chapitres, voix de personnages, aides audio, sauvegarde, final. Le mode adulte confirme les épreuves réelles. Pas de reconnaissance caméra ni d’IA requises.</div></div>
+  <h3>Les 11 scènes à intégrer, dans l'ordre : introduction + 10 épreuves</h3><div id="chapters" class="sectionblock"></div>
+  <div class="grid g2 sectionblock"><div class="panel"><h3>Spécifications techniques minimales</h3><div class="guide"><ul><li><b>Écrans :</b> accueil, préparation parent, jeu, indices, progression, fin, aide.</li><li><b>État :</b> chapitre courant, erreurs, aides révélées, runes récupérées, pièces autorisées.</li><li><b>Entrées :</b> taps et choix ; pas de microphone, caméra ni géolocalisation.</li><li><b>Audio :</b> 47 MP3 pré-enregistrés, lecteur à commande parentale, lancement horaire avec secours manuel.</li><li><b>Résilience :</b> rechargement, pause, reprise, sous-titres et version sans audio.</li><li><b>Accès :</b> utilisateur adulte, lien après achat, validation de commande côté serveur.</li><li><b>Accessibilité :</b> contraste élevé, gros boutons, aucun indice fondé uniquement sur la couleur.</li></ul></div></div><div class="panel"><h3>Ce qu'il faut couper pour finir à temps</h3><div class="guide"><ul><li>Carte 3D, avatars et animation temps réel.</li><li>Génération IA de scénarios ou chatbot.</li><li>Comptes utilisateurs et profil enfant.</li><li>Personnalisation complète d'énigmes par logement.</li><li>Leaderboards, compétition, récompenses payantes.</li><li>Une durée d’une heure promise sans test réel.</li></ul></div><div class="warnbox">Sécurité : consignes sans course, escalade, objets dangereux ni exploration non surveillée. L’adulte reste responsable de la surveillance.</div></div></div>
+  <div class="panel"><div class="row"><div><div class="mini-title">Prompt de production</div><h3>Brief prêt à transmettre à un développeur ou à une IA de code</h3></div><button class="btn" data-copy="buildPrompt">Copier le brief</button></div><pre class="prompt" id="buildPrompt"></pre><p class="footnote">Ce brief sert de base. Les règles complètes des chapitres figurent juste au-dessus et doivent être intégrées. Ne jamais lancer sans QA.</p></div>
+ </section>
+
+<section class="view" id="view-audio">
+  <div class="eyebrow">Mise en scène · expérience sonore</div>
+  <h2>Le téléphone reçoit l'appel du Donjon.</h2>
+  <p class="lead">Ce n'est plus le parent qui explique : <b>quatre personnages originaux guident toute l'aventure</b>. Le parent choisit l'heure, autorise le son, supervise et valide seulement les défis dans la maison.</p>
+  <div class="ribbon warning sectionblock"><b>Limite technique à respecter.</b> Dans la V1, le « message bizarre » est <b>simulé dans la web app</b> : aucun véritable SMS n'arrive sur le téléphone. Le navigateur peut bloquer le son automatique ou suspendre les minuteurs lorsque l'écran est verrouillé. Prévoir un clic « Armer », maintenir la page visible, puis un bouton de lecture de secours. Les vrais messages programmés (SMS/WhatsApp) demandent une infrastructure supplémentaire et ne font pas partie des 24 h.</div>
+  <div class="grid g2 sectionblock">
+   <div class="panel"><div class="mini-title">1 · À l'achat</div><h3>Le parent prépare la surprise</h3><p>Il choisit le jour et l'heure de la fête, les pièces autorisées et le nombre de participants. Il peut cacher l'écran aux enfants. Le produit lui affiche une conversation mystérieuse, comme un message reçu par erreur.</p><div class="ribbon">« Ce message ne vous était peut-être pas destiné… À l'heure prévue, rassemblez les aventuriers. Ne leur dites rien. »</div></div>
+   <div class="panel"><div class="mini-title">2 · Jour J</div><h3>BOUM. L'appel du Gardien.</h3><p>L'adulte ouvre et arme la scène. À l'heure choisie, l'écran simule une notification, joue un court signal <i>si le navigateur le permet</i>, puis propose le vocal mystérieux. La voix d'Orion ouvre le Donjon. Les enfants ne regardent pas un film : ils sont immédiatement sollicités.</p><div class="ribbon">Pendant l'aventure : consigne vocale → jeu physique ou énigme → validation → voix de succès → épreuve suivante.</div></div>
+  </div>
+  <div class="grid g2 sectionblock">
+   <div class="panel"><h3>Studio de simulation</h3><p class="sub mini">Fonctionne dans ce cockpit, sans compte ElevenLabs ni MP3. L'aperçu utilise éventuellement la synthèse vocale du navigateur : <b>ce n'est pas l'audio commercial final</b>.</p><label class="item-label" for="audioAt">Heure de début dans le navigateur</label><input class="field" id="audioAt" type="time" value="15:00"><div class="tworow" style="margin-top:13px"><button class="btn primary" id="armAudio">Armer pour cette heure</button><button class="btn" id="testAudioNow">Simulation en 8 s</button></div><p id="audioStatus" class="footnote" role="status">Non armé. Tester de préférence avec la page au premier plan.</p><div class="ribbon" style="margin-top:10px">Au déclenchement : si le son est bloqué, les enfants voient un bouton géant « Écouter le message ». Il n'y a jamais de départ silencieux ou perdu.</div></div>
+   <div class="panel"><div class="mini-title">Prévisualisation du téléphone</div><div class="phone-shell"><div class="phone-notch"></div><div id="phoneContent" class="phone-inner"><span class="mini">Aucun événement programmé</span><h3 style="color:#fff">Un message étrange vous attend.</h3><p style="color:#bed4df">Armez l'aventure pour découvrir l'effet.</p></div></div><div class="tworow" style="margin-top:13px"><button class="btn small" id="playAudioMessage">▶ Lire / écouter l'appel</button><button class="btn small" id="stopAudioPreview">◼ Stop</button></div></div>
+  </div>
+  <div class="panel sectionblock"><div class="row"><div><div class="mini-title">Direction artistique</div><h3>4 personnages, 4 signatures sonores</h3></div><span class="tag green">Audio généré une seule fois</span></div><div id="voiceGrid" class="grid g2" style="margin-top:17px"></div><p class="footnote">Pour l'offre payante, exporter les pistes MP3 depuis un forfait disposant d'une licence commerciale. Aucun coût de voix à chaque achat : les fichiers sont pré-générés et hébergés avec le jeu.</p></div>
+  <div class="panel sectionblock"><div class="row"><div><div class="mini-title">Bibliothèque des pistes</div><h3>Les scripts enregistrables — 47 clips</h3></div><button class="btn primary" id="downloadManifest">↧ Exporter les scripts CSV</button></div><p class="sub mini">Chaque fichier comprend le personnage, le texte intégral et son nom exact. Générer dans ElevenLabs, télécharger en MP3 et nommer le fichier comme indiqué. Les clips « indices » ne doivent se déclencher que sur demande.</p><div class="formgrid"><label>Filtrer les scènes<select class="field" id="audioSceneFilter"><option value="all">Toutes les scènes</option><option value="Pré">Prologue</option><option value="00">Introduction</option><option value="01">Épreuve 01</option><option value="02">Épreuve 02</option><option value="03">Épreuve 03</option><option value="04">Épreuve 04</option><option value="05">Épreuve 05</option><option value="06">Épreuve 06</option><option value="07">Épreuve 07</option><option value="08">Épreuve 08</option><option value="09">Épreuve 09</option><option value="10">Épreuve 10</option></select></label><label>Filtrer les pistes<select class="field" id="audioTypeFilter"><option value="all">Tous les types</option><option value="Consigne">Consignes</option><option value="Indice 1">Indices 1</option><option value="Indice 2">Indices 2</option><option value="Succès">Succès</option></select></label></div><div id="audioScripts" style="margin-top:15px"></div></div>
+  <div class="grid g2 sectionblock"><div class="panel"><h3>Intégration technique — V1</h3><div class="guide"><ul><li>Générer les MP3 dans ElevenLabs, <b>avant</b> la mise en vente ; pas de synthèse en direct chez le client.</li><li>Répertoire <code>/audio/</code>, 47 fichiers au nom stable, encodage MP3 léger, même niveau sonore.</li><li>Un lecteur pour chaque scène : <b>consigne, indice 1, indice 2, succès</b>, bouton Rejouer, pause et transcription.</li><li>Précharger la prochaine consigne, avec échec gracieux si fichier absent.</li><li>Ne jamais lancer les indices automatiquement ; donner le choix à l'adulte.</li><li>L'heure programmée est une mise en scène ; le parent peut toujours lancer immédiatement.</li></ul></div></div><div class="panel"><h3>Tests GO supplémentaires</h3><div class="guide"><ul><li>Audio audible dans un salon sur vrai iPhone et Android.</li><li>Clips et sous-titres correspondent aux vrais gestes / réponses.</li><li>La notification ne fait jamais croire à un véritable SMS non envoyé.</li><li>Écran verrouillé / onglet en arrière-plan : reprise manuelle claire.</li><li>Jeu totalement compréhensible en mode sourdine.</li><li>Pas de voix caricaturale effrayante, ni de personnages protégés par une franchise.</li></ul></div><div class="ribbon warning">Une voix synthétique n'est pas automatiquement autorisée commercialement. Vérifier la licence du plan utilisé au moment de la création.</div></div></div>
+</section>
+
+ <section class="view" id="view-funnel"><div class="eyebrow">Parcours de conversion</div><h2>Un funnel sans détour.</h2><p class="lead">Pas de lead magnet obligatoire, pas de tunnel à six pages. On fait vivre une partie de l'expérience avant d'exiger la confiance.</p><div class="twocol sectionblock"><div id="funnelFlow"></div><div><div class="panel"><div class="mini-title">Hero prêt à publier</div><h3>L'anniversaire dont votre enfant sera le héros.</h3><p><b>Sans que vous ayez à devenir animateur.</b></p><p class="sub">Une aventure collective dans votre maison, conçue pour 6 à 10 enfants de 8 à 11 ans. Pas de kit à imprimer. Jouez gratuitement à la première mission.</p><div class="pillgroup"><span class="pill">Démo gratuite</span><span class="pill">Aucune inscription imposée</span><span class="pill">Prix visible : 39,90 €</span></div><div class="line"></div><button class="btn light" data-copy="landingCopy">Copier tout le texte de vente</button></div><div class="panel" style="margin-top:15px"><h3>Architecture à publier</h3><div class="stack guide"><div><code class="code-note">/</code> Landing et FAQ</div><div><code class="code-note">/demo</code> Mini-jeu gratuit</div><div><code class="code-note">/paiement</code> Checkout hébergé</div><div><code class="code-note">/merci</code> Confirmation et instructions</div><div><code class="code-note">/jeu</code> Accès personnel payé</div></div><div class="line"></div><b class="mini">Événements</b><p class="mini sub">landing_view, demo_start, demo_complete, offer_click, checkout_start, purchase_paid (depuis le paiement), game_started.</p></div></div></div><div class="panel"><h3>Le chemin d'une vraie commande</h3><div class="stack guide"><div>1. Sophie découvre le produit, puis termine la démo sans donner son adresse.</div><div>2. Elle paie une seule offre à 39,90 € TTC, sans compte obligatoire.</div><div>3. Le prestataire confirme le paiement à ton serveur ou automatisation fiable.</div><div>4. Un accès personnel au jeu est créé et envoyé avec le reçu.</div><div>5. Sophie configure les pièces puis lance la partie.</div><div>6. Le support peut réémettre l'accès ou aider si un appareil bloque.</div></div><div class="warnbox" style="margin-top:15px">Ne jamais considérer le retour vers une page « merci » comme une preuve de paiement. Confirmer côté serveur ou via le système de commerce.</div></div></section>
+ <section class="view" id="view-ads"><div class="eyebrow">Trafic froid</div><h2>Deux publicités. Une histoire qui commence par un vocal.</h2><p class="lead">Ne pas chercher la vidéo la plus virale en général : chercher celle qui génère les clients les moins chers parmi les parents ayant bientôt un anniversaire.</p><div id="adCards" class="grid g2 sectionblock"></div><div class="grid g2"><div class="panel"><h3>Setup ads minimal</h3><div class="guide"><ul><li>Meta Ads, diffusion France, audiences adultes, premier test à budget plafonné.</li><li>Deux vidéos 9:16 ; les trois premières secondes annoncent clairement « anniversaire 8–11 ans ».</li><li>Lien direct vers la landing et la démo, sans page de capture.</li><li>Campagne orientée achat lorsqu'un suivi conforme et exploitable existe ; sinon test exploratoire de trafic qualifié.</li><li>Pas de fausse preuve sociale ni de mise en scène trompeuse.</li></ul></div></div><div class="panel"><h3>Générateur de liens UTM</h3><div class="formgrid"><label>URL de la landing<input class="field" id="baseUrl" value="https://exemple.fr" /></label><label>Campagne<input class="field" id="campaign" value="donjon_lancement" /></label><label>Création<select class="field" id="creative"><option value="reel_parent">Reel parent</option><option value="reel_enigme">Reel énigme</option></select></label><label>Source<select class="field" id="source"><option value="instagram">Instagram</option><option value="facebook">Facebook</option><option value="tiktok">TikTok organique</option></select></label></div><div class="copybox" id="utmOutput" style="margin:15px 0;overflow-wrap:anywhere">https://exemple.fr</div><button class="btn" id="copyUtm">Copier ce lien</button></div></div></section>
+ <section class="view" id="view-quality"><div class="eyebrow">Contrôle qualité</div><h2>Le feu vert n'est pas une intuition.</h2><p class="lead">Même avec une landing et des publicités prêtes, on ne vend pas un jeu qui bloque, trompe sur sa durée ou ne peut pas être livré.</p><div class="grid g2 sectionblock"><div class="panel"><div class="row"><h3>Portes de validation du GO</h3><span class="tag warn" id="gateStatus">HOLD</span></div><p class="sub mini">À cocher seulement quand l'action a été vérifiée en réalité.</p><div class="gates" id="gates"></div></div><div class="panel"><h3>Plan de test rapide</h3><div class="stack guide"><div><b>Test 1 — Jeu :</b> partir de l'accueil, finir chaque épreuve et atteindre le final.</div><div><b>Test 2 — Compréhension :</b> faire préparer le jeu à un adulte qui n'a rien conçu.</div><div><b>Test 3 — Groupe :</b> jeu collectif réel si un groupe est disponible ; mesurer la durée et les moments de décrochage.</div><div><b>Test 4 — Audio et mobile :</b> deux navigateurs / systèmes, son autorisé, son refusé, écran verrouillé et reprise.</div><div><b>Test 5 — Paiement :</b> test de commande jusqu'à réception de l'accès, retour/remboursement selon procédure.</div></div><div class="line"></div><div class="warnbox"><b>Sans test avec enfants :</b> lancement commercial éventuel uniquement avec une description prudente et vérifiable, sans garantir « 60 minutes », « zéro animation parent » ou un nombre de participants non testé.</div></div></div><div class="panel"><h3>Critères de refus absolu</h3><div class="grid g2 guide"><div>✕ Paiement encaissé mais jeu non reçu.</div><div>✕ Chapitre impossible à terminer.</div><div>✕ Données d'enfants demandées inutilement.</div><div>✕ Publicité contredisant le produit livré.</div><div>✕ Droit de rétractation ou mentions ignorés.</div><div>✕ Tracking publicitaire installé sans consentement lorsque requis.</div></div></div></section>
+ <section class="view" id="view-finance"><div class="eyebrow">Pilotage économique</div><h2>Des ventes, pas des vues.</h2><p class="lead">Simule les conditions financières du défi. Ces chiffres restent des hypothèses : le seul indicateur décisif est le coût d'acquisition réellement mesuré.</p><div class="grid g2 sectionblock"><div class="panel"><h3>Hypothèses ajustables</h3><div class="formgrid"><label>Objectif net visé (€)<input class="field" id="finTarget" type="number" min="1" step="50" value="1100" /></label><label>Prix de vente TTC (€)<input class="field" id="finPrice" type="number" min="1" step="0.10" value="39.90" /></label><label>Coût par clic (€)<input class="field" id="finCpc" type="number" min="0" step="0.05" value="0.50" /></label><label>Conversion visite → achat (%)<input class="field" id="finConv" type="number" min="0.1" max="100" step="0.5" value="3" /></label><label>Frais variables carte (%)<input class="field" id="finPct" type="number" min="0" max="100" step="0.1" value="1.5" /></label><label>Frais fixes / transaction (€)<input class="field" id="finFixed" type="number" min="0" step="0.05" value="0.25" /></label><label>Budget de départ (€)<input class="field" id="finBudget" type="number" min="0" step="10" value="50" /></label><label>Budget déjà dépensé (€)<input class="field" id="finSpent" type="number" min="0" step="5" value="0" /></label><label>Ventes réellement payées<input class="field" id="finSales" type="number" min="0" step="1" value="0" /></label><label>Versements réellement disponibles (€)<input class="field" id="finCash" type="number" min="0" step="10" value="0" /></label></div><p class="footnote">Le pourcentage et le forfait carte sont modifiables. Par défaut, simple hypothèse de 1,5 % + 0,25 €, pas un devis applicable à tous les moyens de paiement.</p></div><div class="panel"><h3>Résultat simulé</h3><div class="kpirow"><div class="kpi"><small>Coût / client</small><b id="outCac">—</b></div><div class="kpi"><small>Contribution / vente</small><b id="outMargin">—</b></div><div class="kpi"><small>Ventes cible</small><b id="outNeeded">—</b></div></div><div class="line"></div><div class="stack"><div class="row"><span>Budget publicité estimé pour la cible</span><strong id="outMedia">—</strong></div><div class="row"><span>Visiteurs nécessaires</span><strong id="outVisitors">—</strong></div><div class="row"><span>CA réellement payé saisi</span><strong id="outRevenue">—</strong></div><div class="row"><span>Contribution actuelle avant prélèvements</span><strong id="outActual">—</strong></div><div class="row"><span>Argent déclaré réellement disponible</span><strong id="outCash">—</strong></div></div><div class="line"></div><div class="ribbon warning" id="finWarning"></div></div></div><div class="panel"><h3>Décision budgétaire jour 2 à 7</h3><p>Si la pub coûte plus cher que la contribution par vente, on coupe. Si des ventes arrivent mais que l'acquisition exige plusieurs centaines d'euros impossibles à avancer, on ne conclut pas « le business ne marche pas » : on distingue la <b>rentabilité théorique</b> et la <b>trésorerie du challenge</b>.</p><p class="footnote">Hors TVA éventuelle à reverser, fiscalité, remboursements, logiciels, frais de conversion et taxes. Les paiements en attente ne sont pas de la trésorerie disponible.</p></div></section>
+ <section class="view" id="view-resources"><div class="eyebrow">Boîte à outils</div><h2>Ressources prêtes à copier.</h2><p class="lead">Les textes accélèrent la production, mais toute promesse factuelle doit correspondre au produit testé et livré.</p><div class="grid g2 sectionblock"><div class="panel"><div class="row"><h3>E-mail de livraison</h3><button class="btn small" data-copy="deliveryEmail">Copier</button></div><div class="copybox" id="deliveryEmail"></div></div><div class="panel"><div class="row"><h3>FAQ commerciale</h3><button class="btn small" data-copy="faqText">Copier</button></div><div class="copybox" id="faqText"></div></div><div class="panel"><div class="row"><h3>Test d'usabilité parent</h3><button class="btn small" data-copy="testScript">Copier</button></div><div class="copybox" id="testScript"></div></div><div class="panel"><div class="row"><h3>Messages de support</h3><button class="btn small" data-copy="supportText">Copier</button></div><div class="copybox" id="supportText"></div></div></div><div class="panel sectionblock"><h3>Conformité — sources officielles</h3><div class="guide"><ul><li><a href="https://www.service-public.fr/particuliers/vosdroits/F10485" target="_blank" rel="noopener">Service Public : délai de rétractation (vente à distance)</a> et règles applicables aux contenus numériques.</li><li><a href="https://www.cnil.fr/fr/cookies-et-autres-traceurs/regles/cookies/comment-mettre-mon-site-web-en-conformite" target="_blank" rel="noopener">CNIL : cookies et traceurs, consentement publicitaire</a>.</li><li><a href="https://www.cnil.fr/fr/les-droits-pour-maitriser-vos-donnees-personnelles" target="_blank" rel="noopener">CNIL : droits et traitement des données personnelles</a>.</li></ul></div></div><div class="panel"><h3>Sauvegarde et remise à zéro</h3><p>Les cases, notes, hypothèses financières et état du chrono sont conservés dans le navigateur de cet appareil. Exporter un fichier JSON pour conserver ou transférer l'avancement.</p><div class="tworow"><button class="btn primary" id="export2">Exporter mes données</button><button class="btn" id="importBtn">Importer une sauvegarde</button><input type="file" accept="application/json,.json" id="importInput" hidden><button class="btn" id="resetBtn">Tout réinitialiser</button></div><p class="footnote">Ce cockpit fonctionne sans réseau externe. L'import ne modifie que les cases, notes, chrono, GO et paramètres financiers.</p></div></section>
+ <div class="footer">LE DONJON À LA MAISON · Cockpit 24 h · Plan de production, pas une garantie de ventes. Les objectifs et durées sont des hypothèses à confronter aux tests et aux transactions réelles.</div>
+</main></div>
+<div class="modal" id="demoModal" role="dialog" aria-modal="true" aria-label="Mini-aventure de démonstration"><div class="modalcard"><button class="close" id="closeDemo" aria-label="Fermer">✕</button><div class="mini-title">Prototype jouable · non commercial</div><div id="demoContent" class="demo-screen"></div><p class="footnote" style="margin-top:14px">Cette mini-démo prouve le fonctionnement d'une énigme interactive. Elle ne représente pas le jeu complet, qui reste à développer et tester.</p></div></div>
+<div class="toast" id="toast" role="status"></div>
+<script id="project-data" type="application/json">{
+  "tasks": [
+    {
+      "id": "t00",
+      "group": "Cadre",
+      "title": "Verrouiller l’offre",
+      "description": "Une cible, une promesse, une offre. On interdit les fonctions supplémentaires.",
+      "steps": [
+        "Cible : parent organisant à domicile pour des 8–11 ans",
+        "Offre unique 39,90 € TTC à tester, sans abonnement ni upsell",
+        "Promesse provisoire sans durée garantie non testée",
+        "Choisir le canal de paiement déjà opérationnel",
+        "Verrouiller le concept audio : quatre voix originales pré-enregistrées ; parent déclenche/supervise mais ne lit rien"
+      ],
+      "artifact": "Document d’offre de 5 lignes",
+      "caution": "Si un choix complique le produit, le reporter.",
+      "start": 0,
+      "end": 30,
+      "minutes": 30
+    },
+    {
+      "id": "t01",
+      "group": "Produit",
+      "title": "Architecturer les 10 épreuves",
+      "description": "Deux actes de cinq épreuves, une progression, quatre runes et une conclusion sans accessoire acheté.",
+      "steps": [
+        "Valider le synopsis « Les dix sceaux du Donjon » et une seule tranche d’âge 8–11 ans",
+        "Construire un parcours 00 introduction → 01–05 acte I → 06–10 acte II / final",
+        "Répartir quatre runes aux épreuves 01, 03, 07 et 09 ; code final 2413 à l’épreuve 10",
+        "Prévoir 6–10 enfants, rôles tournants, adulte superviseur et un téléphone",
+        "Écrire les états : accueil → configuration → épreuve → indice → succès → fin",
+        "Prévoir le prologue « message bizarre → heure choisie → appel audio », l’application simulant le message (pas de vrai SMS)"
+      ],
+      "artifact": "Carte de l’aventure : 10 épreuves, 4 runes, 1 final",
+      "caution": "Les dix défis doivent être variés, faisables et sûrs dans un logement ordinaire.",
+      "start": 30,
+      "end": 85,
+      "minutes": 55
+    },
+    {
+      "id": "t02",
+      "group": "Produit",
+      "title": "Écrire les 10 épreuves et les répliques",
+      "description": "10 mécaniques, consignes vocales, deux indices et succès. Raccourcir les textes pour une écoute agréable.",
+      "steps": [
+        "Écrire 01 — Bannières : séquence ○ △ ★ ; rune ▲=1",
+        "Écrire 02 — Statues : gestes collectifs et validation adulte",
+        "Écrire 03 — Échos : mémoire des glyphes ; rune ★=2",
+        "Écrire 04 — Messager : trois observations dans les pièces autorisées",
+        "Écrire 05 — Trois Portes : réponse BLEUE",
+        "Écrire 06 — Pont des Flèches : chemin → ↑ →",
+        "Écrire 07 — Bibliothèque des Miroirs : réponse PORTE ; rune ◆=3",
+        "Écrire 08 — Tribunal : réponse HIBOU (deux phrases vraies)",
+        "Écrire 09 — Pacte : rituel collectif adapté à chacun ; rune ○=4",
+        "Écrire 10 — Cœur : code final 2413 + cérémonie de victoire",
+        "Prévoir deux indices gradués et un déblocage adulte pour chaque épreuve",
+        "Prévoir les rôles tournants et des variantes accessibles pour les défis physiques",
+        "Réviser tous les scripts dans l’onglet Voix & lancement : oralité, ton adapté aux 8–11 ans et cohérence avec les écrans",
+        "Prévoir des sous-titres mot pour mot et un bouton Réécouter sur chaque scène"
+      ],
+      "artifact": "10 fiches d’épreuves : consigne, réponse, 2 indices, validation, secours",
+      "caution": "Chaque épreuve doit rester compréhensible et réalisable sans achat et sans danger.",
+      "start": 85,
+      "end": 205,
+      "minutes": 120
+    },
+    {
+      "id": "t21",
+      "group": "Audio",
+      "title": "Produire les 47 pistes audio pré-enregistrées",
+      "description": "Générer des fichiers MP3 une fois pour toutes ; ajouter les petits effets et vérifier les voix.",
+      "steps": [
+        "Choisir et tester quatre voix françaises originales : Orion, Pip, Maître Plume, Brume",
+        "Ouvrir l’onglet Voix : exporter le manifeste CSV avec les noms de fichiers et textes",
+        "Générer 2 messages d’introduction, 11 consignes, 11 indices 1, 11 indices 2, 11 succès et 1 épilogue",
+        "Enregistrer dans /audio/ sous les noms exacts du manifeste",
+        "Monter une petite sonnerie, un « boom », puis de discrets effets de réussite sans masquer les mots",
+        "Ajuster les niveaux sonores, couper les silences et privilégier des fichiers MP3 légers",
+        "Tester les 4 voix et les 10 consignes avec un haut-parleur de téléphone",
+        "Vérifier la licence commerciale du plan de synthèse vocale choisi"
+      ],
+      "artifact": "47 clips MP3 montés + manifeste CSV + contrôle voix",
+      "caution": "Ne pas employer d’audio du forfait gratuit si sa licence n’autorise pas la revente ; aucune voix qui imite Zelda ou une personnalité sans accord.",
+      "start": 205,
+      "end": 340,
+      "minutes": 135
+    },
+    {
+      "id": "t03",
+      "group": "Produit",
+      "title": "Construire le moteur web",
+      "description": "Moteur de jeu mobile, lecture de fichiers audio et lancement scénarisé à heure choisie.",
+      "steps": [
+        "Interface mobile accessible : gros boutons et lisibilité",
+        "Navigation / états / choix des pièces / sauvegarde locale",
+        "Indices, pause, reprise, étapes terminées et écran parent",
+        "Fonctionner sans son ; aucune donnée enfant requise",
+        "Écran smartphone « Message inconnu » simulé, horloge réglable et écran de départ à l’heure prévue",
+        "Un clic parental « Armer l’aventure » pour activer l’audio ; si écran verrouillé ou lecture bloquée, grand bouton « Écouter le vocal »",
+        "Lecteur audio statique MP3 par scène : brief, indice 1, indice 2, succès ; rejouer, pause et texte accessible",
+        "Pas d’appel IA lors du jeu ; préchargement du prochain MP3, fallback texte et mode sans son"
+      ],
+      "artifact": "Application jouable hors paiement",
+      "caution": "Ne jamais simuler une sécurité d’accès avec un simple bouton masqué.",
+      "start": 340,
+      "end": 485,
+      "minutes": 145
+    },
+    {
+      "id": "t04",
+      "group": "Produit",
+      "title": "Intégrer les 10 épreuves",
+      "description": "Les dix défis, quatre runes et la conclusion doivent fonctionner comme un seul jeu terminé.",
+      "steps": [
+        "Intégrer 00 introduction + 01 Bannières (▲=1)",
+        "Intégrer 02 Statues",
+        "Intégrer 03 Échos (★=2)",
+        "Intégrer 04 Messager",
+        "Intégrer 05 Trois Portes + transition vers acte II",
+        "Intégrer 06 Pont des Flèches",
+        "Intégrer 07 Bibliothèque des Miroirs (◆=3)",
+        "Intégrer 08 Tribunal",
+        "Intégrer 09 Pacte des Aventuriers (○=4)",
+        "Intégrer 10 Cœur du Donjon + fin (2413)",
+        "Relier aides, sauts adultes, progrès 0/10 → 10/10 et sauvegarde",
+        "Vérifier toutes les conditions de réussite, pas seulement les écrans visibles",
+        "Raccorder chaque scène aux 4 pistes associées, pas de texte à lire pour l’adulte",
+        "Vérifier que la dernière piste de chaque épreuve ne se joue qu’après validation de la réussite",
+        "Vérifier que l’application attend une action si la lecture automatique est refusée"
+      ],
+      "artifact": "Jeu complet vocalisé : intro + 10 épreuves, fichiers MP3 et sous-titres",
+      "caution": "Ne pas promettre une durée précise avant essai intégral ; viser d’abord une mécanique sûre et fiable.",
+      "start": 485,
+      "end": 650,
+      "minutes": 165
+    },
+    {
+      "id": "t05",
+      "group": "Pause",
+      "title": "Pause courte",
+      "description": "Éviter les erreurs de fatigue avant les tests.",
+      "steps": [
+        "Quitter les écrans et noter tout problème bloquant déjà repéré"
+      ],
+      "artifact": "Reprise avec liste des bugs",
+      "caution": "La pause fait partie des 24 heures.",
+      "start": 650,
+      "end": 665,
+      "minutes": 15
+    },
+    {
+      "id": "t06",
+      "group": "Conversion",
+      "title": "Démo gratuite",
+      "description": "Une victoire rapide qui explique la valeur sans prélever d’e-mail.",
+      "steps": [
+        "Créer une entrée autonome de 2–3 minutes",
+        "Mettre une énigme, un feedback, un retour au monde réel",
+        "Laisser terminer la démo gratuitement",
+        "Placer « Préparer mon anniversaire » vers la vente",
+        "Lancer la démo avec un faux message mystérieux puis un extrait audio original ; si audio absent, conserver le texte"
+      ],
+      "artifact": "URL /demo jouable",
+      "caution": "La démo n’est pas un faux paywall.",
+      "start": 665,
+      "end": 695,
+      "minutes": 30
+    },
+    {
+      "id": "t07",
+      "group": "Qualité",
+      "title": "Test individuel intégral",
+      "description": "Test de bout en bout avant de montrer le jeu à qui que ce soit.",
+      "steps": [
+        "Terminer 01–05 sur un téléphone sans outils développeur",
+        "Terminer 06–10 et saisir le code final 2413",
+        "Tester chaque erreur, chaque indice et la solution de secours adulte",
+        "Vérifier la progression 0/10, la sauvegarde et la reprise après rechargement",
+        "Vérifier au moins deux tailles d’écran et l’accessibilité des choix",
+        "Vérifier les 47 fichiers, la langue, la cohérence des personnages et les sous-titres",
+        "Tester le lancement programmé en page visible, puis le cas téléphone verrouillé / onglet masqué"
+      ],
+      "artifact": "Test solo documenté des 10 épreuves",
+      "caution": "Un parcours incomplet ou une énigme impossible = pas de vente.",
+      "start": 695,
+      "end": 760,
+      "minutes": 65
+    },
+    {
+      "id": "t08",
+      "group": "Conversion",
+      "title": "Landing mobile",
+      "description": "Une page qui vend une expérience compréhensible en 20 secondes.",
+      "steps": [
+        "Hero problème + promesse vérifiable",
+        "Vidéo ou capture réelle + CTA « Essayer gratuitement »",
+        "Démo intégrée et fonctionnement en 3 étapes",
+        "Prix, FAQ, limites, conditions et CTA achat",
+        "Montrer la valeur « le jeu vous parle : consignes déjà enregistrées » avec un véritable extrait audio"
+      ],
+      "artifact": "Page de vente publiée en aperçu",
+      "caution": "Ne pas ajouter d’avis fictifs ni de fausse rareté.",
+      "start": 760,
+      "end": 805,
+      "minutes": 45
+    },
+    {
+      "id": "t09",
+      "group": "Vente",
+      "title": "Checkout et livraison",
+      "description": "C’est le plus important : un paiement doit donner un accès réel au jeu.",
+      "steps": [
+        "Créer l’offre unique et le prix TTC approprié",
+        "Connecter paiement → confirmation serveur → accès personnel",
+        "Envoyer reçu, instructions et lien de secours",
+        "Faire un paiement de test + contrôler l’arrivée de l’e-mail"
+      ],
+      "artifact": "Commande livrée de bout en bout",
+      "caution": "Ne pas remettre le jeu complet publiquement dans le code source de la landing.",
+      "start": 805,
+      "end": 860,
+      "minutes": 55
+    },
+    {
+      "id": "t10",
+      "group": "Pause",
+      "title": "Pause et vérification du scope",
+      "description": "Réévaluer sans ajouter de fonctionnalités.",
+      "steps": [
+        "Noter le chemin critique restant et reporter les idées secondaires"
+      ],
+      "artifact": "Périmètre inchangé",
+      "caution": "La priorité est une vente livrable, pas un produit parfait.",
+      "start": 860,
+      "end": 885,
+      "minutes": 25
+    },
+    {
+      "id": "t11",
+      "group": "Acquisition",
+      "title": "Tourner les deux Reels",
+      "description": "Deux hypothèses, deux films. Montage très simple, screenshots du vrai jeu.",
+      "steps": [
+        "A : « 8 enfants samedi, vous avez prévu quoi ? »",
+        "B : une énigme visuelle de 5 secondes avec contexte anniversaire",
+        "Ajouter démonstration réelle et CTA vers la démo",
+        "Exporter vertical 9:16 sous-titres lisibles et son optionnel",
+        "Utiliser le « message bizarre » et le premier vocal comme hook des vidéos, avec l’audio réel"
+      ],
+      "artifact": "2 vidéos + miniatures",
+      "caution": "Pas de séquence présentant un jeu simulé comme une vraie expérience.",
+      "start": 885,
+      "end": 935,
+      "minutes": 50
+    },
+    {
+      "id": "t12",
+      "group": "Mesure",
+      "title": "Installer la mesure utile",
+      "description": "Mesurer les achats plutôt que célébrer les vues.",
+      "steps": [
+        "UTM distinctes sur chaque publicité",
+        "Événements anonymisés demo_start / demo_complete / offer_click",
+        "Suivi fiable purchase_paid côté paiement",
+        "Outil publicitaire / consentement configurés selon règles applicables"
+      ],
+      "artifact": "Tableau de suivi opérationnel",
+      "caution": "Traceurs publicitaires uniquement avec consentement quand requis.",
+      "start": 935,
+      "end": 970,
+      "minutes": 35
+    },
+    {
+      "id": "t13",
+      "group": "Qualité",
+      "title": "Test avec adultes / familles",
+      "description": "Chercher les erreurs de compréhension et les faiblesses du rythme.",
+      "steps": [
+        "Faire préparer le jeu à un adulte sans explication extérieure",
+        "Faire jouer 01–10 en conditions réelles si un groupe est disponible",
+        "Chronométrer la durée TOTALE et chaque épreuve séparément",
+        "Observer participation, changement de rôles, aide adulte et utilisation écran",
+        "Recueillir incompréhensions et objections, sans guider les réponses",
+        "Tester si un parent extérieur arrive à jouer sans prononcer les règles",
+        "Tester si les enfants écoutent/comprennent les quatre voix depuis un vrai téléphone"
+      ],
+      "artifact": "Observations réelles + liste de corrections",
+      "caution": "Si pas de groupe disponible, ne pas prétendre avoir validé la durée.",
+      "start": 970,
+      "end": 1060,
+      "minutes": 90
+    },
+    {
+      "id": "t14",
+      "group": "Qualité",
+      "title": "Réparer les points bloquants",
+      "description": "Corriger la rupture de promesse, pas la cosmétique.",
+      "steps": [
+        "Réparer tous les bugs P0/P1",
+        "Raccourcir les consignes confuses et clarifier les objectifs",
+        "Revoir les dix épreuves qui bloquent, se répètent ou excluent un enfant",
+        "Re-tester au moins l’étape modifiée",
+        "Remplacer les consignes trop longues ou incomprises par des MP3 plus courts"
+      ],
+      "artifact": "Zéro bug bloquant connu",
+      "caution": "Un jeu non testé n’est pas « prêt à vendre ».",
+      "start": 1060,
+      "end": 1125,
+      "minutes": 65
+    },
+    {
+      "id": "t15",
+      "group": "Vente",
+      "title": "Mentions et sécurité",
+      "description": "Réduire les risques sans alourdir la page.",
+      "steps": [
+        "CGV, vendeur, contact, informations précontractuelles",
+        "Déterminer le traitement du droit de rétractation numérique",
+        "Politique de confidentialité ; données enfants minimisées",
+        "Sécurité domestique, âge, supervision adulte et compatibilité",
+        "Décrire sans ambiguïté : faux message dans le jeu (aucun SMS réel), audio pré-enregistré, téléphone parent requis"
+      ],
+      "artifact": "Mentions accessibles et relues",
+      "caution": "Ne pas inventer une renonciation automatique à la rétractation.",
+      "start": 1125,
+      "end": 1180,
+      "minutes": 55
+    },
+    {
+      "id": "t16",
+      "group": "Qualité",
+      "title": "Test transactionnel réel",
+      "description": "Simuler le parcours d’une inconnue, pas celui d’un développeur.",
+      "steps": [
+        "Tester landing → démo → checkout → réception accès",
+        "Recharger le jeu, revenir, déconnecter/reconnecter",
+        "Tester iPhone et Android ou appareils équivalents",
+        "Confirmer montant, e-mail transactionnel et support",
+        "Tester un nouveau client sur iPhone Safari et Android Chrome : activation audio + interruption/reprise"
+      ],
+      "artifact": "Check final de livraison",
+      "caution": "Éviter les faux indicateurs de paiement.",
+      "start": 1180,
+      "end": 1225,
+      "minutes": 45
+    },
+    {
+      "id": "t17",
+      "group": "Lancement",
+      "title": "Publier le système",
+      "description": "Déployer les trois espaces : vente, démo, jeu payé.",
+      "steps": [
+        "Publier domaine/HTTPS, liens, favicon et responsive",
+        "Vérifier confidentialité de la version payante",
+        "Faire un dernier achat de test en environnement approprié",
+        "Contrôler la page depuis une navigation privée",
+        "Vérifier au déploiement les URL des 47 MP3, le MIME audio/mpeg et les erreurs de chargement"
+      ],
+      "artifact": "Site en production",
+      "caution": "Le jeu payant doit être accessible uniquement comme prévu par la solution retenue.",
+      "start": 1225,
+      "end": 1270,
+      "minutes": 45
+    },
+    {
+      "id": "t18",
+      "group": "Lancement",
+      "title": "Préparer la diffusion",
+      "description": "Une campagne simple à contrôler et à arrêter.",
+      "steps": [
+        "Publier contenus organiques sur comptes dédiés",
+        "Configurer une campagne Meta à budget plafond réel",
+        "Vérifier URL / démo / événement achat / facturation",
+        "Choisir règles de stop en cas de clics non qualifiés"
+      ],
+      "artifact": "Créations publiées et campagne prête",
+      "caution": "N’investir qu’un budget réellement disponible.",
+      "start": 1270,
+      "end": 1310,
+      "minutes": 40
+    },
+    {
+      "id": "t19",
+      "group": "Lancement",
+      "title": "Ouvrir les ventes",
+      "description": "On mesure enfin des transactions.",
+      "steps": [
+        "Passer le checkout en mode réel et retester",
+        "Mettre les publicités en diffusion si validées",
+        "Surveiller premier paiement et première livraison",
+        "Noter ventes, coût, encaissement disponible et retours"
+      ],
+      "artifact": "Vente active et suivie",
+      "caution": "Un achat n’est pas du cash disponible tant que le versement n’est pas reçu.",
+      "start": 1310,
+      "end": 1345,
+      "minutes": 35
+    },
+    {
+      "id": "t20",
+      "group": "Marge",
+      "title": "Buffer / sécurité",
+      "description": "Le dernier créneau est réservé aux retards, pas aux nouvelles idées.",
+      "steps": [
+        "Résoudre uniquement les incidents critiques, ou se reposer",
+        "Sauvegarder la configuration et exporter le cockpit",
+        "Prendre une décision GO / HOLD sur faits observés"
+      ],
+      "artifact": "Système stabilisé",
+      "caution": "Avec 10 épreuves en 24 h, protéger absolument le test complet et le parcours de paiement.",
+      "start": 1345,
+      "end": 1440,
+      "minutes": 95
+    }
+  ],
+  "chapters": [
+    {
+      "n": "00",
+      "name": "L’Appel du Gardien",
+      "duration": "3–4 min cible",
+      "type": "Introduction / rôles",
+      "brief": "La veille de l’anniversaire, dix sceaux gardant le Cœur du Donjon ont disparu. Quatre runes permettent d’ouvrir la dernière porte.",
+      "mechanic": "Le parent lance la narration et indique les pièces autorisées. Les enfants constituent leur équipe ; les rôles Éclaireur, Décodeur, Messager et Gardien des indices tournent toutes les deux épreuves. Si le groupe compte plus de quatre enfants, plusieurs partagent chaque rôle.",
+      "done": "Règles comprises, pièces autorisées confirmées, équipe prête ; bouton « Épreuve 01 ».",
+      "clues": "Mode adulte : rappel des règles, consignes de sécurité et rotation des rôles."
+    },
+    {
+      "n": "01",
+      "name": "La Salle des Bannières",
+      "duration": "5–7 min cible",
+      "type": "Observation + symboles",
+      "brief": "La première porte du Donjon exige que les aventuriers retrouvent l’ordre des trois signes anciens.",
+      "mechanic": "Le Gardien lit trois indices : « Je n’ai aucun coin », « J’en ai trois », « Je brille au-dessus des tours ». Les enfants discutent ; ils choisissent tour à tour ○, △ puis ★ sur l’écran. Le parent ne souffle pas les réponses.",
+      "done": "Séquence ○ → △ → ★ ; premier sceau rétabli ; rune ▲ = 1 obtenue.",
+      "clues": "Indice 1 : compter les coins ; indice 2 : le premier signe est rond. Passage parent possible."
+    },
+    {
+      "n": "02",
+      "name": "Le Serment des Statues",
+      "duration": "5–7 min cible",
+      "type": "Mouvement + synchronisation",
+      "brief": "Quatre statues s’éveillent si le groupe accomplit ensemble leur serment.",
+      "mechanic": "Le téléphone présente une suite de 4 gestes doux et sûrs : lever les mains, joindre les paumes, montrer le plafond, dessiner un cercle avec les bras. Après un aperçu, chaque enfant contribue à restituer le bon ordre. Le parent valide, les rôles tournent.",
+      "done": "Séquence réalisée collectivement et confirmée par l’adulte ; deuxième sceau rétabli.",
+      "clues": "Indice 1 : montrer les deux premiers gestes ; indice 2 : revoir les quatre. Parent : confirmer sans pénalité."
+    },
+    {
+      "n": "03",
+      "name": "Le Coffre des Échos",
+      "duration": "5–7 min cible",
+      "type": "Mémoire + coopération",
+      "brief": "Un coffre garde en mémoire cinq glyphes qui apparaissent très brièvement.",
+      "mechanic": "Afficher 5 symboles distincts pendant 12 secondes (par exemple ☾ ★ ◆ ○ ▲). Les masquer, puis proposer huit cartes dont les cinq bonnes. Les enfants reconstruisent l’ordre ensemble, avec sélection chacun son tour. Trois essais puis aides.",
+      "done": "Ordre exact : ☾ ★ ◆ ○ ▲ ; troisième sceau rétabli ; rune ★ = 2 obtenue.",
+      "clues": "Indice 1 : montrer la première position ; indice 2 : rejouer les cinq symboles durant 5 secondes. Passer côté parent."
+    },
+    {
+      "n": "04",
+      "name": "Le Messager Perdu",
+      "duration": "6–8 min cible",
+      "type": "Observation dans la maison",
+      "brief": "Le Messager demande une preuve que l’équipe sait observer son propre royaume.",
+      "mechanic": "Dans les pièces préalablement autorisées, en marchant et sans fouiller, les enfants trouvent un objet rond, un objet doux et un objet qui porte des lettres. Si un objet manque, ils peuvent simplement le nommer ou le montrer du doigt. Un adulte confirme.",
+      "done": "Trois observations validées ; quatrième sceau rétabli.",
+      "clues": "Indice 1 : expliquer chaque propriété ; indice 2 : exemples non obligatoires. Parent : valider des équivalents. Aucun tiroir ni placard."
+    },
+    {
+      "n": "05",
+      "name": "Le Couloir des Trois Portes",
+      "duration": "5–7 min cible",
+      "type": "Déduction visuelle",
+      "brief": "Une seule des trois portes permet d’atteindre la seconde moitié du donjon.",
+      "mechanic": "Porte rouge : un dragon. Porte verte : une clé et deux dragons. Porte bleue : deux clés et zéro dragon. Le Gardien précise : « La porte sûre porte exactement deux clés et aucun dragon. » Chaque équipe élimine une porte puis le groupe vote.",
+      "done": "Réponse : porte BLEUE. Cinquième sceau rétabli ; passage à l’acte II.",
+      "clues": "Indice 1 : compter les clés ; indice 2 : aucun dragon. Parent : passer."
+    },
+    {
+      "n": "06",
+      "name": "Le Pont des Flèches",
+      "duration": "5–7 min cible",
+      "type": "Mini-labyrinthe en équipe",
+      "brief": "Le Pont invisible n’existe que si les aventuriers trouvent ensemble un chemin sûr.",
+      "mechanic": "Afficher une grille de 3×3. Départ au centre gauche (ligne 2, colonne 1), arrivée en haut à droite (ligne 1, colonne 3). Pierres effondrées : (1,1), (2,3), (3,2). Le Gardien demande le CHEMIN LE PLUS COURT en exactement trois déplacements. Les enfants proposent les directions, le parent ou un enfant saisit les flèches.",
+      "done": "Solution unique en trois déplacements : DROITE → HAUT → DROITE (→ ↑ →) ; sixième sceau rétabli.",
+      "clues": "Indice 1 : il faut d’abord gagner la colonne centrale ; indice 2 : monter depuis la case centrale. Mode parent : montrer le chemin."
+    },
+    {
+      "n": "07",
+      "name": "La Bibliothèque des Miroirs",
+      "duration": "5–7 min cible",
+      "type": "Message codé + lecture",
+      "brief": "Les livres ont perdu le sens de la lecture. Un mot retourné révèle le passage secret.",
+      "mechanic": "Afficher la suite ETROP et l’indice scénarisé : « Le miroir lit à l’envers ». Les enfants reconstruisent PORTE en lisant les lettres de droite à gauche, puis choisissent parmi PORTE / TRÔNE / TORCHE. Le groupe doit expliquer son raisonnement.",
+      "done": "Réponse PORTE ; septième sceau rétabli ; rune ◆ = 3 obtenue.",
+      "clues": "Indice 1 : commencer par la dernière lettre ; indice 2 : afficher P _ R _ E. Passer côté parent."
+    },
+    {
+      "n": "08",
+      "name": "Le Tribunal des Trois Coffres",
+      "duration": "5–7 min cible",
+      "type": "Logique + discussion",
+      "brief": "Trois coffres et trois phrases : exactement deux affirmations sont vraies.",
+      "mechanic": "Les coffres sont RENARD, HIBOU et LOUP. Inscriptions : A « La clé est dans le coffre Renard » ; B « La clé est dans le coffre Hibou » ; C « La clé n’est pas dans le coffre Renard ». Le Gardien annonce : « Exactement deux affirmations disent vrai. » Le groupe teste les trois possibilités en votant.",
+      "done": "Réponse HIBOU : B et C sont vraies, A est fausse. Huitième sceau rétabli.",
+      "clues": "Indice 1 : si c’est Renard, une seule phrase est vraie ; indice 2 : relire ensemble B et C. Parent : révéler le raisonnement."
+    },
+    {
+      "n": "09",
+      "name": "Le Pacte des Aventuriers",
+      "duration": "6–9 min cible",
+      "type": "Coopération + créativité sans matériel",
+      "brief": "Les pierres du Donjon veulent entendre chaque voix avant de révéler la dernière rune.",
+      "mechanic": "L’adulte répartit le groupe en deux équipes. Chaque équipe invente un nom et un geste de ralliement de 3 secondes ; chacune montre son geste. Puis tous fusionnent les deux gestes en un rituel collectif de moins de 10 secondes. Le téléphone propose deux temps guidés et le parent confirme. Aucun contact physique obligatoire, chacun peut participer à son rythme.",
+      "done": "Chaque enfant a eu une occasion de participer ; rituel collectif réalisé ; neuvième sceau rétabli ; rune ○ = 4 obtenue.",
+      "clues": "Indice 1 : proposer « éclair » et « bouclier » comme gestes ; indice 2 : réduire à un seul geste par équipe. Parent : adapter aux capacités des enfants."
+    },
+    {
+      "n": "10",
+      "name": "Le Cœur du Donjon",
+      "duration": "6–9 min cible",
+      "type": "Final : assembler les quatre runes",
+      "brief": "Le dixième sceau garde le Cœur du Donjon. Les quatre runes gagnées doivent être placées dans l’ordre royal.",
+      "mechanic": "Le parchemin final indique ★ ○ ▲ ◆. Les fragments obtenus aux épreuves 01, 03, 07 et 09 valent ▲=1, ★=2, ◆=3, ○=4. Les enfants associent symboles et valeurs en expliquant chaque chiffre, puis l’enfant célébré saisit le code collectif.",
+      "done": "Code final : 2413. Dixième sceau restauré ; le Gardien félicite toute l’équipe et lance une courte célébration.",
+      "clues": "Indice 1 : afficher les quatre valeurs déjà découvertes ; indice 2 : début « 2 4 _ _ ». Un adulte peut débloquer la conclusion."
+    }
+  ],
+  "ads": [
+    {
+      "name": "A · Le problème du samedi",
+      "goal": "Qualité des acheteurs",
+      "duration": "18–22 sec",
+      "hook": "8 enfants débarquent samedi. Vous avez prévu quoi pour les occuper ?",
+      "shots": [
+        "0–3 s : salon ordinaire + texte accroche",
+        "3–8 s : téléphone qui lance une mission du vrai jeu",
+        "8–15 s : mains, indices et collaboration lors d’un vrai test",
+        "15–22 s : promesse + CTA « Essayer la première mission »"
+      ],
+      "copy": "Votre enfant fête bientôt ses 8, 9, 10 ou 11 ans ? Transformez votre maison en aventure collective. Pas de kit à imprimer. Testez gratuitement une mission du Donjon à la Maison.",
+      "risk": "Ne pas promettre une durée ou une autonomie jamais vérifiées."
+    },
+    {
+      "name": "B · L’énigme jouable",
+      "goal": "Attention qualifiée",
+      "duration": "12–18 sec",
+      "hook": "Une énigme pour l’anniversaire de votre enfant : sauriez-vous ouvrir cette porte ?",
+      "shots": [
+        "0–3 s : préciser « Anniversaire 8–11 ans »",
+        "3–9 s : 3 symboles et une question simple, issue de la vraie démo",
+        "9–13 s : révélation partielle, résultat spectaculaire",
+        "13–18 s : CTA vers mini-jeu gratuit"
+      ],
+      "copy": "Un anniversaire à la maison peut devenir une véritable quête. Essayez cette première énigme gratuitement, puis découvrez l’aventure complète pour 6 à 10 enfants.",
+      "risk": "L’énigme seule peut attirer un public non acheteur : qualification indispensable dans le hook."
+    }
+  ],
+  "voices": {
+    "gardien": {
+      "name": "Orion, le Gardien",
+      "description": "Voix masculine grave, chaleureuse, mystérieuse mais rassurante, français de France; débit lent, pauses théâtrales; aucune imitation de personnage existant.",
+      "color": "#d9bb84"
+    },
+    "pip": {
+      "name": "Pip, le petit dragon",
+      "description": "Voix espiègle, dynamique, légèrement aiguë et très expressive; français de France, humour complice, articulation nette et jamais criarde.",
+      "color": "#8fd6a0"
+    },
+    "archiviste": {
+      "name": "Maître Plume, l’Archiviste",
+      "description": "Voix féminine posée, malicieusement professorale, diction précise, débit modéré, pauses de suspense; français de France.",
+      "color": "#acd3ea"
+    },
+    "brume": {
+      "name": "La Brume des Portes",
+      "description": "Voix féminine soufflée, énigmatique et joueuse; légèrement réverbérée; jamais effrayante pour les 8–11 ans.",
+      "color": "#e3b2da"
+    }
+  },
+  "audio": [
+    {
+      "id": "s00_message",
+      "scene": "Pré",
+      "voice": "brume",
+      "voiceName": "La Brume des Portes",
+      "kind": "Avant-jeu / notification simulée",
+      "file": "audio/s00_message.mp3",
+      "text": "Un message pour un gardien ? Curieux… Si vous gardez cet appareil près de vous, il va bientôt se passer quelque chose."
+    },
+    {
+      "id": "s00_alerte",
+      "scene": "Pré",
+      "voice": "brume",
+      "voiceName": "La Brume des Portes",
+      "kind": "Déclenchement horaire",
+      "file": "audio/s00_alerte.mp3",
+      "text": "La porte s’est ouverte. Le Gardien a besoin de vous. Écoutez son appel."
+    },
+    {
+      "id": "s00_brief",
+      "scene": "00",
+      "voice": "gardien",
+      "voiceName": "Orion, le Gardien",
+      "kind": "Consigne",
+      "file": "audio/s00_brief.mp3",
+      "text": "Écoutez-moi… Si ce message vous parvient, c’est que le Donjon vous a choisis. Dix sceaux se sont éteints et le Cœur du Donjon a disparu. Devant moi se trouve une équipe d’aventuriers courageux. Vous devrez observer, réfléchir et surtout agir ensemble. Écoutez bien : on marche, on ne touche à rien de dangereux, et l’on reste dans les pièces autorisées par l’adulte. Quand vous serez prêts, appuyez sur la première porte."
+    },
+    {
+      "id": "s00_indice1",
+      "scene": "00",
+      "voice": "gardien",
+      "voiceName": "Orion, le Gardien",
+      "kind": "Indice 1",
+      "file": "audio/s00_indice1.mp3",
+      "text": "Le premier conseil d’un aventurier : écoutez les autres, même ceux qui parlent doucement."
+    },
+    {
+      "id": "s00_indice2",
+      "scene": "00",
+      "voice": "gardien",
+      "voiceName": "Orion, le Gardien",
+      "kind": "Indice 2",
+      "file": "audio/s00_indice2.mp3",
+      "text": "Regardez les pièces autorisées, choisissez des rôles, puis touchez la première porte."
+    },
+    {
+      "id": "s00_succes",
+      "scene": "00",
+      "voice": "gardien",
+      "voiceName": "Orion, le Gardien",
+      "kind": "Succès",
+      "file": "audio/s00_succes.mp3",
+      "text": "Le serment est prononcé. Que la quête commence !"
+    },
+    {
+      "id": "s01_brief",
+      "scene": "01",
+      "voice": "gardien",
+      "voiceName": "Orion, le Gardien",
+      "kind": "Consigne",
+      "file": "audio/s01_brief.mp3",
+      "text": "Voici la Salle des Bannières. Pour ouvrir la porte, trois signes doivent être choisis dans l’ordre. Le premier n’a aucun coin. Le deuxième possède trois coins. Le troisième brille au-dessus de vos têtes, dans le ciel de la nuit. Discutez et choisissez les symboles, un aventurier après l’autre."
+    },
+    {
+      "id": "s01_indice1",
+      "scene": "01",
+      "voice": "gardien",
+      "voiceName": "Orion, le Gardien",
+      "kind": "Indice 1",
+      "file": "audio/s01_indice1.mp3",
+      "text": "Comptez les coins de chaque symbole."
+    },
+    {
+      "id": "s01_indice2",
+      "scene": "01",
+      "voice": "gardien",
+      "voiceName": "Orion, le Gardien",
+      "kind": "Indice 2",
+      "file": "audio/s01_indice2.mp3",
+      "text": "Le premier est rond. Ensuite vient le triangle, puis l’étoile."
+    },
+    {
+      "id": "s01_succes",
+      "scene": "01",
+      "voice": "gardien",
+      "voiceName": "Orion, le Gardien",
+      "kind": "Succès",
+      "file": "audio/s01_succes.mp3",
+      "text": "Le premier sceau brille ! Souvenez-vous : la rune triangle pointue vaut un."
+    },
+    {
+      "id": "s02_brief",
+      "scene": "02",
+      "voice": "pip",
+      "voiceName": "Pip, le petit dragon",
+      "kind": "Consigne",
+      "file": "audio/s02_brief.mp3",
+      "text": "Hé, hé ! Je suis Pip ! Quatre statues dorment devant vous. Pour les réveiller, retenez quatre gestes : les mains en l’air, les paumes ensemble, un doigt vers le plafond et un grand cercle dans les airs. Observez-les, puis refaites-les tous ensemble, dans le bon ordre. Un adulte confirmera votre exploit. Et surtout, pas besoin de sauter ni de courir !"
+    },
+    {
+      "id": "s02_indice1",
+      "scene": "02",
+      "voice": "pip",
+      "voiceName": "Pip, le petit dragon",
+      "kind": "Indice 1",
+      "file": "audio/s02_indice1.mp3",
+      "text": "Rappelez-vous des deux premiers gestes."
+    },
+    {
+      "id": "s02_indice2",
+      "scene": "02",
+      "voice": "pip",
+      "voiceName": "Pip, le petit dragon",
+      "kind": "Indice 2",
+      "file": "audio/s02_indice2.mp3",
+      "text": "Mains en l’air, paumes ensemble, doigt vers le plafond, cercle avec les bras."
+    },
+    {
+      "id": "s02_succes",
+      "scene": "02",
+      "voice": "pip",
+      "voiceName": "Pip, le petit dragon",
+      "kind": "Succès",
+      "file": "audio/s02_succes.mp3",
+      "text": "Hahaha ! Les statues bougent ! Vous êtes presque aussi souples que moi. Deuxième sceau retrouvé !"
+    },
+    {
+      "id": "s03_brief",
+      "scene": "03",
+      "voice": "archiviste",
+      "voiceName": "Maître Plume, l’Archiviste",
+      "kind": "Consigne",
+      "file": "audio/s03_brief.mp3",
+      "text": "Chut… Je suis Maître Plume. Mon Coffre des Échos conserve cinq symboles, mais les montre très peu de temps. Regardez attentivement, mémorisez leur ordre, puis reconstruisez la suite. Chacun de vous pourra apporter une partie de la réponse."
+    },
+    {
+      "id": "s03_indice1",
+      "scene": "03",
+      "voice": "archiviste",
+      "voiceName": "Maître Plume, l’Archiviste",
+      "kind": "Indice 1",
+      "file": "audio/s03_indice1.mp3",
+      "text": "Essayez de vous rappeler d’abord le premier symbole : le croissant de lune."
+    },
+    {
+      "id": "s03_indice2",
+      "scene": "03",
+      "voice": "archiviste",
+      "voiceName": "Maître Plume, l’Archiviste",
+      "kind": "Indice 2",
+      "file": "audio/s03_indice2.mp3",
+      "text": "L’ordre était : lune, étoile, losange, cercle, triangle."
+    },
+    {
+      "id": "s03_succes",
+      "scene": "03",
+      "voice": "archiviste",
+      "voiceName": "Maître Plume, l’Archiviste",
+      "kind": "Succès",
+      "file": "audio/s03_succes.mp3",
+      "text": "Splendide mémoire collective. Le troisième sceau est restauré ! Et retenez ceci : l’étoile vaut deux."
+    },
+    {
+      "id": "s04_brief",
+      "scene": "04",
+      "voice": "pip",
+      "voiceName": "Pip, le petit dragon",
+      "kind": "Consigne",
+      "file": "audio/s04_brief.mp3",
+      "text": "Aïe ! J’ai perdu trois preuves dans votre royaume. Dans les pièces autorisées seulement, trouvez sans ouvrir de tiroir : quelque chose de rond, quelque chose de doux et quelque chose qui porte des lettres. Montrez, décrivez ou désignez ces objets, puis demandez à l’adulte de confirmer. En marchant, aventuriers !"
+    },
+    {
+      "id": "s04_indice1",
+      "scene": "04",
+      "voice": "pip",
+      "voiceName": "Pip, le petit dragon",
+      "kind": "Indice 1",
+      "file": "audio/s04_indice1.mp3",
+      "text": "Regardez les objets à portée de vue. Pas besoin de les déplacer."
+    },
+    {
+      "id": "s04_indice2",
+      "scene": "04",
+      "voice": "pip",
+      "voiceName": "Pip, le petit dragon",
+      "kind": "Indice 2",
+      "file": "audio/s04_indice2.mp3",
+      "text": "Un coussin peut être doux, une horloge ronde, un livre porte des lettres. D’autres réponses sont possibles."
+    },
+    {
+      "id": "s04_succes",
+      "scene": "04",
+      "voice": "pip",
+      "voiceName": "Pip, le petit dragon",
+      "kind": "Succès",
+      "file": "audio/s04_succes.mp3",
+      "text": "Mes trois preuves ! Vous méritez une médaille… ou au moins un biscuit. Quatrième sceau retrouvé !"
+    },
+    {
+      "id": "s05_brief",
+      "scene": "05",
+      "voice": "brume",
+      "voiceName": "La Brume des Portes",
+      "kind": "Consigne",
+      "file": "audio/s05_brief.mp3",
+      "text": "Je suis la Brume des Portes. Rouge, verte, bleue : trois entrées, une seule sans danger imaginaire. La porte rouge porte un dragon. La verte, une clé et deux dragons. La bleue, deux clés et aucun dragon. Le passage sûr possède exactement deux clés et aucun dragon. Choisissez avec sagesse."
+    },
+    {
+      "id": "s05_indice1",
+      "scene": "05",
+      "voice": "brume",
+      "voiceName": "La Brume des Portes",
+      "kind": "Indice 1",
+      "file": "audio/s05_indice1.mp3",
+      "text": "Commencez par compter les clés de chaque porte."
+    },
+    {
+      "id": "s05_indice2",
+      "scene": "05",
+      "voice": "brume",
+      "voiceName": "La Brume des Portes",
+      "kind": "Indice 2",
+      "file": "audio/s05_indice2.mp3",
+      "text": "La bonne porte est bleue."
+    },
+    {
+      "id": "s05_succes",
+      "scene": "05",
+      "voice": "brume",
+      "voiceName": "La Brume des Portes",
+      "kind": "Succès",
+      "file": "audio/s05_succes.mp3",
+      "text": "Vous avez traversé ! Cinq sceaux retrouvés. Le Donjon change… et les mystères aussi."
+    },
+    {
+      "id": "s06_brief",
+      "scene": "06",
+      "voice": "pip",
+      "voiceName": "Pip, le petit dragon",
+      "kind": "Consigne",
+      "file": "audio/s06_brief.mp3",
+      "text": "Oh non ! Un pont invisible ! Regardez le petit labyrinthe. Vous partez de la case de gauche, au milieu, et vous devez atteindre la case tout en haut à droite. Trois déplacements seulement. Certaines pierres sont effondrées : ne marchez que sur les cases intactes, et choisissez les flèches ensemble."
+    },
+    {
+      "id": "s06_indice1",
+      "scene": "06",
+      "voice": "pip",
+      "voiceName": "Pip, le petit dragon",
+      "kind": "Indice 1",
+      "file": "audio/s06_indice1.mp3",
+      "text": "Pour gagner, passez d’abord par la case centrale."
+    },
+    {
+      "id": "s06_indice2",
+      "scene": "06",
+      "voice": "pip",
+      "voiceName": "Pip, le petit dragon",
+      "kind": "Indice 2",
+      "file": "audio/s06_indice2.mp3",
+      "text": "Le chemin est : droite, haut, droite."
+    },
+    {
+      "id": "s06_succes",
+      "scene": "06",
+      "voice": "pip",
+      "voiceName": "Pip, le petit dragon",
+      "kind": "Succès",
+      "file": "audio/s06_succes.mp3",
+      "text": "Vous êtes passés sans mouiller vos chaussettes ! Sixième sceau, retrouvé !"
+    },
+    {
+      "id": "s07_brief",
+      "scene": "07",
+      "voice": "archiviste",
+      "voiceName": "Maître Plume, l’Archiviste",
+      "kind": "Consigne",
+      "file": "audio/s07_brief.mp3",
+      "text": "Bienvenue à ma Bibliothèque des Miroirs. Voici un mot ancien : E, T, R, O, P. Mon miroir a inversé les lettres. Si vous lisez ce mot depuis la fin, quel passage secret apparaît ? Prononcez votre réponse ensemble, puis sélectionnez-la à l’écran."
+    },
+    {
+      "id": "s07_indice1",
+      "scene": "07",
+      "voice": "archiviste",
+      "voiceName": "Maître Plume, l’Archiviste",
+      "kind": "Indice 1",
+      "file": "audio/s07_indice1.mp3",
+      "text": "Commencez à lire par la dernière lettre."
+    },
+    {
+      "id": "s07_indice2",
+      "scene": "07",
+      "voice": "archiviste",
+      "voiceName": "Maître Plume, l’Archiviste",
+      "kind": "Indice 2",
+      "file": "audio/s07_indice2.mp3",
+      "text": "Le mot recherché est P, O, R, T, E. Porte."
+    },
+    {
+      "id": "s07_succes",
+      "scene": "07",
+      "voice": "archiviste",
+      "voiceName": "Maître Plume, l’Archiviste",
+      "kind": "Succès",
+      "file": "audio/s07_succes.mp3",
+      "text": "Les livres applaudissent en silence. Septième sceau rétabli ! La rune en forme de losange vaut trois."
+    },
+    {
+      "id": "s08_brief",
+      "scene": "08",
+      "voice": "brume",
+      "voiceName": "La Brume des Portes",
+      "kind": "Consigne",
+      "file": "audio/s08_brief.mp3",
+      "text": "Trois coffres vous attendent : Renard, Hibou et Loup. Sur le premier est écrit : la clé est dans Renard. Sur le deuxième : la clé est dans Hibou. Sur le troisième : la clé n’est pas dans Renard. Attention : exactement deux de ces phrases sont vraies. Réfléchissez ensemble. Où est la clé ?"
+    },
+    {
+      "id": "s08_indice1",
+      "scene": "08",
+      "voice": "brume",
+      "voiceName": "La Brume des Portes",
+      "kind": "Indice 1",
+      "file": "audio/s08_indice1.mp3",
+      "text": "Et si la clé était dans Renard ? Combien de phrases seraient vraies ?"
+    },
+    {
+      "id": "s08_indice2",
+      "scene": "08",
+      "voice": "brume",
+      "voiceName": "La Brume des Portes",
+      "kind": "Indice 2",
+      "file": "audio/s08_indice2.mp3",
+      "text": "La clé est dans Hibou : les deuxième et troisième phrases sont vraies."
+    },
+    {
+      "id": "s08_succes",
+      "scene": "08",
+      "voice": "brume",
+      "voiceName": "La Brume des Portes",
+      "kind": "Succès",
+      "file": "audio/s08_succes.mp3",
+      "text": "Décision acceptée. Vous avez déjoué mon tribunal. Huitième sceau restauré !"
+    },
+    {
+      "id": "s09_brief",
+      "scene": "09",
+      "voice": "pip",
+      "voiceName": "Pip, le petit dragon",
+      "kind": "Consigne",
+      "file": "audio/s09_brief.mp3",
+      "text": "On y est presque ! Maintenant, je veux entendre la force de votre équipe. Formez deux petits groupes. Chaque groupe invente un nom rigolo et un geste de ralliement. Montrez-les, puis assemblez les deux gestes pour créer votre rituel commun. Chacun participe à sa façon, sans se toucher si on n’en a pas envie. L’adulte confirmera le pacte."
+    },
+    {
+      "id": "s09_indice1",
+      "scene": "09",
+      "voice": "pip",
+      "voiceName": "Pip, le petit dragon",
+      "kind": "Indice 1",
+      "file": "audio/s09_indice1.mp3",
+      "text": "Deux idées de gestes : un éclair avec les doigts et un bouclier imaginaire."
+    },
+    {
+      "id": "s09_indice2",
+      "scene": "09",
+      "voice": "pip",
+      "voiceName": "Pip, le petit dragon",
+      "kind": "Indice 2",
+      "file": "audio/s09_indice2.mp3",
+      "text": "Un geste par équipe suffit. Assemblez-les dans l’ordre !"
+    },
+    {
+      "id": "s09_succes",
+      "scene": "09",
+      "voice": "pip",
+      "voiceName": "Pip, le petit dragon",
+      "kind": "Succès",
+      "file": "audio/s09_succes.mp3",
+      "text": "Le pacte est scellé ! Neuvième sceau sauvé. La rune ronde vaut quatre. Je suis très fier de vous !"
+    },
+    {
+      "id": "s10_brief",
+      "scene": "10",
+      "voice": "gardien",
+      "voiceName": "Orion, le Gardien",
+      "kind": "Consigne",
+      "file": "audio/s10_brief.mp3",
+      "text": "Nous voici devant le Cœur du Donjon. Vous avez rassemblé quatre runes : le triangle pointu vaut un, l’étoile deux, le losange trois, le cercle quatre. Le parchemin demande de les lire ainsi : étoile, cercle, triangle pointu, losange. Transformez cette suite en quatre chiffres. Que l’aventurier à l’honneur saisisse le code final !"
+    },
+    {
+      "id": "s10_indice1",
+      "scene": "10",
+      "voice": "gardien",
+      "voiceName": "Orion, le Gardien",
+      "kind": "Indice 1",
+      "file": "audio/s10_indice1.mp3",
+      "text": "Associez les quatre runes aux chiffres que vous avez remportés."
+    },
+    {
+      "id": "s10_indice2",
+      "scene": "10",
+      "voice": "gardien",
+      "voiceName": "Orion, le Gardien",
+      "kind": "Indice 2",
+      "file": "audio/s10_indice2.mp3",
+      "text": "Étoile : deux. Cercle : quatre. Triangle : un. Losange : trois."
+    },
+    {
+      "id": "s10_succes",
+      "scene": "10",
+      "voice": "gardien",
+      "voiceName": "Orion, le Gardien",
+      "kind": "Succès",
+      "file": "audio/s10_succes.mp3",
+      "text": "Deux, quatre, un, trois… Le Cœur du Donjon se réveille ! Les dix sceaux sont restaurés. Aventuriers, vous avez triomphé ensemble ! Aujourd’hui, notre héros est celui ou celle dont nous célébrons l’anniversaire… mais la victoire appartient à toute l’équipe !"
+    },
+    {
+      "id": "s10_outro",
+      "scene": "10",
+      "voice": "archiviste",
+      "voiceName": "Maître Plume, l’Archiviste",
+      "kind": "Épilogue",
+      "file": "audio/s10_outro.mp3",
+      "text": "La légende retiendra votre exploit. Les meilleurs donjons ne se gagnent jamais seuls. Profitez maintenant de votre fête, jeunes aventuriers !"
+    }
+  ]
+}</script>
+<script>
+(async()=>{'use strict';
+const DATA=JSON.parse(document.getElementById('project-data').textContent);
+const KEY='donjon-launch-24h-v3';const OLD_KEY='donjon-launch-24h-v2';const defaults={checks:{},notes:{},gates:{},timerStart:null,financial:{}};
+
+const CLOUD_KEY='donjon-private-access-v1';
+let cloudToken=(new URLSearchParams(location.hash.slice(1))).get('key')||localStorage.getItem(CLOUD_KEY)||'';
+let cloudRevision=null,cloudTimer=null,cloudBusy=false,cloudPending=false,cloudConflict=false;
+function cloudStatus(msg,bad){const el=document.getElementById('cloudStatus');if(el){el.textContent=msg;el.style.color=bad?'#bd4938':'#218468';}}
+async function cloudRequest(op,payload){
+ const r=await fetch('https://vvuqkddageaupkfolorc.supabase.co/functions/v1/donjon-cockpit?sync=1',{method:'POST',headers:{'content-type':'application/json'},cache:'no-store',body:JSON.stringify({op:op,token:cloudToken,...(payload||{})})});
+ const data=await r.json().catch(()=>({}));
+ if(!r.ok){const e=new Error(data.error||'Erreur serveur');e.status=r.status;throw e;}
+ return data;
+}
+async function cloudBoot(){
+ if(!cloudToken){
+   cloudToken=(prompt('Accès privé au Donjon. Collez la clé personnelle qui vous a été remise :')||'').trim();
+   if(!cloudToken){cloudStatus('⚠ Sauvegarde locale seulement : clé manquante',true);return load();}
+ }
+ try{
+  const a=await cloudRequest('load');
+  cloudRevision=a.revision;
+  localStorage.setItem(CLOUD_KEY,cloudToken);
+  localStorage.setItem(KEY,JSON.stringify(a.state||{}));
+  cloudStatus('☁ Sauvegarde cloud active');
+  return load();
+ }catch(e){
+  if(e.status===403||e.status===404){localStorage.removeItem(CLOUD_KEY);cloudToken='';cloudStatus('⚠ Clé refusée — rechargez avec votre lien privé',true);}
+  else cloudStatus('⚠ Hors ligne : modifications locales uniquement',true);
+  return load();
+ }
+}
+async function flushCloud(){
+ if(!cloudToken||cloudRevision===null||cloudConflict)return false;
+ if(cloudBusy){cloudPending=true;return false;}
+ clearTimeout(cloudTimer);cloudBusy=true;cloudStatus('☁ Enregistrement…');
+ const snapshot=JSON.parse(JSON.stringify(state));
+ let ok=false;
+ try{
+   const res=await cloudRequest('save',{state:snapshot,revision:cloudRevision});
+   cloudRevision=res.revision;cloudStatus('☁ Enregistré en ligne ✓');ok=true;
+ }catch(e){
+   if(e.status===409){cloudConflict=true;cloudStatus('⚠ Conflit : rechargez pour récupérer la dernière version',true);alert('Un autre appareil a modifié ce cockpit. Exportez vos notes locales, puis rechargez la page pour éviter un écrasement involontaire.');}
+   else cloudStatus('⚠ Sauvegarde cloud en échec — export JSON conseillé',true);
+ }finally{
+   cloudBusy=false;
+   if(cloudPending&&!cloudConflict){cloudPending=false;setTimeout(flushCloud,0);}
+ }
+ return ok;
+}
+function queueCloud(){if(!cloudToken||cloudRevision===null)return;cloudStatus('☁ Modifications à sauvegarder…');clearTimeout(cloudTimer);cloudTimer=setTimeout(flushCloud,500);}
+
+let state=await cloudBoot();
+const $=(s,root=document)=>root.querySelector(s),$=(s,root=document)=>Array.from(root.querySelectorAll(s));
+const escap=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const eur=n=>Number.isFinite(n)?n.toLocaleString('fr-FR',{style:'currency',currency:'EUR',maximumFractionDigits:2}):'—';
+const number=n=>Number.isFinite(n)?Math.ceil(n).toLocaleString('fr-FR'):'—';
+function load(){try{const fresh=localStorage.getItem(KEY),legacy=!fresh&&localStorage.getItem(OLD_KEY),d=JSON.parse(fresh||legacy||'null');if(!d||typeof d!=='object')return structuredClone(defaults);const clean={...structuredClone(defaults),...d,checks:{...(d.checks||{})},notes:d.notes||{},gates:{...(d.gates||{})},financial:d.financial||{}};if(legacy){Object.keys(clean.checks).filter(k=>/^t(00|01|02|03|04|06|07|08|11|13|14|15|16|17)_/.test(k)).forEach(k=>delete clean.checks[k]);['realgame','parent','honest','phones','audio'].forEach(k=>clean.gates[k]=false);}return clean}catch{return structuredClone(defaults)}}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(state));queueCloud()}catch{toast('Sauvegarde locale indisponible : pensez à exporter.')}}
+let toastTimer;function toast(s){let el=$('#toast');el.textContent=s;el.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>el.classList.remove('show'),2800)}
+function navigate(which){ $('.view').forEach(e=>e.classList.toggle('active',e.id==='view-'+which)); $('.navbtn').forEach(e=>e.classList.toggle('active',e.dataset.view===which));window.scrollTo({top:0,behavior:'smooth'});if(which==='timeline')renderTasks();if(which==='finance')calcFinance()}
+$('[data-view]').forEach(b=>b.addEventListener('click',()=>navigate(b.dataset.view)));$('[data-go]').forEach(b=>b.addEventListener('click',()=>navigate(b.dataset.go)));
+function fmtTime(m){return 'H+'+String(Math.floor(m/60)).padStart(2,'0')+':'+String(m%60).padStart(2,'0')}
+const countAll=DATA.tasks.reduce((n,t)=>n+t.steps.length,0);
+function completed(t){return t.steps.every((_,i)=>!!state.checks[t.id+'_'+i])}
+function updateProgress(){let total=0;DATA.tasks.forEach(t=>t.steps.forEach((s,i)=>{if(state.checks[t.id+'_'+i])total++}));let pct=Math.round(100*total/countAll);$('#progressPct').textContent=pct+' %';$('#progressBar').style.width=pct+'%';$('#checkedTasks').textContent=total+' / '+countAll;updateCurrent()}
+function updateCurrent(){const next=DATA.tasks.find(t=>!completed(t));const slot=next||DATA.tasks.at(-1);$('#nextTask').innerHTML=`<div class="row" style="margin:12px 0"><div><span class="tag">${fmtTime(slot.start)} → ${fmtTime(slot.end)}</span><h3 style="margin:9px 0 0">${escap(next?next.title:'Toutes les tâches cochées')}</h3></div><div class="infoicon">↗</div></div><p class="mini sub">${escap(next?next.description:'Avant de publier, vérifie encore les portes GO de contrôle qualité.')}</p>`}
+const groups={'Cadre':'CADRAGE','Produit':'FABRICATION DU JEU','Pause':'PAUSE / RECALAGE','Conversion':'CONVERSION','Qualité':'TESTS / QUALITÉ','Vente':'VENTE / CONFORMITÉ','Acquisition':'CRÉATIONS','Mesure':'MESURE','Lancement':'DIFFUSION','Marge':'BUFFER'};
+function taskMarkup(t){const checked=t.steps.filter((_,i)=>state.checks[t.id+'_'+i]).length;return `<article class="task ${completed(t)?'complete':''}" id="block-${t.id}"><div class="taskhead"><div class="tasktime">${fmtTime(t.start)}<br>→ ${fmtTime(t.end)}<small>${t.minutes} min</small></div><div class="taskmain"><div class="row"><span class="tag ${completed(t)?'green':''}">${escap(groups[t.group])}</span><span class="micro">${checked}/${t.steps.length} étapes</span></div><h3>${escap(t.title)}</h3><p>${escap(t.description)}</p></div></div><details class="taskdetails" ${checked&&checked<t.steps.length?'open':''}><summary>Actions à exécuter · livrable · notes</summary><div class="taskbody"><div>${t.steps.map((s,i)=>`<label class="checkrow"><input type="checkbox" data-check="${t.id}_${i}" ${state.checks[t.id+'_'+i]?'checked':''}><span>${escap(s)}</span></label>`).join('')}</div><p class="mini" style="margin:14px 0 6px"><b>Livrable :</b> ${escap(t.artifact)}</p><div class="warnbox">${escap(t.caution)}</div><div class="tasknote"><label for="note-${t.id}">Notes, lien ou problème à résoudre</label><textarea class="field" id="note-${t.id}" data-note="${t.id}" placeholder="Ta note personnelle…">${escap(state.notes[t.id]||'')}</textarea></div><button class="btn small" data-complete="${t.id}" style="margin-top:10px">${completed(t)?'Décocher ce bloc':'Cocher tout le bloc'}</button></div></details></article>`}
+function renderTasks(){let q=($('#taskSearch').value||'').toLowerCase().trim(),filter=$('#taskFilter').value;let arr=DATA.tasks.filter(t=>(!q||[t.title,t.description,t.artifact,...t.steps].join(' ').toLowerCase().includes(q))&&(filter==='all'||(filter==='todo'&&!completed(t))||(filter==='done'&&completed(t))||(filter==='product'&&t.group==='Produit')));$('#tasksFound').textContent=arr.length+' blocs';let last='';$('#tasks').innerHTML=arr.map(t=>{let div=last!==t.group?`<div class="phase"><span>${escap(groups[t.group])}</span></div>`:'';last=t.group;return div+taskMarkup(t)}).join('')||'<div class="panel">Aucune tâche trouvée.</div>';$('[data-check]').forEach(b=>b.addEventListener('change',()=>{state.checks[b.dataset.check]=b.checked;save();updateProgress();renderDeliverables();let open=b.closest('details').open;let sc=window.scrollY;renderTasks();let d=$(`#block-${b.dataset.check.split('_')[0]} details`);if(d&&open)d.open=true;window.scrollTo({top:sc})}));$('[data-note]').forEach(el=>el.addEventListener('input',()=>{state.notes[el.dataset.note]=el.value;save()}));$('[data-complete]').forEach(el=>el.addEventListener('click',()=>{let t=DATA.tasks.find(t=>t.id===el.dataset.complete),make=!completed(t);t.steps.forEach((_,i)=>state.checks[t.id+'_'+i]=make);save();updateProgress();renderDeliverables();renderTasks()}))}
+$('#taskSearch').addEventListener('input',renderTasks);$('#taskFilter').addEventListener('change',renderTasks);
+function renderChapters(){$('#chapters').innerHTML=DATA.chapters.map(c=>`<details class="chapter" ${c.n==='00'?'open':''}><summary><span class="index">${escap(c.n)}</span><span><b>${escap(c.name)}</b><br><span class="sub mini">${escap(c.type)}</span></span><span class="caption">${escap(c.duration)} ▾</span></summary><div class="chapbody"><div><div class="item-label">Mise en situation</div><p>${escap(c.brief)}</p><div class="item-label">Déroulé réel</div><p>${escap(c.mechanic)}</p></div><div><div class="item-label">Condition de réussite</div><p>${escap(c.done)}</p><div class="item-label">Aides & secours</div><p>${escap(c.clues)}</p></div></div></details>`).join('')}
+function renderAds(){$('#adCards').innerHTML=DATA.ads.map((a,i)=>`<div class="panel"><div class="row"><span class="tag ${i?'dark':'green'}">CREA ${i?'B':'A'} · ${escap(a.duration)}</span><span class="micro">${escap(a.goal)}</span></div><h3 style="margin-top:13px">${escap(a.name)}</h3><p><b>Hook :</b> « ${escap(a.hook)} »</p><div class="mini-title">Storyboard</div><div class="guide"><ul>${a.shots.map(s=>`<li>${escap(s)}</li>`).join('')}</ul></div><div class="mini-title">Texte publicitaire</div><div class="copybox">${escap(a.copy)}</div><p class="footnote">${escap(a.risk)}</p><button class="btn small" data-adcopy="${i}">Copier le script complet</button></div>`).join('');$('[data-adcopy]').forEach(b=>b.addEventListener('click',()=>{let a=DATA.ads[+b.dataset.adcopy];copyText(a.name+'\nHook : '+a.hook+'\n\n'+a.shots.join('\n')+'\n\nTexte : '+a.copy)}))}
+const flow=[['Publicités / posts','2 créations Meta + 2 publications organiques depuis le compte du produit.'],['Landing','Promesse, vraie démonstration et prix affiché.'],['Démo jouable','2–3 minutes sans formulaire ; victoire complète et CTA.'],['Paiement unique','39,90 € TTC, sans upsell ni abonnement.'],['Accès + configuration','E-mail transactionnel, pièces, heure de départ, téléphone adulte.'],['Fête / expérience','Message mystérieux + appel vocal puis 10 missions guidées par personnages.'],['Recommandation','Invitations et diplôme optionnels en phase 2.']];
+$('#funnelFlow').innerHTML=flow.map((it,i)=>`<div class="flowstep"><div class="flownum">${i+1}</div><div class="flowcard"><h3>${escap(it[0])}</h3><p>${escap(it[1])}</p></div></div>`).join('');
+const GATES=[['realgame','Les 10 épreuves se terminent, avec code final 2413 et un mode de secours pour chacune.'],['parent','Un adulte extérieur prépare et lance le jeu sans avoir à lire les consignes.'],['audio','Les 47 MP3 sont présents, audibles, correctement attribués ; l’échec d’autoplay a un bouton de secours.'],['phones','La démo, le jeu et la lecture audio ont été testés sur iPhone/Android, y compris écran verrouillé et retour à la page.'],['paid','Une commande de test confirme le paiement ET livre un accès fonctionnel.'],['honest','La durée totale des 10 épreuves, le nombre de joueurs et la simplicité correspondent aux tests.'],['law','CGV, confidentialité, rétractation, identité vendeur et consentement pub vérifiés.'],['support','Un contact support et une procédure de secours sont disponibles.']];
+function renderGates(){$('#gates').innerHTML=GATES.map(([id,txt])=>`<label class="checkrow"><input data-gate="${id}" type="checkbox" ${state.gates[id]?'checked':''}><span>${escap(txt)}</span></label>`).join('');$('[data-gate]').forEach(el=>el.addEventListener('change',()=>{state.gates[el.dataset.gate]=el.checked;save();updateGates()}));updateGates()}
+function updateGates(){let good=GATES.filter(([id])=>state.gates[id]).length,go=good===GATES.length;$('#gateStatus').textContent=go?'GO · '+good+'/'+GATES.length:'HOLD · '+good+'/'+GATES.length;$('#gateStatus').className='tag '+(go?'green':'warn');$('#readyOverview').textContent=go?'GO':'HOLD';$('#readyOverview').style.color=go?'#218468':'#ad683e'}
+const C={
+ buildPrompt:`Tu es développeur front-end senior et concepteur de jeux d'aventure pour 8–11 ans. Crée une application web mobile-first jouable intégralement, intitulée « Le Donjon à la Maison — Les dix sceaux ».\n\nCIBLE : un parent organise un anniversaire de 6 à 10 enfants. Un adulte garde le téléphone et supervise ; les enfants participent physiquement. Aucun matériel à imprimer ou acheter.\n\nPÉRIMÈTRE : un seul scénario, 11 scènes détaillées ci-dessous : introduction puis 10 épreuves (bannières, statues, échos, messager, trois portes, pont des flèches, bibliothèque des miroirs, tribunal des coffres, pacte des aventuriers, cœur du Donjon). Dérouler les 10 épreuves dans cet ordre. Les quatre runes se récupèrent en 01 (▲=1), 03 (★=2), 07 (◆=3), 09 (○=4). Le final 10 attend le code 2413. Utiliser toutes les solutions et aides indiquées dans les fiches ci-dessous.\n\nCONTRAINTES : HTML/CSS/JavaScript mobile-first. Pas d'API IA, pas de compte enfant, pas de publicité, pas de collecte de données enfant. Configurer uniquement les pièces accessibles et le nombre approximatif de joueurs. Boutons tactiles accessibles, texte lisible, instructions parent et enfants séparées, mode sans audio.\n\nMÉCANIQUE AUDIO (OBLIGATOIRE) : 4 voix fictives, 47 MP3 pré-générés avec noms de fichiers stricts issus du manifeste ; la web app présente un faux message mystérieux (pas de SMS réel), le parent choisit une heure, touche « Armer la mission », puis à l'heure prévue l’interface affiche l'appel vocal (lecture après permission préalable si possible ; sinon bouton « Écouter le message »). Lecture de chaque brief vocal, de deux indices facultatifs et du succès pour les dix épreuves. Une piste par fichier, boutons pause/réécouter, textes synchronisés lisibles, mode muet, contrôle de volume, état sauvegardé. La web app ne doit jamais prétendre pouvoir produire automatiquement du son lorsque l’appareil est verrouillé et doit gérer les échecs de play() et le retour au premier plan. Aucun message SMS/WhatsApp réel, aucune génération vocale en direct.
+
+MÉCANIQUE : machine à états, indices progressifs, vérification des réponses, confirmation parent pour les tâches réelles, rôles à répartir, sauvegarde d'avancement localement (si disponible), pause/reprise, bouton « Débloquer une étape » réservé à l'adulte, écran final. Les enfants ne doivent ni courir, ni grimper, ni fouiller placards, escaliers ou objets dangereux.\n\nLIVRABLES : application complète, introduction et 10 épreuves prêtes à jouer, code commenté, procédure de tests 01 à 10, liste des limites. Fournis un jeu fonctionnel et non une maquette. Évite toute promesse de durée non vérifiée. La gestion de l'accès après paiement sera faite séparément et validée côté serveur.`,
+ landingCopy:`L'anniversaire dont votre enfant sera le héros.\n\nSans que vous ayez à devenir animateur.\n\nTransformez votre maison en aventure collective pour les enfants de 8 à 11 ans. Le Donjon à la Maison accompagne le groupe à travers des énigmes et des missions à accomplir ensemble. Pas de kit à imprimer.\n\n[ESSAYER GRATUITEMENT LA PREMIÈRE MISSION]\n\nComment ça marche ?\n1. Choisissez les pièces accessibles aux enfants.\n2. Lancez le jeu depuis votre téléphone.\n3. Le Gardien guide l'équipe de mission en mission ; un adulte reste présent.\n\nLe Donjon à la Maison — 39,90 € TTC, achat unique.\n[PRÉPARER MON ANNIVERSAIRE]\n\nAvant achat : voir le fonctionnement, l'âge conseillé, le nombre de joueurs réellement testé, les appareils compatibles, la durée testée, le rôle de l'adulte, le support et les conditions de vente.`,
+ deliveryEmail:`Objet : Votre Donjon est prêt 🗝️\n\nBonjour,\n\nVotre aventure « Le Donjon à la Maison » est disponible !\n\n1. Ouvrez votre accès personnel : [LIEN D'ACCÈS]\n2. Choisissez les pièces autorisées et l'effectif du groupe.\n3. Lancez l'aventure lorsque les enfants sont réunis.\n\nAvant de commencer, vérifiez le son ou activez la version sans audio. Gardez un adulte présent pendant les missions.\n\nUne question ? Répondez à cet e-mail ou écrivez à [SUPPORT].\n\nBelle aventure !\nL'équipe Le Donjon à la Maison`,
+ faqText:`Faut-il imprimer quelque chose ?\nNon, le jeu est pensé pour fonctionner sans impression.\n\nFaut-il installer une application ?\nNon si la version web est livrée comme prévu ; l'accès s'effectue dans le navigateur indiqué.\n\nLes enfants jouent-ils seuls ?\nNon. Un adulte supervise et confirme certaines épreuves physiques ; le jeu guide le déroulement.\n\nCombien de temps dure une partie ?\n[INDIQUER UNIQUEMENT LA DURÉE OBSERVÉE EN TEST].\n\nEt si une énigme bloque ?\nDes indices et un mode parent permettent de poursuivre.\n\nQue se passe-t-il en cas de problème technique ?\nContact : [SUPPORT]. Accès de secours : [PROCÉDURE].`,
+ testScript:`Test parent en conditions réelles :\n1. « Préparez un anniversaire pour huit enfants avec ce lien. Faites comme si je n'étais pas là. »\n2. Chronométrer le temps de préparation réel.\n3. Noter chaque hésitation, clic erroné et question. Ne pas souffler les réponses.\n4. Tester une épreuve collective puis, si possible, toute l'aventure en groupe.\n5. Observer : le groupe collabore-t-il ? Le téléphone monopolise-t-il l'attention ? Faut-il improviser ?\n6. Relever la durée et le nombre d'interventions adultes.\n7. Terminer par « Qu'est-ce qui vous empêcherait de payer pour utiliser ceci samedi ? » (pour comprendre une objection, pas comme preuve d'achat).`,
+ supportText:`Si le lien ne s'ouvre pas :\nBonjour, merci pour votre message. Pour que votre aventure puisse commencer, pouvez-vous nous préciser l'appareil et le navigateur utilisés ainsi que le message d'erreur affiché (sans données personnelles d'enfant) ? Nous vérifions votre accès et vous proposons une solution de secours.\n\nSi une énigme bloque :\nDans l'écran de jeu, ouvrez « Indice » puis « Aide parent ». Vous pouvez révéler la solution et poursuivre sans perdre la progression.\n\nSi une commande n'a pas été livrée :\nVérifier en priorité la confirmation du paiement côté marchand, puis réémettre un lien fonctionnel selon la procédure de support.`,
+};
+C.buildPrompt+='\n\n=== CHAPITRES ET SOLUTIONS À INTÉGRER, SANS OMISSION ===\n'+DATA.chapters.map(c=>`\n${c.n} · ${c.name} (${c.duration})\nHistoire : ${c.brief}\nMécanique : ${c.mechanic}\nSuccès : ${c.done}\nAides : ${c.clues}`).join('\n');
+Object.entries(C).forEach(([id,s])=>{let el=document.getElementById(id);if(el)el.textContent=s});
+async function copyText(s){try{await navigator.clipboard.writeText(s);toast('Texte copié')}catch{const el=document.createElement('textarea');el.value=s;el.style.position='fixed';el.style.opacity='0';document.body.appendChild(el);el.select();try{document.execCommand('copy');toast('Texte copié')}catch{toast('Copie impossible : sélectionnez le texte')}el.remove()}}
+$('[data-copy]').forEach(b=>b.addEventListener('click',()=>copyText(C[b.dataset.copy]||document.getElementById(b.dataset.copy)?.textContent||'')));
+function makeUtm(){try{let u=new URL($('#baseUrl').value);u.searchParams.set('utm_source',$('#source').value);u.searchParams.set('utm_medium',$('#source').value==='tiktok'?'organic_social':'paid_social');u.searchParams.set('utm_campaign',$('#campaign').value.trim()||'donjon_lancement');u.searchParams.set('utm_content',$('#creative').value);$('#utmOutput').textContent=u.href}catch{$('#utmOutput').textContent='Entrez une URL valide, par exemple https://monsite.fr'}}
+['baseUrl','source','creative','campaign'].forEach(id=>$('#'+id).addEventListener('input',makeUtm));$('#copyUtm').addEventListener('click',()=>copyText($('#utmOutput').textContent));makeUtm();
+function calcFinance(){let get=id=>{let v=$('#fin'+id),n=parseFloat(v.value);return Number.isFinite(n)?Math.max(0,n):0},p=get('Price'),target=get('Target'),cpc=get('Cpc'),conv=get('Conv')/100,pct=get('Pct')/100,fixed=get('Fixed'),budget=get('Budget'),spent=get('Spent'),sales=get('Sales'),cash=get('Cash');let fee=p*pct+fixed,cac=conv>0?cpc/conv:Infinity,contrib=p-fee-cac,needed=contrib>0?Math.ceil(target/contrib):Infinity,media=needed*cac,visitors=conv>0?needed/conv:Infinity,actual=sales*(p-fee)-spent;
+$('#outCac').textContent=eur(cac);$('#outMargin').textContent=eur(contrib);$('#outNeeded').textContent=number(needed);$('#outMedia').textContent=eur(media);$('#outVisitors').textContent=number(visitors);$('#outRevenue').textContent=eur(sales*p);$('#outActual').textContent=eur(actual);$('#outCash').textContent=eur(cash);$('#finWarning').textContent=contrib<=0?'Avec ces hypothèses, une vente coûte autant ou plus qu’elle ne rapporte après paiement et publicité.':`Le budget initial de ${eur(budget)} ne suffit ${media>budget?'pas':'potentiellement'} à financer ${eur(media)} d’acquisition théorique. À mesurer par de vrais achats ; marge hors impôts et versements différés.`;
+['Target','Price','Cpc','Conv','Pct','Fixed','Budget','Spent','Sales','Cash'].forEach(id=>state.financial[id]=$('#fin'+id).value);save()}
+['Target','Price','Cpc','Conv','Pct','Fixed','Budget','Spent','Sales','Cash'].forEach(id=>{if(state.financial[id]!=null)$('#fin'+id).value=state.financial[id];$('#fin'+id).addEventListener('input',calcFinance)});
+function tick(){let start=state.timerStart,elapsed=start===null?0:Math.max(0,Math.floor((Date.now()-start)/60000)),remain=Math.max(0,1440-elapsed),h=Math.floor(remain/60),m=remain%60;$('#countdown').textContent=String(h).padStart(2,'0')+'h '+String(m).padStart(2,'0');$('#timerSub').textContent=start===null?'Chrono non démarré':remain===0?'24 heures écoulées':`H+${String(Math.floor(elapsed/60)).padStart(2,'0')}:${String(elapsed%60).padStart(2,'0')} écoulées`;$('#currentTimeLabel').textContent=`H+${String(Math.floor(elapsed/60)).padStart(2,'0')}:${String(elapsed%60).padStart(2,'0')}`;$('#timerBtn').textContent=start===null?'▶ Démarrer 24 h':'↻ Réinitialiser le chrono'}
+$('#timerBtn').addEventListener('click',()=>{if(state.timerStart===null){state.timerStart=Date.now();save();tick();toast('Chrono 24 h démarré')}else if(confirm('Remettre le chrono à zéro ? Les cases et notes resteront enregistrées.')){state.timerStart=null;save();tick()}});setInterval(tick,1000*15);
+function exportData(){const blob=new Blob([JSON.stringify({version:3,exportedAt:new Date().toISOString(),...state},null,2)],{type:'application/json'}),url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download='donjon-cockpit-sauvegarde.json';document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1500);toast('Sauvegarde exportée')}
+$('#copyCloudLink').addEventListener('click',async()=>{if(!cloudToken){toast('Ouvrez le lien privé pour activer le cloud');return;}const u=location.origin+location.pathname+'#key='+encodeURIComponent(cloudToken);try{await navigator.clipboard.writeText(u);toast('Lien privé copié. Ne le partagez pas !')}catch{prompt('Copiez votre lien personnel :',u)}});
+$('#exportBtn').addEventListener('click',exportData);$('#export2').addEventListener('click',exportData);$('#printBtn').addEventListener('click',()=>window.print());$('#importBtn').addEventListener('click',()=>$('#importInput').click());$('#importInput').addEventListener('change',async e=>{try{let d=JSON.parse(await e.target.files[0].text());if(!d||typeof d!=='object'||typeof d.checks!=='object')throw Error('format');if(!confirm('Remplacer l’avancement actuel par cette sauvegarde ?'))return;state={...structuredClone(defaults),checks:d.checks||{},notes:d.notes||{},gates:d.gates||{},timerStart:typeof d.timerStart==='number'?d.timerStart:null,financial:d.financial||{}};save();if(await flushCloud())location.reload();else toast('Import local effectué : sauvegarde cloud non confirmée')}catch{toast('Fichier de sauvegarde invalide')}});$('#resetBtn').addEventListener('click',async()=>{if(confirm('Réinitialiser définitivement les cases, notes, finance et chrono SUR TOUS VOS APPAREILS ? Exportez une sauvegarde avant.')){state=structuredClone(defaults);save();if(await flushCloud())location.reload();else toast('La remise à zéro cloud a échoué : réessayez')}});
+let demoMode=0,demoChoice=[];
+function openDemo(){demoMode=0;demoChoice=[];$('#demoModal').classList.add('open');document.body.style.overflow='hidden';showDemo()}
+function closeDemo(){$('#demoModal').classList.remove('open');document.body.style.overflow=''}
+$('#openDemo').addEventListener('click',openDemo);$('#demoFromProduct').addEventListener('click',openDemo);$('#closeDemo').addEventListener('click',closeDemo);$('#demoModal').addEventListener('click',e=>{if(e.target.id==='demoModal')closeDemo()});document.addEventListener('keydown',e=>{if(e.key==='Escape')closeDemo()});
+function showDemo(msg=''){let el=$('#demoContent');if(demoMode===0)el.innerHTML=`<div class="eyebrow" style="color:#b8d8be">Épreuve 01 · Le premier sceau</div><h3>La porte des trois signes</h3><p>« Je n'ai aucun coin. J'en ai trois. Je brille la nuit. »</p><p>Choisissez les trois symboles dans l’ordre.</p><div class="runes"><button data-rune="★" aria-label="Étoile">★</button><button data-rune="○" aria-label="Cercle">○</button><button data-rune="△" aria-label="Triangle">△</button></div><div id="demoProgress" style="letter-spacing:5px;font-size:25px">${escap(demoChoice.join(' '))||'_ _ _'}</div><div class="mini" id="demoInfo">${escap(msg)}</div><button class="btn small" id="hintDemo">Indice</button>`;else if(demoMode===1)el.innerHTML=`<div class="eyebrow" style="color:#b8d8be">Le corridor des portes</div><h3>Quel passage est sûr ?</h3><p>La bonne porte porte <b>deux clés</b> et <b>aucun dragon</b>.</p><div class="runes"><button data-door="rouge" style="font-size:15px">Rouge<br>🐉</button><button data-door="verte" style="font-size:15px">Verte<br>🗝🐉🐉</button><button data-door="bleue" style="font-size:15px">Bleue<br>🗝🗝</button></div><div id="demoInfo">${escap(msg)}</div>`;else el.innerHTML=`<div style="font-size:50px">🏰</div><h3>Le premier donjon est ouvert !</h3><p>Voilà le principe : un jeu guidé, des choix, des indices et une récompense. La version complète ajoute des épreuves physiques et collectives.</p><button class="btn primary" id="toProduct">Revenir au cahier des charges</button>`;
+$('[data-rune]',el).forEach(b=>b.addEventListener('click',()=>{let seq=['○','△','★'],v=b.dataset.rune;if(v===seq[demoChoice.length]){demoChoice.push(v);if(demoChoice.length===3){demoMode=1;showDemo('Bravo ! Le sceau 01 sur 10 est retrouvé.')}else showDemo('Bien joué ! Encore '+(3-demoChoice.length)+' symbole(s).')}else{demoChoice=[];showDemo('Ce n’est pas le bon ordre : on recommence, sans pénalité.')}}));$('[data-door]',el).forEach(b=>b.addEventListener('click',()=>{if(b.dataset.door==='bleue'){demoMode=2;showDemo()}else showDemo('Il faut deux clés et aucun dragon. Essaie encore.')}));let hint=$('#hintDemo');if(hint)hint.addEventListener('click',()=>{$('#demoInfo').textContent='Indice : commencez par le cercle, la figure sans coin.'});let toProd=$('#toProduct');if(toProd)toProd.addEventListener('click',()=>{closeDemo();navigate('product')})}
+const DELIVERABLES=[['t04','Aventure complète vocalisée'],['t21','47 clips audio prêts'],['t06','Mini-démo sans inscription'],['t08','Page de vente mobile'],['t09','Paiement + livraison automatique'],['t11','Deux vidéos publicitaires'],['t15','Conditions, confidentialité, support'],['t16','Test transactionnel de bout en bout']];
+function renderDeliverables(){$('#deliverables').innerHTML=DELIVERABLES.map(([id,name])=>{let t=DATA.tasks.find(t=>t.id===id);return `<button type="button" data-deliver="${id}" class="row" style="width:100%;background:transparent;border:0;border-bottom:1px solid #e8eded;padding:11px 1px;text-align:left;cursor:pointer"><span class="mini">${completed(t)?'✅':'○'} ${escap(name)}</span><span class="tag ${completed(t)?'green':''}">${completed(t)?'fait':'à produire'} →</span></button>`}).join('');$('[data-deliver]').forEach(b=>b.addEventListener('click',()=>{let id=b.dataset.deliver;navigate('timeline');let el=$('#block-'+id);if(el){el.scrollIntoView({behavior:'smooth',block:'center'});el.querySelector('details').open=true}}))}
+
+// ---- Module « Voix & grand départ » : démonstration locale + export, aucune API ----
+const VOICES=DATA.voices;const AUDIO=DATA.audio;let armedAt=null,armedTimer=null,previewSpeech=null;
+function renderVoices(){
+  $('#voiceGrid').innerHTML=Object.entries(VOICES).map(([id,v])=>`<div class="voice-card"><span class="voice-dot" style="background:${escap(v.color)}"></span><div><b>${escap(v.name)}</b><p class="mini sub">${escap(v.description)}</p></div></div>`).join('')
+}
+function renderAudioScripts(){let scene=$('#audioSceneFilter').value,type=$('#audioTypeFilter').value;
+ const selected=AUDIO.filter(a=>(scene==='all'||a.scene===scene)&&(type==='all'||a.kind===type));
+ $('#audioScripts').innerHTML=`<p class="mini sub">${selected.length} pistes affichées sur ${AUDIO.length}</p>`+selected.map(a=>`<details class="audio-clip"><summary><span class="tag">${escap(a.scene)}</span><b>${escap(a.kind)}</b><span class="sub mini">${escap(a.voiceName)}</span><code>${escap(a.file)}</code></summary><div class="audio-body"><p>${escap(a.text)}</p><div class="tworow"><button class="btn small" data-audiocopy="${escap(a.id)}">Copier le texte</button><button class="btn small" data-audiofile="${escap(a.id)}">Copier le chemin MP3</button><button class="btn small" data-audiopreview="${escap(a.id)}">▶ Aperçu voix navigateur</button></div></div></details>`).join('');
+ $('[data-audiocopy]').forEach(b=>b.addEventListener('click',()=>copyText(AUDIO.find(a=>a.id===b.dataset.audiocopy).text)));
+ $('[data-audiofile]').forEach(b=>b.addEventListener('click',()=>copyText(AUDIO.find(a=>a.id===b.dataset.audiofile).file)));
+ $('[data-audiopreview]').forEach(b=>b.addEventListener('click',()=>speakPreview(AUDIO.find(a=>a.id===b.dataset.audiopreview).text)))
+}
+function csvField(v){return '"'+String(v).replaceAll('"','""')+'"'}
+function exportManifest(){let rows=[['id','scene','type','personnage','description_de_voix','fichier_mp3','texte_integral'],...AUDIO.map(a=>[a.id,a.scene,a.kind,a.voiceName,VOICES[a.voice].description,a.file,a.text])];const csv='\uFEFF'+rows.map(row=>row.map(csvField).join(';')).join('\r\n');let url=URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8'}));let link=document.createElement('a');link.href=url;link.download='donjon-47-scripts-audio-elevenlabs.csv';document.body.appendChild(link);link.click();link.remove();setTimeout(()=>URL.revokeObjectURL(url),2000);toast('Manifeste CSV exporté')}
+function speakPreview(text){if(!('speechSynthesis' in window)){toast('Synthèse vocale non disponible dans ce navigateur');return}try{speechSynthesis.cancel();let utter=new SpeechSynthesisUtterance(text);utter.lang='fr-FR';utter.rate=.88;utter.pitch=1;previewSpeech=utter;speechSynthesis.speak(utter)}catch{toast('Aperçu vocal indisponible')}}
+function phoneView(mode){let p=$('#phoneContent');if(mode==='waiting'){p.innerHTML='<div class="phone-badge">MESSAGE • EXPÉDITEUR INCONNU</div><p class="phone-msg">« Ce message ne vous était peut-être pas destiné... À l’heure prévue, rassemblez les aventuriers. »</p><div class="phone-time">L’appel arrivera bientôt...</div>';return}
+ if(mode==='ringing'){p.innerHTML='<div class="phone-badge">⚡ APPEL DU DONJON</div><h3 style="color:#fff;font-size:23px">MESSAGE VOCAL REÇU</h3><p>« La porte s’est ouverte. Le Gardien a besoin de vous. »</p><div class="phone-time">Appuyez sur « Lire / écouter l’appel » si votre appareil n’a pas démarré le son.</div>';return}
+ p.innerHTML='<div class="phone-badge">MISSION ARMÉE</div><h3 style="color:#fff">Le Donjon attend.</h3><p>Une étrange conversation apparaît sur l’écran parental.</p>'}
+function armScene(ms){if(armedTimer)clearTimeout(armedTimer);const delay=Math.max(0,ms-Date.now());armedAt=ms;phoneView('waiting');$('#audioStatus').textContent='Mission armée : '+new Date(ms).toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit',second:'2-digit'})+'. Garder la page ouverte et visible ; le téléphone ne doit pas être verrouillé.';armedTimer=setTimeout(triggerScene,delay)}
+function triggerScene(){armedAt=null;armedTimer=null;phoneView('ringing');$('#audioStatus').textContent='L’heure est arrivée. Le bouton de lecture reste disponible si le son automatique est bloqué.';
+ // On tente le son seulement après un geste parental préalable; l'échec ne doit jamais être masqué.
+ speakPreview(AUDIO.find(a=>a.id==='s00_alerte').text)}
+$('#armAudio').addEventListener('click',()=>{let val=$('#audioAt').value;let m=/^(\d{2}):(\d{2})$/.exec(val);if(!m)return toast('Choisissez une heure valide');let target=new Date();target.setHours(+m[1],+m[2],0,0);if(target.getTime()<=Date.now())target.setDate(target.getDate()+1);armScene(target.getTime())});
+$('#testAudioNow').addEventListener('click',()=>armScene(Date.now()+8000));
+$('#playAudioMessage').addEventListener('click',()=>{phoneView('ringing');speakPreview(AUDIO.find(a=>a.id==='s00_alerte').text+' '+AUDIO.find(a=>a.id==='s00_brief').text)});
+$('#stopAudioPreview').addEventListener('click',()=>{if('speechSynthesis' in window)speechSynthesis.cancel();if(armedTimer)clearTimeout(armedTimer);armedTimer=null;armedAt=null;$('#audioStatus').textContent='Simulation interrompue.';phoneView('idle')});
+$('#audioSceneFilter').addEventListener('change',renderAudioScripts);$('#audioTypeFilter').addEventListener('change',renderAudioScripts);$('#downloadManifest').addEventListener('click',exportManifest);
+renderVoices();renderAudioScripts();
+
+renderChapters();renderAds();
+function escap(s){return String(s).replace(/[&<>\"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;',"'":'&#39;'}[c]));}
+function renderMyTasks(){
+ const items=Array.isArray(state.notes.__customTasks)?state.notes.__customTasks:[];
+ document.getElementById('customTasksList').innerHTML=items.length?items.map(item=>
+  '<div class="row" style="border-top:1px solid #e6e8e9;padding:10px 0;align-items:center;gap:10px">'+
+   '<label style="display:flex;align-items:center;gap:10px;flex:1;min-width:0"><input type="checkbox" data-mytask-check="'+escap(item.id)+'" '+(item.done?'checked':'')+'><span style="'+(item.done?'text-decoration:line-through;opacity:.55':'')+'">'+escap(item.title)+'</span></label>'+
+   '<button type="button" class="btn small" data-mytask-remove="'+escap(item.id)+'">Supprimer</button></div>'
+ ).join(''):'<p class="mini sub">Aucune tâche ajoutée pour l’instant.</p>';
+ document.querySelectorAll('[data-mytask-check]').forEach(el=>el.addEventListener('change',()=>{
+   const i=state.notes.__customTasks.find(x=>x.id===el.dataset.mytaskCheck);if(i){i.done=el.checked;save();renderMyTasks()}
+ }));
+ document.querySelectorAll('[data-mytask-remove]').forEach(el=>el.addEventListener('click',()=>{
+  if(!confirm('Supprimer cette tâche personnelle ?'))return;
+  state.notes.__customTasks=state.notes.__customTasks.filter(x=>x.id!==el.dataset.mytaskRemove);save();renderMyTasks()
+ }));
+}
+document.getElementById('projectJournal').value=state.notes.__journal||'';
+document.getElementById('projectJournal').addEventListener('input',e=>{state.notes.__journal=e.target.value;save()});
+document.getElementById('customTaskForm').addEventListener('submit',e=>{
+ e.preventDefault();const field=document.getElementById('customTaskTitle'),title=field.value.trim();
+ if(!title)return;
+ if(!Array.isArray(state.notes.__customTasks))state.notes.__customTasks=[];
+ state.notes.__customTasks.push({id:'self_'+Date.now().toString(36)+'_'+Math.floor(Math.random()*1e6),title,done:false});
+ field.value='';save();renderMyTasks()
+});
+renderMyTasks();
+
+renderGates();updateProgress();renderDeliverables();calcFinance();tick();
+})();
+</script>
+</body></html>
