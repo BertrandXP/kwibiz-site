@@ -32,7 +32,7 @@
  <div class="sidebarfoot">Cockpit en ligne • Sauvegarde cloud automatique • Accès privé</div>
 </aside>
 <main class="main">
- <div class="topbar"><div><span class="eyebrow">Opération · lancement express</span><div id="cloudStatus" style="font-size:12px;font-weight:700;color:#218468;margin-top:4px">☁ Connexion au cloud…</div></div><div class="right"><button class="btn" id="copyCloudLink" title="Gardez ce lien confidentiel">🔒 Copier mon accès</button><button class="btn" id="exportBtn">↧ Sauvegarder</button><button class="btn" id="printBtn">⎙ Imprimer</button><button class="btn primary" id="timerBtn">▶ Démarrer 24 h</button></div></div>
+ <div class="topbar"><div><span class="eyebrow">Opération · lancement express</span><div id="cloudStatus" style="font-size:12px;font-weight:700;color:#218468;margin-top:4px">☁ Connexion au cloud…</div></div><div class="right"><button class="btn" id="copyCloudLink" title="Gardez ce lien confidentiel">🔒 Copier mon accès</button><button class="btn" id="exportBtn">↧ Sauvegarder</button><button class="btn" id="printBtn">⎙ Imprimer</button><button class="btn" id="pauseTimerBtn" disabled aria-pressed="false" title="Figer le compte à rebours sans perdre le temps écoulé">⏸ Pause</button><button class="btn primary" id="timerBtn">▶ Démarrer 24 h</button></div></div>
  <section class="view active" id="view-overview">
   <div class="hero"><div class="eyebrow">MISSION 01 — DU ZÉRO À LA PREMIÈRE VENTE</div><h1>24 heures pour lancer<br>Le Donjon à la Maison.</h1><p>Une aventure d’anniversaire à créer, tester, vendre et livrer. Ce cockpit transforme le projet en 22 blocs d'exécution — avec 10 épreuves scénarisées, 47 vocaux, scripts, cahier des charges, publicités et contrôles de mise en ligne.</p><div class="tworow"><button class="btn primary" data-go="timeline">Ouvrir le plan d'exécution →</button><button class="btn" data-go="product">Voir le jeu à fabriquer</button><button class="btn" id="openDemo">Jouer la mini-démo</button></div></div>
   <div class="ribbon sectionblock"><b>Nouvelle expérience :</b> faux message mystérieux sur le téléphone parental → heure choisie → appel vocal du Gardien → 10 épreuves pilotées par 4 personnages. <button class="btn small" data-go="audio">🎙 Voir les voix & scripts</button></div>
@@ -1193,8 +1193,49 @@ function calcFinance(){let get=id=>{let v=$('#fin'+id),n=parseFloat(v.value);ret
 $('#outCac').textContent=eur(cac);$('#outMargin').textContent=eur(contrib);$('#outNeeded').textContent=number(needed);$('#outMedia').textContent=eur(media);$('#outVisitors').textContent=number(visitors);$('#outRevenue').textContent=eur(sales*p);$('#outActual').textContent=eur(actual);$('#outCash').textContent=eur(cash);$('#finWarning').textContent=contrib<=0?'Avec ces hypothèses, une vente coûte autant ou plus qu’elle ne rapporte après paiement et publicité.':`Le budget initial de ${eur(budget)} ne suffit ${media>budget?'pas':'potentiellement'} à financer ${eur(media)} d’acquisition théorique. À mesurer par de vrais achats ; marge hors impôts et versements différés.`;
 ['Target','Price','Cpc','Conv','Pct','Fixed','Budget','Spent','Sales','Cash'].forEach(id=>state.financial[id]=$('#fin'+id).value);save()}
 ['Target','Price','Cpc','Conv','Pct','Fixed','Budget','Spent','Sales','Cash'].forEach(id=>{if(state.financial[id]!=null)$('#fin'+id).value=state.financial[id];$('#fin'+id).addEventListener('input',calcFinance)});
-function tick(){let start=state.timerStart,elapsed=start===null?0:Math.max(0,Math.floor((Date.now()-start)/60000)),remain=Math.max(0,1440-elapsed),h=Math.floor(remain/60),m=remain%60;$('#countdown').textContent=String(h).padStart(2,'0')+'h '+String(m).padStart(2,'0');$('#timerSub').textContent=start===null?'Chrono non démarré':remain===0?'24 heures écoulées':`H+${String(Math.floor(elapsed/60)).padStart(2,'0')}:${String(elapsed%60).padStart(2,'0')} écoulées`;$('#currentTimeLabel').textContent=`H+${String(Math.floor(elapsed/60)).padStart(2,'0')}:${String(elapsed%60).padStart(2,'0')}`;$('#timerBtn').textContent=start===null?'▶ Démarrer 24 h':'↻ Réinitialiser le chrono'}
-$('#timerBtn').addEventListener('click',()=>{if(state.timerStart===null){state.timerStart=Date.now();save();tick();toast('Chrono 24 h démarré')}else if(confirm('Remettre le chrono à zéro ? Les cases et notes resteront enregistrées.')){state.timerStart=null;save();tick()}});setInterval(tick,1000*15);
+
+function tick(){
+ const start=state.timerStart;
+ const pausedAt=Number.isFinite(state.notes.__timerPausedAt)?state.notes.__timerPausedAt:null;
+ const paused=start!==null&&pausedAt!==null;
+ const reference=paused?pausedAt:Date.now();
+ const elapsed=start===null?0:Math.max(0,Math.floor((reference-start)/60000));
+ const remain=Math.max(0,1440-elapsed);
+ const hours=Math.floor(remain/60),minutes=remain%60;
+ $('#countdown').textContent=String(hours).padStart(2,'0')+'h '+String(minutes).padStart(2,'0');
+ $('#timerSub').textContent=start===null?'Chrono non démarré':paused?'⏸ En pause · H+'+String(Math.floor(elapsed/60)).padStart(2,'0')+':'+String(elapsed%60).padStart(2,'0')+' écoulées':remain===0?'24 heures écoulées':'H+'+String(Math.floor(elapsed/60)).padStart(2,'0')+':'+String(elapsed%60).padStart(2,'0')+' écoulées';
+ $('#currentTimeLabel').textContent='H+'+String(Math.floor(elapsed/60)).padStart(2,'0')+':'+String(elapsed%60).padStart(2,'0')+(paused?' · PAUSE':'');
+ $('#timerBtn').textContent=start===null?'▶ Démarrer 24 h':'↻ Réinitialiser le chrono';
+ const btn=$('#pauseTimerBtn');
+ btn.disabled=start===null||(!paused&&remain===0);
+ btn.textContent=paused?'▶ Reprendre':'⏸ Pause';
+ btn.setAttribute('aria-pressed',paused?'true':'false');
+ btn.title=paused?'Relancer le décompte à partir du temps restant':'Figer le compte à rebours sans perdre le temps écoulé';
+}
+$('#timerBtn').addEventListener('click',()=>{
+ if(state.timerStart===null){
+   state.timerStart=Date.now();
+   delete state.notes.__timerPausedAt;
+   save();tick();toast('Chrono 24 h démarré');
+ }else if(confirm('Remettre le chrono à zéro ? Les cases et notes resteront enregistrées.')){
+   state.timerStart=null;
+   delete state.notes.__timerPausedAt;
+   save();tick();toast('Chrono réinitialisé');
+ }
+});
+$('#pauseTimerBtn').addEventListener('click',()=>{
+ if(state.timerStart===null)return;
+ const pause=state.notes.__timerPausedAt;
+ if(Number.isFinite(pause)){
+   state.timerStart+=Math.max(0,Date.now()-pause);
+   delete state.notes.__timerPausedAt;
+   save();tick();toast('Chrono repris');
+ }else{
+   state.notes.__timerPausedAt=Date.now();
+   save();tick();toast('Chrono en pause — temps conservé');
+ }
+});
+setInterval(tick,1000*15);
 function exportData(){const blob=new Blob([JSON.stringify({version:3,exportedAt:new Date().toISOString(),...state},null,2)],{type:'application/json'}),url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download='donjon-cockpit-sauvegarde.json';document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1500);toast('Sauvegarde exportée')}
 $('#copyCloudLink').addEventListener('click',async()=>{if(!cloudToken){toast('Ouvrez le lien privé pour activer le cloud');return;}const u=location.origin+location.pathname+'#key='+encodeURIComponent(cloudToken);try{await navigator.clipboard.writeText(u);toast('Lien privé copié. Ne le partagez pas !')}catch{prompt('Copiez votre lien personnel :',u)}});
 $('#exportBtn').addEventListener('click',exportData);$('#export2').addEventListener('click',exportData);$('#printBtn').addEventListener('click',()=>window.print());$('#importBtn').addEventListener('click',()=>$('#importInput').click());$('#importInput').addEventListener('change',async e=>{try{let d=JSON.parse(await e.target.files[0].text());if(!d||typeof d!=='object'||typeof d.checks!=='object')throw Error('format');if(!confirm('Remplacer l’avancement actuel par cette sauvegarde ?'))return;state={...structuredClone(defaults),checks:d.checks||{},notes:d.notes||{},gates:d.gates||{},timerStart:typeof d.timerStart==='number'?d.timerStart:null,financial:d.financial||{}};save();if(await flushCloud())location.reload();else toast('Import local effectué : sauvegarde cloud non confirmée')}catch{toast('Fichier de sauvegarde invalide')}});$('#resetBtn').addEventListener('click',async()=>{if(confirm('Réinitialiser définitivement les cases, notes, finance et chrono SUR TOUS VOS APPAREILS ? Exportez une sauvegarde avant.')){state=structuredClone(defaults);save();if(await flushCloud())location.reload();else toast('La remise à zéro cloud a échoué : réessayez')}});
